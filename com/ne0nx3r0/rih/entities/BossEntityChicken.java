@@ -2,6 +2,8 @@
 package com.ne0nx3r0.rih.entities;
 
 import java.lang.reflect.Field;
+import net.minecraft.server.v1_7_R3.DamageSource;
+import net.minecraft.server.v1_7_R3.Entity;
 import net.minecraft.server.v1_7_R3.EntityChicken;
 import net.minecraft.server.v1_7_R3.EntityHuman;
 import net.minecraft.server.v1_7_R3.GenericAttributes;
@@ -21,7 +23,7 @@ public class BossEntityChicken extends EntityChicken{
     
     public BossEntityChicken(World world) {
         super(world);
-        
+
         try {
             Field bField = PathfinderGoalSelector.class.getDeclaredField("b");
             bField.setAccessible(true);
@@ -66,5 +68,19 @@ public class BossEntityChicken extends EntityChicken{
         //this.getAttributeInstance(GenericAttributes.e).setValue(3.0D);
         
         //this.bb().b(bp).setValue(this.random.nextDouble() * 0.10000000149011612D);
+    }
+    
+    @Override
+    public boolean n(Entity entity) {
+        return entity.damageEntity(DamageSource.mobAttack(this), 3.0F);
+    }
+
+    @Override
+    public boolean damageEntity(DamageSource damagesource, float f) {
+        if (this.isInvulnerable()) {
+            return false;
+        } else {
+            return super.damageEntity(damagesource, f);
+        }
     }
 }

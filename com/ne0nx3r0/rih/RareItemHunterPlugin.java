@@ -1,34 +1,62 @@
 package com.ne0nx3r0.rih;
 
+import com.ne0nx3r0.rih.boss.BossManager;
 import com.ne0nx3r0.rih.commands.RareItemHunterCommandExecutor;
 import com.ne0nx3r0.rih.entities.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.Map;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class RareItemHunterPlugin extends JavaPlugin{
+    private BossManager bossManager;
+    
     @Override
     public void onEnable(){
         this.getCommand("ri2").setExecutor(new RareItemHunterCommandExecutor(this));
         
         RareItemHunterPlugin.addBossEntity(BossEntityZombie.class, "BossZombie", 54);
         RareItemHunterPlugin.addBossEntity(BossEntityOcelot.class, "BossOcelot", 98);
-        RareItemHunterPlugin.addBossEntity(BossEntityChicken.class, "BossCucco", 93);
+        RareItemHunterPlugin.addBossEntity(BossEntityChicken.class, "BossChicken", 93);
+        
+        this.bossManager = new BossManager(this);
+    }
+    
+    public BossManager getBossManager(){
+        return this.bossManager;
     }
     
     
+
     
     
     
     
     
+// Public helper methods
     
-    
-    
-    
-    
-    
-    
+    public void copy(InputStream in, File file)
+    {
+        try
+        {
+            OutputStream out = new FileOutputStream(file);
+            byte[] buf = new byte[1024];
+            int len;
+            while((len=in.read(buf))>0)
+            {
+                out.write(buf,0,len);
+            }
+            out.close();
+            in.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
     
     
     

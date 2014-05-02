@@ -28,8 +28,10 @@ public class RareItemHunterCommand {
         return false;
     }
 
-    public String getUsage() {
-        return "/ri "+this.name+" "+this.usageArguments;
+    public String[] getUsage() {
+        return new String[]{
+            "/ri "+this.name+" "+this.usageArguments
+        };
     }
 
     void send(CommandSender cs, String...lines) {

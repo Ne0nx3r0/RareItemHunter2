@@ -10,7 +10,6 @@ import net.minecraft.server.v1_7_R3.PathfinderGoalHurtByTarget;
 import net.minecraft.server.v1_7_R3.PathfinderGoalLeapAtTarget;
 import net.minecraft.server.v1_7_R3.PathfinderGoalLookAtPlayer;
 import net.minecraft.server.v1_7_R3.PathfinderGoalMeleeAttack;
-import net.minecraft.server.v1_7_R3.PathfinderGoalMoveThroughVillage;
 import net.minecraft.server.v1_7_R3.PathfinderGoalMoveTowardsRestriction;
 import net.minecraft.server.v1_7_R3.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_7_R3.PathfinderGoalRandomLookaround;
@@ -42,7 +41,6 @@ public class BossEntityOcelot extends EntityOcelot{
         this.goalSelector.a(2, new PathfinderGoalLeapAtTarget(this, 0.4F));
         this.goalSelector.a(2, new PathfinderGoalMeleeAttack(this, EntityHuman.class, 1.0D, false));
         this.goalSelector.a(5, new PathfinderGoalMoveTowardsRestriction(this, 1.0D));
-        this.goalSelector.a(6, new PathfinderGoalMoveThroughVillage(this, 1.0D, false));
         this.goalSelector.a(7, new PathfinderGoalRandomStroll(this, 1.0D));
         this.goalSelector.a(8, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 8.0F));
         this.goalSelector.a(8, new PathfinderGoalRandomLookaround(this));

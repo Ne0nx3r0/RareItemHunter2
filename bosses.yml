@@ -1,0 +1,32 @@
+Bobcat:
+# valid types:
+# ocelot, chicken
+  type: ocelot
+# 1-10
+  difficulty: 4
+  hp: 2000
+  attackPower: 16
+# Skills the boss will use when hit
+  onHit:
+    - 30% chance Disorient level 5
+    - 30% chance Poison Dart level 5
+# Skills the boss will use every X seconds (X * 20 ticks)
+# If a player is targetted
+  onHeartbeat:
+    - every 5 seconds Disorient level 3
+
+Fisherman:
+  type: zombie
+  hp: 1800
+  attackPower: 20
+  difficulty: 5
+  onHit:
+    - 40% chance Pull level 5 
+    - 40% chance JumpAttack level 5
+  onHeartbeat:
+    - every 10 seconds Pull level 5
+  armor:
+    - LEATHER_HELMET PROTECTION_ENVIRONMENTAL:3,THORNS:3
+    - LEATHER_BOOTS PROTECTION_ENVIRONMENTAL:3
+    - LEATHER_BOOTS PROTECTION_PROJECTILE:2
+  weapon: FISHING_ROD
