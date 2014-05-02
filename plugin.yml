@@ -1,0 +1,13 @@
+name: RareItemHunter
+main: com.ne0nx3r0.rih.RareItemHunterPlugin
+version: '2.0a'
+database: false
+description: Rare Item Hunter
+commands:
+    ri:
+      description: RareItems commands
+permissions: 
+# All
+  rih.tester:
+    description: Permission to test ALL the things
+    default: false
