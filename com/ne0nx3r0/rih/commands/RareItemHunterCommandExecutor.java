@@ -14,6 +14,7 @@ public class RareItemHunterCommandExecutor implements CommandExecutor {
         this.commands = new HashMap<>();
         
         this.registerCommand(new CommandTest(plugin));
+        this.registerCommand(new CommandTestCat(plugin));
     }
     
     @Override

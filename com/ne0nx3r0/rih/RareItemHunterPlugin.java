@@ -1,7 +1,7 @@
 package com.ne0nx3r0.rih;
 
 import com.ne0nx3r0.rih.commands.RareItemHunterCommandExecutor;
-import com.ne0nx3r0.rih.entities.BossZombie;
+import com.ne0nx3r0.rih.entities.*;
 import java.lang.reflect.Field;
 import java.util.Map;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -9,9 +9,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class RareItemHunterPlugin extends JavaPlugin{
     @Override
     public void onEnable(){
-        this.getCommand("ri").setExecutor(new RareItemHunterCommandExecutor(this));
+        this.getCommand("ri2").setExecutor(new RareItemHunterCommandExecutor(this));
         
-        this.addBossEntity(BossZombie.class, "BossZombie", 51);
+        RareItemHunterPlugin.addBossEntity(BossEntityZombie.class, "BossZombie", 54);
+        RareItemHunterPlugin.addBossEntity(BossEntityOcelot.class, "BossOcelot", 98);
+        RareItemHunterPlugin.addBossEntity(BossEntityChicken.class, "BossCucco", 93);
     }
     
     

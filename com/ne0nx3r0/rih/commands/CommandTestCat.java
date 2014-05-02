@@ -1,16 +1,16 @@
 package com.ne0nx3r0.rih.commands;
 
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
-import com.ne0nx3r0.rih.entities.BossEntityChicken;
+import com.ne0nx3r0.rih.entities.BossEntityOcelot;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
 import org.bukkit.entity.Player;
 
-class CommandTest extends RareItemHunterCommand{
+class CommandTestCat extends RareItemHunterCommand{
 
-    public CommandTest(RareItemHunterPlugin plugin) {
-        super("t","","Testing command","rih.tester");
+    public CommandTestCat(RareItemHunterPlugin plugin) {
+        super("tc","","Testing command","rih.tester");
     }
     
     @Override
@@ -26,7 +26,7 @@ class CommandTest extends RareItemHunterCommand{
     public void spawnCustomEntity(Location loc){
         net.minecraft.server.v1_7_R3.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
         
-        BossEntityChicken customZombie = new BossEntityChicken(nmsWorld);
+        BossEntityOcelot customZombie = new BossEntityOcelot(nmsWorld);
         
         customZombie.setPosition(loc.getX(), loc.getY(), loc.getZ());
         
