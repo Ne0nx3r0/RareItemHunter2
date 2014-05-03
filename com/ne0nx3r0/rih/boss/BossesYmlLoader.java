@@ -4,10 +4,8 @@ import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.entities.BossEntityType;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -46,7 +44,7 @@ public class BossesYmlLoader {
             BossEntityType bossEntityType;
             
             try{
-                bossEntityType = BossEntityType.valueOf(sType);
+                bossEntityType = BossEntityType.valueOf(sType.toUpperCase());
             }
             catch(IllegalArgumentException ex){
                 plugin.getLogger().log(Level.WARNING, "{0} is not a valid boss type for {1}",
@@ -90,7 +88,7 @@ public class BossesYmlLoader {
 // Add weapon if boss has one
             ItemStack weapon = null; 
             
-            if(bossesYml.isSet(bossName+".weapon"))
+            if(bossSection.isSet("weapon"))
             {
                 // Method will return null if invalid, and handle notification of error
                 weapon = this.getItemStackFromEquipmentString(bossName,bossSection.getString("weapon"));

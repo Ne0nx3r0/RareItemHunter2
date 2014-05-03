@@ -19,8 +19,11 @@ public class BossManager {
         
         this.bossTemplates = loader.loadBosses();
     }
+    
     public BossTemplate getBossTemplate(String bossName){
         for(BossTemplate bt : this.bossTemplates){
+            System.out.println(bt);
+            System.out.println(bt.getName());
             if(bt.getName().equalsIgnoreCase(bossName)){
                 return bt;
             }
@@ -43,7 +46,7 @@ public class BossManager {
         return new Boss(uuid,bt);
     }
     
-    public UUID spawnBossEntity(BossEntityType bossType,Location loc){
+    private UUID spawnBossEntity(BossEntityType bossType,Location loc){
         net.minecraft.server.v1_7_R3.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
         
         Entity bossEntity;

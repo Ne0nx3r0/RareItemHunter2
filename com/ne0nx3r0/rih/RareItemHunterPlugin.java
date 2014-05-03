@@ -16,13 +16,23 @@ public class RareItemHunterPlugin extends JavaPlugin{
     
     @Override
     public void onEnable(){
-        this.getCommand("ri2").setExecutor(new RareItemHunterCommandExecutor(this));
+        getDataFolder().mkdirs();
+        
+        File configFile = new File(getDataFolder(),"config.yml");
+        
+        if(!configFile.exists())
+        {
+            copy(getResource("config.yml"), configFile);
+        }
         
         RareItemHunterPlugin.addBossEntity(BossEntityZombie.class, "BossZombie", 54);
         RareItemHunterPlugin.addBossEntity(BossEntityOcelot.class, "BossOcelot", 98);
         RareItemHunterPlugin.addBossEntity(BossEntityChicken.class, "BossChicken", 93);
         
         this.bossManager = new BossManager(this);
+        
+        this.getCommand("ri2").setExecutor(new RareItemHunterCommandExecutor(this));
+        
     }
     
     public BossManager getBossManager(){
