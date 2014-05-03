@@ -1,6 +1,7 @@
 
 package com.ne0nx3r0.rih.entities;
 
+import com.ne0nx3r0.rih.boss.BossTemplate;
 import java.lang.reflect.Field;
 import net.minecraft.server.v1_7_R3.EntityHuman;
 import net.minecraft.server.v1_7_R3.EntityZombie;
@@ -28,6 +29,7 @@ public class BossEntityZombie extends EntityZombie{
             bField.setAccessible(true);
             Field cField = PathfinderGoalSelector.class.getDeclaredField("c");
             cField.setAccessible(true);
+            
             bField.set(goalSelector, new UnsafeList<PathfinderGoalSelector>());
             bField.set(targetSelector, new UnsafeList<PathfinderGoalSelector>());
             cField.set(goalSelector, new UnsafeList<PathfinderGoalSelector>());
@@ -46,11 +48,6 @@ public class BossEntityZombie extends EntityZombie{
         this.goalSelector.a(8, new PathfinderGoalRandomLookaround(this));
         this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, true));
         this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityHuman.class, 0, true));
-    }
-    
-    @Override
-    public String getName(){
-        return "Bob";
     }
     
     @Override

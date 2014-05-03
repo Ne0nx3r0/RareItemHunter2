@@ -49,11 +49,6 @@ public class BossEntityOcelot extends EntityOcelot{
     }
     
     @Override
-    public String getName(){
-        return "Bob";
-    }
-    
-    @Override
     protected void aC() {
         super.aC();
         

@@ -49,11 +49,6 @@ public class BossEntityChicken extends EntityChicken{
     }
     
     @Override
-    public String getName(){
-        return "Cucco";
-    }
-    
-    @Override
     protected void aC() {
         super.aC();
         

@@ -33,6 +33,7 @@ public class RareItemHunterPlugin extends JavaPlugin{
         
         this.getCommand("ri2").setExecutor(new RareItemHunterCommandExecutor(this));
         
+        this.getServer().getPluginManager().registerEvents(new RareItemHunterBossListener(this), this);
     }
     
     public BossManager getBossManager(){

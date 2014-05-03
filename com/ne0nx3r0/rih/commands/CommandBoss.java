@@ -24,8 +24,8 @@ class CommandBoss extends RareItemHunterCommand{
     @Override
     public String[] getUsage() {
         return new String[]{
-            "/ri "+this.getName()+" <bossName> here",
-            "/ri "+this.getName()+" <bossName> <spawnPoint>"
+            "/ri2 "+this.getName()+" <bossName> here",
+            "/ri2 "+this.getName()+" <bossName> <spawnPoint>"
         };
     }
 
