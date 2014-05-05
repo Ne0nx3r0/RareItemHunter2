@@ -1,5 +1,7 @@
 package com.ne0nx3r0.rih;
 
+import com.ne0nx3r0.rih.listeners.RareItemHunterPlayerListener;
+import com.ne0nx3r0.rih.listeners.RareItemHunterBossListener;
 import com.ne0nx3r0.rih.boss.BossManager;
 import com.ne0nx3r0.rih.commands.RareItemHunterCommandExecutor;
 import com.ne0nx3r0.rih.entities.*;
@@ -28,12 +30,14 @@ public class RareItemHunterPlugin extends JavaPlugin{
         RareItemHunterPlugin.addBossEntity(BossEntityZombie.class, "BossZombie", 54);
         RareItemHunterPlugin.addBossEntity(BossEntityOcelot.class, "BossOcelot", 98);
         RareItemHunterPlugin.addBossEntity(BossEntityChicken.class, "BossChicken", 93);
+        RareItemHunterPlugin.addBossEntity(BossEntityPig.class, "BossPig", 90);
         
         this.bossManager = new BossManager(this);
         
         this.getCommand("ri2").setExecutor(new RareItemHunterCommandExecutor(this));
         
         this.getServer().getPluginManager().registerEvents(new RareItemHunterBossListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new RareItemHunterPlayerListener(this), this);
     }
     
     public BossManager getBossManager(){

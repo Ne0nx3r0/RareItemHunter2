@@ -1,8 +1,17 @@
-package com.ne0nx3r0.rih;
+package com.ne0nx3r0.rih.listeners;
 
+import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.boss.Boss;
 import com.ne0nx3r0.rih.boss.BossManager;
+import com.ne0nx3r0.util.FireworkVisualEffect;
+import java.util.Random;
+import java.util.logging.Level;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -59,17 +68,8 @@ public class RareItemHunterBossListener implements Listener {
         Boss boss = this.bossManager.getBoss(e.getEntity());
         
         if(boss == null){
-            System.out.println("------------EDE (not boss)------------");
-            
             return;
         }
-        
-        e.setCancelled(true);
-                    
-        System.out.println("------------EDE------------");
-        System.out.println(e.getEntity());
-        System.out.println(e.getCause());
-        System.out.println("");
         
         if (e.getEntity() != null && this.bossManager.isBoss(e.getEntity()))
         {
@@ -83,14 +83,12 @@ public class RareItemHunterBossListener implements Listener {
                 case FALL:
                 case DROWNING:
                 case FALLING_BLOCK:
+                    e.setCancelled(true);
                     return;
             }
         }
-        
-        System.out.println("sent to bossdamage");
-        System.out.println("");
 
-        this.bossDamaged(boss, null, e.getDamage());
+        this.bossDamaged(e.getEntity(),boss, null, e.getDamage());
         
         e.setDamage(1d);
         
@@ -106,12 +104,8 @@ public class RareItemHunterBossListener implements Listener {
         Boss boss = this.bossManager.getBoss(e.getEntity());
         
         if(boss == null){
-            System.out.println("------------EDBE (not boss)------------");
-            
             return;
         }
-        
-        e.setCancelled(true);
         
         Entity eAttacker = e.getDamager();
         Player pAttacker = null;
@@ -127,22 +121,16 @@ public class RareItemHunterBossListener implements Listener {
             }
         }
         
-        this.bossDamaged(boss, pAttacker, e.getDamage());
+        this.bossDamaged(e.getEntity(),boss, pAttacker, e.getDamage());
         
         e.setDamage(1d);
         
         LivingEntity lent = (LivingEntity) e.getEntity();
         
         lent.setHealth(lent.getMaxHealth());
-        
-        System.out.println("------------EDBE------------");
-        System.out.println(e.getEntity());
-        System.out.println(e.getDamager());
-        System.out.println(e.getDamager().getClass());
-        System.out.println("");
     }
     
-    public void bossDamaged(Boss boss,Player attacker,double damageAmount){
+    public void bossDamaged(Entity eBoss,Boss boss,Player attacker,double damageAmount){
         
         if(attacker != null){
             boss.addPlayerDamage(attacker, (int) damageAmount);
@@ -155,10 +143,50 @@ public class RareItemHunterBossListener implements Listener {
         // Still alive
         if(remainingHealth > 0){
             boss.setHealth(remainingHealth);
+            
+            int maxHealth = boss.getTemplate().getMaxHealth();
+            String bossName = boss.getTemplate().getName();
+            
+            ((LivingEntity) eBoss).setCustomName(String.format("%s %sHP / %sHP",new Object[]{
+                bossName,
+                remainingHealth,
+                maxHealth
+            }));
+                
+            if(attacker != null){
+                attacker.sendMessage(bossName+" HP: "+remainingHealth+"/"+maxHealth);
+            }
         }
         // Dead
         else {
-            
+            try
+            {
+                new FireworkVisualEffect().playFirework(
+                    eBoss.getWorld(), eBoss.getLocation(),
+                    FireworkEffect
+                        .builder()
+                        .with(FireworkEffect.Type.CREEPER)
+                        .withColor(Color.RED)
+                        .build()
+                );
+            }
+            catch (Exception ex)
+            {
+                // fireworks not supported
+            }
+
+            if(attacker instanceof Player)
+            {
+                Player pAttacker = (Player) attacker;
+
+                Bukkit.getServer().broadcastMessage(pAttacker.getName()+ChatColor.DARK_GREEN+" has defeated legendary boss "+ChatColor.WHITE+boss.getTemplate().getName()+ChatColor.GREEN+"!");
+            }
+            else
+            {
+                Bukkit.getServer().broadcastMessage("A legendary boss has been defeated!");
+            }
+
+            this.bossManager.removeBoss(boss);
         }
     }
 }

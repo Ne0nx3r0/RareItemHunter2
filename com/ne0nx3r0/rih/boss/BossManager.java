@@ -1,16 +1,12 @@
 package com.ne0nx3r0.rih.boss;
 
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
-import com.ne0nx3r0.rih.entities.BossEntityChicken;
-import com.ne0nx3r0.rih.entities.BossEntityOcelot;
-import com.ne0nx3r0.rih.entities.BossEntityType;
-import com.ne0nx3r0.rih.entities.BossEntityZombie;
+import com.ne0nx3r0.rih.entities.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
-import org.bukkit.entity.Entity;
 
 public class BossManager {
     private final List<BossTemplate> bossTemplates;
@@ -42,7 +38,10 @@ public class BossManager {
         if(bt == null){
             return null;
         }
+        
         UUID uuid = this.spawnBossEntity(bt.getBossEntityType(), lSpawnAt);
+        
+        this.activeBosses.add(new Boss(uuid,bt));
         
         return new Boss(uuid,bt);
     }
@@ -62,6 +61,9 @@ public class BossManager {
                 break;
             case OCELOT: 
                 bossEntity = new BossEntityOcelot(nmsWorld);
+                break;
+            case PIG: 
+                bossEntity = new BossEntityPig(nmsWorld);
                 break;
         }
         
@@ -94,5 +96,9 @@ public class BossManager {
         }
         
         return null;
+    }
+
+    public void removeBoss(Boss boss) {
+        this.activeBosses.remove(boss);
     }
 }
