@@ -5,7 +5,7 @@ Bobcat:
 # 1-10
   difficulty: 4
   hp: 2000
-  attackPower: 16
+  attackPower: 12
 # Skills the boss will use when hit
   onHit:
     - 30% chance Disorient level 5
@@ -18,7 +18,7 @@ Bobcat:
 Fisherman:
   type: zombie
   hp: 1800
-  attackPower: 20
+  attackPower: 18
   difficulty: 5
   onHit:
     - 40% chance Pull level 5 
@@ -30,3 +30,26 @@ Fisherman:
     - LEATHER_BOOTS PROTECTION_ENVIRONMENTAL:3
     - LEATHER_BOOTS PROTECTION_PROJECTILE:2
   weapon: FISHING_ROD
+  
+  
+Cucco:
+  type: chicken
+  hp: 800
+  attackPower: 24
+  difficulty: 5
+  onHit:
+    - 40% chance Pull level 5 
+    - 40% chance JumpAttack level 5
+  onHeartbeat:
+    - every 10 seconds Pull level 5
+  
+"Spicy Bacon":
+  type: pig
+  hp: 1600
+  attackPower: 20
+  difficulty: 5
+  onHit:
+    - 40% chance Pull level 5 
+    - 40% chance JumpAttack level 5
+  onHeartbeat:
+    - every 10 seconds Pull level 5

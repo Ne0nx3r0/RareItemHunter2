@@ -43,7 +43,7 @@ class CommandBoss extends RareItemHunterCommand{
             return true;
         }
         
-        String bossName = args[1];
+        String bossName = args[1].replace("_"," ");
         String sSpawnAt = args[2];
         
         if(!this.bossManager.isValidBossName(bossName)){

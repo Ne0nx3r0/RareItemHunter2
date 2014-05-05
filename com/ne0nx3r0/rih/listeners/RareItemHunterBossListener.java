@@ -21,6 +21,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import static org.bukkit.event.entity.EntityDamageEvent.DamageCause.*;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 
@@ -85,15 +86,20 @@ public class RareItemHunterBossListener implements Listener {
                 case FALLING_BLOCK:
                     e.setCancelled(true);
                     return;
+                // caught already by damagedbyentity
+                case ENTITY_ATTACK:
+                case PROJECTILE:
+                case MAGIC:
+                    return;
             }
         }
 
         this.bossDamaged(e.getEntity(),boss, null, e.getDamage());
-        
+
         e.setDamage(1d);
-        
+
         LivingEntity lent = (LivingEntity) e.getEntity();
-        
+
         lent.setHealth(lent.getMaxHealth());
     }
     
@@ -101,6 +107,12 @@ public class RareItemHunterBossListener implements Listener {
     @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
     public void onBossDamagedByEntity(EntityDamageByEntityEvent e)
     {
+        if(e.getCause() != ENTITY_ATTACK 
+        && e.getCause() != PROJECTILE 
+        && e.getCause() != MAGIC){
+            return;
+        }
+        
         Boss boss = this.bossManager.getBoss(e.getEntity());
         
         if(boss == null){
@@ -109,7 +121,7 @@ public class RareItemHunterBossListener implements Listener {
         
         Entity eAttacker = e.getDamager();
         Player pAttacker = null;
-        
+
         if(eAttacker instanceof Player){
            pAttacker = (Player) eAttacker;
         }
