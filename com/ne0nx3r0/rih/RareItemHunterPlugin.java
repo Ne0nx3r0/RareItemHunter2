@@ -28,9 +28,10 @@ public class RareItemHunterPlugin extends JavaPlugin{
         }
         
         RareItemHunterPlugin.addBossEntity(BossEntityZombie.class, "BossZombie", 54);
-        RareItemHunterPlugin.addBossEntity(BossEntityOcelot.class, "BossOcelot", 98);
-        RareItemHunterPlugin.addBossEntity(BossEntityChicken.class, "BossChicken", 93);
+        RareItemHunterPlugin.addBossEntity(BossEntityEnderman.class, "BossEnderman", 58);
         RareItemHunterPlugin.addBossEntity(BossEntityPig.class, "BossPig", 90);
+        RareItemHunterPlugin.addBossEntity(BossEntityChicken.class, "BossChicken", 93);
+        RareItemHunterPlugin.addBossEntity(BossEntityOcelot.class, "BossOcelot", 98);
         
         this.bossManager = new BossManager(this);
         

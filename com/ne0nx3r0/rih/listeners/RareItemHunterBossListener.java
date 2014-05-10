@@ -3,15 +3,16 @@ package com.ne0nx3r0.rih.listeners;
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.boss.Boss;
 import com.ne0nx3r0.rih.boss.BossManager;
+import com.ne0nx3r0.rih.boss.BossTemplate;
+import com.ne0nx3r0.rih.boss.skills.BossSkill;
+import com.ne0nx3r0.rih.boss.skills.BossSkillTemplate;
 import com.ne0nx3r0.util.FireworkVisualEffect;
 import java.util.Random;
-import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -199,6 +200,33 @@ public class RareItemHunterBossListener implements Listener {
             }
 
             this.bossManager.removeBoss(boss);
+        }
+    
+        if(attacker != null){
+            Random random = new Random();
+            BossTemplate bossTemplate = boss.getTemplate();
+            
+            for(BossSkill skill : bossTemplate.getOnHitSkills()){
+                if(random.nextInt() < skill.getChance()){
+                    
+                    BossSkillTemplate skillTemplate = skill.getSkillTemplate();
+                    
+                    if(attacker != null){
+                        if(skillTemplate.activateSkill(boss, attacker, remainingHealth)){
+                            attacker.sendMessage(bossTemplate.getName()+" used "+skillTemplate.getName()+"!");
+                            
+                            break;
+                        }
+                    }
+                    else {
+                        if(skillTemplate.activateSkill(boss, remainingHealth)){
+                            
+                            break;
+                        }
+                    }
+                    
+                }
+            }
         }
     }
 }

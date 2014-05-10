@@ -7,23 +7,26 @@ Bobcat:
   hp: 2000
   attackPower: 12
 # Skills the boss will use when hit
-  onHit:
+  onHitSkill:
     - 30% chance Disorient level 5
     - 30% chance Poison Dart level 5
 # Skills the boss will use every X seconds (X * 20 ticks)
 # If a player is targetted
-  onHeartbeat:
+  onHeartbeatSkills:
     - every 5 seconds Disorient level 3
+# Passive abilities the boss has
+  passiveSkills:
+    - immunityToArrows
 
 Fisherman:
   type: zombie
   hp: 1800
   attackPower: 18
   difficulty: 5
-  onHit:
+  onHitSkills:
     - 40% chance Pull level 5 
     - 40% chance JumpAttack level 5
-  onHeartbeat:
+  onHeartbeatSkills:
     - every 10 seconds Pull level 5
   armor:
     - LEATHER_HELMET PROTECTION_ENVIRONMENTAL:3,THORNS:3
@@ -53,3 +56,15 @@ Cucco:
     - 40% chance JumpAttack level 5
   onHeartbeat:
     - every 10 seconds Pull level 5
+    
+"Renderman":
+  type: enderman
+  hp: 1800
+  attackPower: 10
+  difficulty: 5
+  onHit:
+    - 40% chance Pull level 5 
+    - 40% chance JumpAttack level 5
+  onHeartbeat:
+    - every 10 seconds Pull level 5
+    

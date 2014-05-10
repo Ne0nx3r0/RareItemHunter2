@@ -5,8 +5,12 @@ import com.ne0nx3r0.rih.entities.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import net.minecraft.server.v1_7_R3.Entity;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.ItemStack;
 
 public class BossManager {
     private final List<BossTemplate> bossTemplates;
@@ -39,14 +43,38 @@ public class BossManager {
             return null;
         }
         
-        UUID uuid = this.spawnBossEntity(bt.getBossEntityType(), lSpawnAt);
+        Entity bossEntity = this.spawnBossEntity(bt.getBossEntityType(), lSpawnAt);
+
+        LivingEntity lent = (LivingEntity) bossEntity.getBukkitEntity();
         
-        this.activeBosses.add(new Boss(uuid,bt));
+        lent.setCustomNameVisible(true);
+        lent.setRemoveWhenFarAway(false);
         
-        return new Boss(uuid,bt);
+        EntityEquipment lequips = lent.getEquipment();
+            
+        if(bt.getEquipment() != null)
+        {
+            lequips.setArmorContents(bt.getEquipment().toArray(new ItemStack[4]));
+
+            lequips.setBootsDropChance(0f);
+            lequips.setLeggingsDropChance(0f);
+            lequips.setChestplateDropChance(0f);    
+            lequips.setHelmetDropChance(0f);
+        }
+            
+        if(bt.getWeapon() != null)
+        {
+            lequips.setItemInHand(bt.getWeapon());
+
+            lequips.setItemInHandDropChance(0f);
+        }
+        
+        this.activeBosses.add(new Boss(bossEntity.getUniqueID(),bt));
+        
+        return new Boss(bossEntity.getUniqueID(),bt);
     }
     
-    private UUID spawnBossEntity(BossEntityType bossType,Location loc){
+    private Entity spawnBossEntity(BossEntityType bossType,Location loc){
         net.minecraft.server.v1_7_R3.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
         
         net.minecraft.server.v1_7_R3.Entity bossEntity;
@@ -65,13 +93,16 @@ public class BossManager {
             case PIG: 
                 bossEntity = new BossEntityPig(nmsWorld);
                 break;
+            case ENDERMAN: 
+                bossEntity = new BossEntityEnderman(nmsWorld);
+                break;
         }
         
         bossEntity.setPosition(loc.getX(), loc.getY(), loc.getZ());
         
         nmsWorld.addEntity(bossEntity);
         
-        return bossEntity.getUniqueID();
+        return bossEntity;
     }
 
     public boolean isBoss(org.bukkit.entity.Entity entity) {

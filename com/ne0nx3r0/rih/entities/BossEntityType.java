@@ -4,5 +4,6 @@ public enum BossEntityType {
     OCELOT,
     CHICKEN,
     ZOMBIE,
-    PIG
+    PIG,
+    ENDERMAN
 }

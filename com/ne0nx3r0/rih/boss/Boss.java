@@ -1,6 +1,8 @@
 package com.ne0nx3r0.rih.boss;
 
+import com.ne0nx3r0.rih.boss.skills.BossSkill;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.bukkit.entity.Player;
