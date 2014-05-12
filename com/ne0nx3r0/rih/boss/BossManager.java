@@ -69,9 +69,11 @@ public class BossManager {
             lequips.setItemInHandDropChance(0f);
         }
         
-        this.activeBosses.add(new Boss(bossEntity.getUniqueID(),bt));
+        Boss boss = new Boss(lent,bt);
         
-        return new Boss(bossEntity.getUniqueID(),bt);
+        this.activeBosses.add(boss);
+        
+        return boss;
     }
     
     private Entity spawnBossEntity(BossEntityType bossType,Location loc){

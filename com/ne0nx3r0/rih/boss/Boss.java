@@ -1,10 +1,9 @@
 package com.ne0nx3r0.rih.boss;
 
-import com.ne0nx3r0.rih.boss.skills.BossSkill;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class Boss {
@@ -12,10 +11,10 @@ public class Boss {
     private final BossTemplate template;
     private int currentHealth;
     private int kills = 0;
-    private Map<String,Integer> playerDamage;
-    
-    public Boss(UUID entityUUID,BossTemplate template){
-        this.entityUUID = entityUUID;
+    private final Map<String,Integer> playerDamage;
+
+    Boss(LivingEntity lent, BossTemplate template) {
+        this.entityUUID = lent.getUniqueId();
         this.template = template;
         this.currentHealth = template.getMaxHealth();
         this.playerDamage = new HashMap<>();

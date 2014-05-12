@@ -4,7 +4,7 @@ import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.boss.Boss;
 import com.ne0nx3r0.rih.boss.BossManager;
 import com.ne0nx3r0.rih.boss.BossTemplate;
-import com.ne0nx3r0.rih.boss.skills.BossSkill;
+import com.ne0nx3r0.rih.boss.skills.BossSkillInstance;
 import com.ne0nx3r0.rih.boss.skills.BossSkillTemplate;
 import com.ne0nx3r0.util.FireworkVisualEffect;
 import java.util.Random;
@@ -95,7 +95,7 @@ public class RareItemHunterBossListener implements Listener {
             }
         }
 
-        this.bossDamaged(e.getEntity(),boss, null, e.getDamage());
+        this.bossDamaged((LivingEntity) e.getEntity(),boss, null, e.getDamage());
 
         e.setDamage(1d);
 
@@ -134,7 +134,7 @@ public class RareItemHunterBossListener implements Listener {
             }
         }
         
-        this.bossDamaged(e.getEntity(),boss, pAttacker, e.getDamage());
+        this.bossDamaged((LivingEntity) e.getEntity(),boss, pAttacker, e.getDamage());
         
         e.setDamage(1d);
         
@@ -143,7 +143,7 @@ public class RareItemHunterBossListener implements Listener {
         lent.setHealth(lent.getMaxHealth());
     }
     
-    public void bossDamaged(Entity eBoss,Boss boss,Player attacker,double damageAmount){
+    public void bossDamaged(LivingEntity eBoss,Boss boss,Player attacker,double damageAmount){
         
         if(attacker != null){
             boss.addPlayerDamage(attacker, (int) damageAmount);
@@ -206,20 +206,20 @@ public class RareItemHunterBossListener implements Listener {
             Random random = new Random();
             BossTemplate bossTemplate = boss.getTemplate();
             
-            for(BossSkill skill : bossTemplate.getOnHitSkills()){
+            for(BossSkillInstance skill : bossTemplate.getOnHitSkills()){
                 if(random.nextInt() < skill.getChance()){
                     
                     BossSkillTemplate skillTemplate = skill.getSkillTemplate();
                     
                     if(attacker != null){
-                        if(skillTemplate.activateSkill(boss, attacker, remainingHealth)){
+                        if(skillTemplate.activateOnHitSkill(eBoss,boss, attacker, remainingHealth)){
                             attacker.sendMessage(bossTemplate.getName()+" used "+skillTemplate.getName()+"!");
                             
                             break;
                         }
                     }
                     else {
-                        if(skillTemplate.activateSkill(boss, remainingHealth)){
+                        if(skillTemplate.activateSkill(eBoss,boss, remainingHealth)){
                             
                             break;
                         }

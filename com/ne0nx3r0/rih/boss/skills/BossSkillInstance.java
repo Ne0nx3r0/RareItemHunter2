@@ -1,13 +1,13 @@
 
 package com.ne0nx3r0.rih.boss.skills;
 
-public class BossSkill
+public class BossSkillInstance
 {
     private final int chance;
     private final int level;
     private final BossSkillTemplate bossSkill;
     
-    public BossSkill(BossSkillTemplate bossSkill,int level,int chance)
+    public BossSkillInstance(BossSkillTemplate bossSkill,int level,int chance)
     {
         this.bossSkill = bossSkill;
         this.level = level;

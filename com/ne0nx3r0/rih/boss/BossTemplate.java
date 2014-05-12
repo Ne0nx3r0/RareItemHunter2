@@ -2,7 +2,7 @@
 package com.ne0nx3r0.rih.boss;
 
 import com.ne0nx3r0.rih.boss.skills.BossSkillTemplate;
-import com.ne0nx3r0.rih.boss.skills.BossSkill;
+import com.ne0nx3r0.rih.boss.skills.BossSkillInstance;
 import com.ne0nx3r0.rih.entities.BossEntityType;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class BossTemplate {
     private final int difficulty;
     private List<ItemStack> equipment;
     private ItemStack weapon;
-    private List<BossSkill> onHitSkills;
+    private List<BossSkillInstance> onHitSkills;
         
     public BossTemplate(String name,BossEntityType entityType,int maxHealth,int attackPower,int difficulty,List<ItemStack> equipment,ItemStack weapon)
     {
@@ -41,13 +41,13 @@ public class BossTemplate {
     {
         if(this.onHitSkills == null)
         {
-            this.onHitSkills = new ArrayList<BossSkill>();
+            this.onHitSkills = new ArrayList<BossSkillInstance>();
         }
         
-        this.onHitSkills.add(new BossSkill(bs,level,chance));
+        this.onHitSkills.add(new BossSkillInstance(bs,level,chance));
     }
     
-    public List<BossSkill> getOnHitSkills(){
+    public List<BossSkillInstance> getOnHitSkills(){
         return this.onHitSkills;
     }
     
