@@ -18,17 +18,8 @@ public class BossSkillTemplateSpawn extends BossSkillTemplate
     }
     
     @Override
-    public boolean activateOnHitSkill(LivingEntity bossEntity, Boss boss, LivingEntity target, int level)
-    {
+    public boolean activateOnHitSkill(LivingEntity bossEntity, Boss boss, LivingEntity target, int level, int damageTaken){  
         this.spawnMobs(target.getLocation(),level);
-        
-        return true;
-    }
-    
-    @Override
-    public boolean activateSkill(LivingEntity bossEntity, Boss boss, int level)
-    {
-        this.spawnMobs(bossEntity.getLocation(), level);
         
         return true;
     }

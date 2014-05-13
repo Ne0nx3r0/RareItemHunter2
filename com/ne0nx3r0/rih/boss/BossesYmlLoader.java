@@ -26,15 +26,13 @@ public class BossesYmlLoader {
         
         File bossesFile = new File(plugin.getDataFolder(),"bosses.yml");
 
-        if(!bossesFile.exists())
-        {
+        if(!bossesFile.exists()){
             plugin.copy(plugin.getResource("bosses.yml"),bossesFile);
         }
         
         FileConfiguration bossesYml = YamlConfiguration.loadConfiguration(bossesFile);
         
-        for(Iterator<String> it = bossesYml.getKeys(false).iterator(); it.hasNext();)
-        {
+        for(Iterator<String> it = bossesYml.getKeys(false).iterator(); it.hasNext();){
             String bossName = it.next();
             
             ConfigurationSection bossSection = bossesYml.getConfigurationSection(bossName);

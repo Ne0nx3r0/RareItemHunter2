@@ -1,10 +1,7 @@
 package com.ne0nx3r0.rih.boss.skills;
 
 import com.ne0nx3r0.rih.boss.Boss;
-import com.ne0nx3r0.rih.boss.skills.BossSkillTemplate;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class Pull extends BossSkillTemplate
 {
@@ -13,17 +10,10 @@ public class Pull extends BossSkillTemplate
         super("Pull");
     }
     
-    @Override
-    public boolean activateSkill(Boss boss,EntityDamageByEntityEvent e, Entity eAttacker, int level)
-    {       
-        if(e.getEntity() instanceof LivingEntity)
-        {        
-            LivingEntity le = (LivingEntity) eAttacker;
+    @Override    
+    public boolean activateOnHitSkill(LivingEntity bossEntity, Boss boss, LivingEntity target, int level, int damageTaken){
+        bossEntity.teleport(target);
 
-            eAttacker.teleport(e.getEntity());
-
-            return true;
-        }
-        return false;
+        return true;
     }
 }

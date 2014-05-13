@@ -11,7 +11,7 @@ public class LightningBolt extends BossSkillTemplate
     }
     
     @Override
-    public boolean activateOnHitSkill(LivingEntity bossEntity, Boss boss, LivingEntity target, int level){   
+    public boolean activateOnHitSkill(LivingEntity bossEntity, Boss boss, LivingEntity target, int level, int damageTaken){   
         target.getWorld().strikeLightning(target.getLocation());
         
         return true;

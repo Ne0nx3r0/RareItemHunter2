@@ -13,8 +13,7 @@ public class Blink extends BossSkillTemplate
     }
 
     @Override
-    public boolean activateSkill(LivingEntity bossEntity,Boss boss, int level)
-    {   
+    public boolean activateOnHitSkill(LivingEntity bossEntity, Boss boss, LivingEntity target, int level, int damageTaken){   
         Location blinkTo = bossEntity.getLocation();
         
         Random random = new Random();

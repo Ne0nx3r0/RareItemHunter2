@@ -1,13 +1,11 @@
 package com.ne0nx3r0.rih.boss.skills;
 
 import com.ne0nx3r0.rih.boss.Boss;
-import com.ne0nx3r0.rih.boss.skills.BossSkillTemplate;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class FakeWeb extends BossSkillTemplate
 {
@@ -15,14 +13,13 @@ public class FakeWeb extends BossSkillTemplate
     {
         super("Fake Web");
     }
-    
+
     @Override
-    public boolean activateSkill(Boss boss,EntityDamageByEntityEvent e, Entity eAttacker, int level)
-    {       
-        if(eAttacker instanceof Player)
+    public boolean activateOnHitSkill(LivingEntity bossEntity, Boss boss, LivingEntity target, int level, int damageTaken){      
+        if(target instanceof Player)
         {
-            Block block = eAttacker.getLocation().getBlock();
-            Player pAttacker = (Player) eAttacker;
+            Block block = target.getLocation().getBlock();
+            Player pAttacker = (Player) target;
 
             BlockFace[] bfs = new BlockFace[]{
                 BlockFace.SELF,

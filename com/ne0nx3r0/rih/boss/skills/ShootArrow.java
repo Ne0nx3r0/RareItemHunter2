@@ -1,11 +1,8 @@
 package com.ne0nx3r0.rih.boss.skills;
 
 import com.ne0nx3r0.rih.boss.Boss;
-import com.ne0nx3r0.rih.boss.skills.BossSkillTemplate;
 import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class ShootArrow extends BossSkillTemplate
 {
@@ -13,13 +10,10 @@ public class ShootArrow extends BossSkillTemplate
     {
         super("Shoot Arrow");
     }
-    
+
     @Override
-    public boolean activateSkill(Boss boss,EntityDamageByEntityEvent e, Entity eAttacker, int level)
-    {       
-        LivingEntity leBoss = (LivingEntity) e.getEntity();   
-        
-        leBoss.launchProjectile(Arrow.class);
+    public boolean activateOnHitSkill(LivingEntity bossEntity, Boss boss, LivingEntity target, int level, int damageTaken){   
+        bossEntity.launchProjectile(Arrow.class);
         
         return true;
     }

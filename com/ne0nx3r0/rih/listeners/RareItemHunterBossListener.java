@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -201,31 +202,46 @@ public class RareItemHunterBossListener implements Listener {
 
             this.bossManager.removeBoss(boss);
         }
-    
-        if(attacker != null){
-            Random random = new Random();
-            BossTemplate bossTemplate = boss.getTemplate();
-            
-            for(BossSkillInstance skill : bossTemplate.getOnHitSkills()){
-                if(random.nextInt() < skill.getChance()){
-                    
-                    BossSkillTemplate skillTemplate = skill.getSkillTemplate();
-                    
-                    if(attacker != null){
-                        if(skillTemplate.activateOnHitSkill(eBoss,boss, attacker, remainingHealth)){
-                            attacker.sendMessage(bossTemplate.getName()+" used "+skillTemplate.getName()+"!");
-                            
-                            break;
-                        }
+
+        // attempt to use a random onhit skill
+        Random random = new Random();
+        BossTemplate bossTemplate = boss.getTemplate();
+
+        for(BossSkillInstance skill : bossTemplate.getOnHitSkills()){
+            if(random.nextInt() < skill.getChance()){
+                BossSkillTemplate skillTemplate = skill.getSkillTemplate();
+
+                if(attacker != null){
+                    if(skillTemplate.activateOnHitSkill(eBoss, boss, attacker, remainingHealth, (int) damageAmount
+                    )){
+                        attacker.sendMessage(bossTemplate.getName()+" used "+skillTemplate.getName()+"!");
+
+                        break;
                     }
-                    else {
-                        if(skillTemplate.activateSkill(eBoss,boss, remainingHealth)){
-                            
-                            break;
-                        }
-                    }
-                    
                 }
+                else {
+                    LivingEntity target = null;
+                    // target nearest player
+                    double currentMinDistance = 15^2;
+                    Location lBoss = eBoss.getLocation();
+
+                    for(Player p : eBoss.getWorld().getPlayers()){
+                        double tempMinDistance = lBoss.distanceSquared(p.getLocation());
+
+                        if(tempMinDistance < currentMinDistance){
+                            target = p;
+                            currentMinDistance = tempMinDistance;
+                        }
+                    }
+
+                    if(target != null){
+                        if(skillTemplate.activateOnHitSkill(eBoss, boss, target, remainingHealth, (int) damageAmount)){
+
+                            break;
+                        }
+                    }
+                }
+
             }
         }
     }

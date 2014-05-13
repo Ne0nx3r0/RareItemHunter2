@@ -11,10 +11,9 @@ public class Disorient extends BossSkillTemplate
     {
         super("Disorient");
     }
-    
+
     @Override
-    public boolean activateOnHitSkill(LivingEntity bossEntity, Boss boss, LivingEntity target, int level)
-    {
+    public boolean activateOnHitSkill(LivingEntity bossEntity, Boss boss, LivingEntity target, int level, int damageTaken){   
         target.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION,20 * 5 * level,level));
         target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,20 * 5 * level,level));
 

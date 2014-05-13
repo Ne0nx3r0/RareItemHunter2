@@ -1,10 +1,10 @@
 package com.ne0nx3r0.rih.boss.skills;
 
 import com.ne0nx3r0.rih.boss.Boss;
-import com.ne0nx3r0.rih.boss.skills.BossSkillTemplate;
-import org.bukkit.entity.Entity;
+import java.util.Random;
+import org.bukkit.Location;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class LightningStorm extends BossSkillTemplate
 {
@@ -12,31 +12,24 @@ public class LightningStorm extends BossSkillTemplate
     {
         super("Lightning Storm");
     }
-    
+
     @Override
-    public boolean activateSkill(Boss boss,EntityDamageByEntityEvent e, Entity eAttacker, int level)
-    {     
-        if(!(eAttacker instanceof Player))
-        {
-            return false;
-        }
+    public boolean activateOnHitSkill(LivingEntity eBoss, Boss boss, LivingEntity target, int level, int damageTaken){   
+        double maxDistanceSquared = 30^2;
         
-        int count = 0;
+        Location lBoss = eBoss.getLocation();
         
-        for(Entity ent : e.getEntity().getNearbyEntities(20, 20, 20))
-        {
-            if(count < level)
-            {
-                if(ent instanceof Player)
-                {
-                    ent.getWorld().strikeLightning(ent.getLocation());
-                    
-                    count++;
+        Random r = new Random();
+        
+        for(Player p : eBoss.getWorld().getPlayers()){
+            Location lPlayer = p.getLocation();
+            
+            if(lBoss.distanceSquared(lPlayer) < maxDistanceSquared){
+                for(int i = 0;i<level;i++){
+                    if(r.nextBoolean()){
+                        eBoss.getWorld().strikeLightning(lPlayer);
+                    }
                 }
-            }
-            else
-            {
-                break;
             }
         }
         
