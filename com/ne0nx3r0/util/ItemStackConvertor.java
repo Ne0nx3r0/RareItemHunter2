@@ -18,7 +18,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 public class ItemStackConvertor {
-    public static String fromItemStack(ItemStack is) {
+    public static String fromItemStack(ItemStack is,boolean includeName) {
         StringBuilder f = new StringBuilder();
         f.append("type=").append(is.getType()).append(";");
         if (is.getDurability() != 0)
@@ -64,6 +64,9 @@ public class ItemStackConvertor {
         
         if (is.hasItemMeta()) {
            ItemMeta m = is.getItemMeta();
+           if (includeName && m.hasDisplayName()) {
+              f.append("name=").append(m.getDisplayName().replace(";","&#59")).append(";");
+           }
            if (m instanceof LeatherArmorMeta) {
               LeatherArmorMeta me = (LeatherArmorMeta) m;
               int r = me.getColor().getRed();
@@ -94,6 +97,7 @@ public class ItemStackConvertor {
       short dura = 0;
       int amount = 1;
       Map<Enchantment, Integer> enchants = new HashMap<>();
+      String cName = null;
       String[] rgb = null;
       List<String> lore = new ArrayList<>();
       String owner = null;
@@ -125,6 +129,8 @@ public class ItemStackConvertor {
                String[] ench = en.split(":");
                enchants.put(Enchantment.getByName(ench[0]), Integer.parseInt(ench[1]));
             }
+         } else if (id[0].equalsIgnoreCase("name")) {
+            cName = id[1].replace("&#59",";");
          } else if (id[0].equalsIgnoreCase("rgb")) {
             rgb = id[1].split(",");
          } else if (id[0].equalsIgnoreCase("lore")) {
@@ -138,7 +144,8 @@ public class ItemStackConvertor {
          is.setDurability(dura);
       }
       ItemMeta m = is.getItemMeta();
-      
+      if (cName != null)
+         m.setDisplayName(cName);
       if (rgb != null)
          ((LeatherArmorMeta) m).setColor(Color.fromRGB(Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2])));
       if (!lore.isEmpty())

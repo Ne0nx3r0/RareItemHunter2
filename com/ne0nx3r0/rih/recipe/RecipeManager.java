@@ -2,6 +2,7 @@ package com.ne0nx3r0.rih.recipe;
 
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.properties.RareItemProperty;
+import com.ne0nx3r0.util.ItemStackConvertor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -89,52 +90,15 @@ public class RecipeManager {
     }
 
     public int getRecipeHashCode(ItemStack[] contents){
-        return this.getHashString(contents).hashCode();
-    }
-    
-    // The difference between this and the above method
-    // Is that this one returns something that can be edited by hand
-    // Which is great for recipe files, etc...
-    //
-    // Also this protects the recipes if the hash type has to be changed
-    public String getHashString(ItemStack[] contents) {
         StringBuilder sb = new StringBuilder();
         
         for(int i=0;i<9;i++){
-            sb.append("|");
-            
-            if(contents.length < i || contents[i].getType().equals(Material.AIR)){
-                sb.append("AIR");
-            }
-            else {
-                ItemStack is = contents[i];
-                
-                sb.append(is.getAmount())
-                .append(is.getData().getData())
-                .append(is.getDurability());
-                
-                for(Entry<Enchantment,Integer> enchant : is.getEnchantments().entrySet()){
-                    sb.append(enchant.getKey().getName())
-                    .append(enchant.getValue());
-                }
-                
-                if(is.hasItemMeta()){
-                    ItemMeta meta = is.getItemMeta();
-                    
-                    if(meta.hasLore()){
-                        for(String loreLine : meta.getLore()){
-                            sb.append(loreLine);
-                        }
-                    }
-                    
-                    // Skipping name on purpose
-                    // This allows players to use renamed items
-                }
-                
-                sb.append(is.getType().name());
+            if(contents.length < i){
+                sb.append(ItemStackConvertor.fromItemStack(contents[i],false));
             }
         }
-        return sb.toString();
+        
+        return sb.toString().hashCode();
     }
 
     private final String ESSENCE_PROPERTY_NAME = ChatColor.DARK_GRAY+"Essence of "+ChatColor.GREEN+"%s";
