@@ -1,7 +1,7 @@
 package com.ne0nx3r0.rih.boss;
 
+import com.ne0nx3r0.rih.boss.entities.*;
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
-import com.ne0nx3r0.rih.entities.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -97,6 +97,9 @@ public class BossManager {
                 break;
             case ENDERMAN: 
                 bossEntity = new BossEntityEnderman(nmsWorld);
+                break;
+            case SNOWMAN: 
+                bossEntity = new BossEntitySnowman(nmsWorld);
                 break;
         }
         

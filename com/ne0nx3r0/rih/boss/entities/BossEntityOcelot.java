@@ -1,14 +1,13 @@
 
-package com.ne0nx3r0.rih.entities;
+package com.ne0nx3r0.rih.boss.entities;
 
 import java.lang.reflect.Field;
-import net.minecraft.server.v1_7_R3.DamageSource;
-import net.minecraft.server.v1_7_R3.Entity;
-import net.minecraft.server.v1_7_R3.EntityChicken;
 import net.minecraft.server.v1_7_R3.EntityHuman;
+import net.minecraft.server.v1_7_R3.EntityOcelot;
 import net.minecraft.server.v1_7_R3.GenericAttributes;
 import net.minecraft.server.v1_7_R3.PathfinderGoalFloat;
 import net.minecraft.server.v1_7_R3.PathfinderGoalHurtByTarget;
+import net.minecraft.server.v1_7_R3.PathfinderGoalLeapAtTarget;
 import net.minecraft.server.v1_7_R3.PathfinderGoalLookAtPlayer;
 import net.minecraft.server.v1_7_R3.PathfinderGoalMeleeAttack;
 import net.minecraft.server.v1_7_R3.PathfinderGoalMoveTowardsRestriction;
@@ -19,11 +18,11 @@ import net.minecraft.server.v1_7_R3.PathfinderGoalSelector;
 import net.minecraft.server.v1_7_R3.World;
 import org.bukkit.craftbukkit.v1_7_R3.util.UnsafeList;
 
-public class BossEntityChicken extends EntityChicken{
+public class BossEntityOcelot extends EntityOcelot{
     
-    public BossEntityChicken(World world) {
+    public BossEntityOcelot(World world) {
         super(world);
-
+        
         try {
             Field bField = PathfinderGoalSelector.class.getDeclaredField("b");
             bField.setAccessible(true);
@@ -39,6 +38,7 @@ public class BossEntityChicken extends EntityChicken{
         }
         
         this.goalSelector.a(0, new PathfinderGoalFloat(this));
+        this.goalSelector.a(2, new PathfinderGoalLeapAtTarget(this, 0.4F));
         this.goalSelector.a(2, new PathfinderGoalMeleeAttack(this, EntityHuman.class, 1.0D, false));
         this.goalSelector.a(5, new PathfinderGoalMoveTowardsRestriction(this, 1.0D));
         this.goalSelector.a(7, new PathfinderGoalRandomStroll(this, 1.0D));
@@ -63,19 +63,5 @@ public class BossEntityChicken extends EntityChicken{
         //this.getAttributeInstance(GenericAttributes.e).setValue(3.0D);
         
         //this.bb().b(bp).setValue(this.random.nextDouble() * 0.10000000149011612D);
-    }
-    
-    @Override
-    public boolean n(Entity entity) {
-        return entity.damageEntity(DamageSource.mobAttack(this), 3.0F);
-    }
-
-    @Override
-    public boolean damageEntity(DamageSource damagesource, float f) {
-        if (this.isInvulnerable()) {
-            return false;
-        } else {
-            return super.damageEntity(damagesource, f);
-        }
     }
 }

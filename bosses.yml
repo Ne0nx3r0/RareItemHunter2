@@ -7,7 +7,7 @@ Bobcat:
   hp: 2000
   attackPower: 12
 # Skills the boss will use when hit
-  onHitSkill:
+  onHit:
     - 30% chance Disorient level 5
     - 30% chance Poison Dart level 5
 # Skills the boss will use every X seconds (X * 20 ticks)
@@ -23,9 +23,9 @@ Fisherman:
   hp: 1800
   attackPower: 18
   difficulty: 5
-  onHitSkills:
+  onHit:
     - 40% chance Pull level 5 
-    - 40% chance JumpAttack level 5
+    - 40% chance Jump Attack level 5
   onHeartbeatSkills:
     - every 10 seconds Pull level 5
   armor:
@@ -42,7 +42,7 @@ Cucco:
   difficulty: 5
   onHit:
     - 40% chance Pull level 5 
-    - 40% chance JumpAttack level 5
+    - 40% chance Jump Attack level 5
   onHeartbeat:
     - every 10 seconds Pull level 5
   
@@ -53,7 +53,7 @@ Cucco:
   difficulty: 5
   onHit:
     - 40% chance Pull level 5 
-    - 40% chance JumpAttack level 5
+    - 40% chance Jump Attack level 5
   onHeartbeat:
     - every 10 seconds Pull level 5
     
@@ -64,7 +64,19 @@ Cucco:
   difficulty: 5
   onHit:
     - 40% chance Pull level 5 
-    - 40% chance JumpAttack level 5
+    - 40% chance Jump Attack level 5
+  onHeartbeat:
+    - every 10 seconds Pull level 5 
+    
+"Frosty":
+  type: snowman
+  hp: 1000
+  attackPower: 10
+  difficulty: 5
+  onHit:
+    - 50% chance Freeze level 5 
+    - 50% chance Shiver level 5
   onHeartbeat:
     - every 10 seconds Pull level 5
+    
     

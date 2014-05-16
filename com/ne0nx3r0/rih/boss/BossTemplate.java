@@ -3,7 +3,7 @@ package com.ne0nx3r0.rih.boss;
 
 import com.ne0nx3r0.rih.boss.skills.BossSkillTemplate;
 import com.ne0nx3r0.rih.boss.skills.BossSkillInstance;
-import com.ne0nx3r0.rih.entities.BossEntityType;
+import com.ne0nx3r0.rih.boss.entities.BossEntityType;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.inventory.ItemStack;

@@ -1,11 +1,15 @@
 package com.ne0nx3r0.rih.boss;
 
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
-import com.ne0nx3r0.rih.entities.BossEntityType;
+import com.ne0nx3r0.rih.boss.skills.*;
+import com.ne0nx3r0.rih.boss.skills.BossSkillTemplate;
+import com.ne0nx3r0.rih.boss.entities.BossEntityType;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -15,13 +19,46 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 public class BossesYmlLoader {
-    private RareItemHunterPlugin plugin;
+    private final RareItemHunterPlugin plugin;
     
+    // we load the skills here so that only the ones which are used are kept in memory
+    // Small gain I guess, but we don't need unused ones around and we only use once instance of each skill
+    private final Map<String,BossSkillTemplate> availableSkills;
+
     public BossesYmlLoader(RareItemHunterPlugin plugin){
         this.plugin = plugin;
+        
+        availableSkills = new HashMap<>();
+        
+        this.addSkill(new Blink());
+        this.addSkill(new Burst());
+        this.addSkill(new Disarm());
+        this.addSkill(new Disorient());
+        this.addSkill(new FakeWeb());
+        this.addSkill(new Freeze());
+        this.addSkill(new GreaterBurst());
+        this.addSkill(new JumpAttack());
+        this.addSkill(new LightningBolt());
+        this.addSkill(new LightningStorm());
+        this.addSkill(new PoisonDart());
+        this.addSkill(new Pull());
+        this.addSkill(new ShootArrow());
+        this.addSkill(new ShootFireball());
+        this.addSkill(new SpawnCaveSpider());
+        this.addSkill(new SpawnCreeper());
+        this.addSkill(new SpawnSilverfish());
+        this.addSkill(new SpawnSkeleton());
+        this.addSkill(new SpawnSpider());
+        this.addSkill(new SpawnZombie());
+        this.addSkill(new Shiver());
+    }
+    
+    public final void addSkill(BossSkillTemplate skill){
+        this.availableSkills.put(skill.getName(),skill);        
     }
     
     public List<BossTemplate> loadBosses(){
+
         List<BossTemplate> bossTemplates = new ArrayList<>();
         
         File bossesFile = new File(plugin.getDataFolder(),"bosses.yml");
@@ -92,7 +129,7 @@ public class BossesYmlLoader {
                 weapon = this.getItemStackFromEquipmentString(bossName,bossSection.getString("weapon"));
             }
             
-            bossTemplates.add(new BossTemplate(
+            BossTemplate bt = new BossTemplate(
                 bossName,
                 bossEntityType,
                 hp,
@@ -100,13 +137,59 @@ public class BossesYmlLoader {
                 difficulty,
                 equipment,
                 weapon
-            ));
+            );
+            
+            bossTemplates.add(bt);
+            
+// Load onHit skills
+            for(String skillString : bossSection.getStringList("onHit")){
+                // - 30% chance Disorient level 5
+
+                String sSkillName = skillString.substring(skillString.indexOf("chance ")+7, skillString.indexOf(" level"));
+                
+                BossSkillTemplate bst = this.availableSkills.get(sSkillName);
+                
+                if(bst == null){
+                    plugin.getLogger().log(Level.WARNING, "{0} is not a valid skill on boss {1}", new Object[]{sSkillName, bossName});
+                    
+                    continue;
+                }
+                
+                String sLevel = skillString.substring(skillString.lastIndexOf(" ")+1);
+                int level;
+                
+                try{
+                    level = Integer.parseInt(sLevel);
+                }
+                catch(NumberFormatException ex){
+                    plugin.getLogger().log(Level.WARNING, "{0} is not a valid level for {1} on boss {2}", new Object[]{sLevel, sSkillName, bossName});
+                    
+                    continue;
+                }
+                
+                String sChance = skillString.substring(0, skillString.indexOf("%"));
+                int chance;
+                
+                try{
+                    chance = Integer.parseInt(sChance);
+                }
+                catch(NumberFormatException ex){
+                    plugin.getLogger().log(Level.WARNING, "{0} is not a valid chance % for {1} on boss {2}", new Object[]{sLevel, sSkillName, bossName});
+                    
+                    continue;
+                }
+                
+                bt.addOnHitSkill(null, level, chance);
+            }
         }
+        
+        
         
         return bossTemplates;
     }
     
 // Misc helper methods
+    
     private ItemStack getItemStackFromEquipmentString(String sBossName,String sItem)
     {
         String[] equipValues = sItem.split(" ");

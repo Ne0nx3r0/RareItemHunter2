@@ -1,12 +1,11 @@
 
-package com.ne0nx3r0.rih.entities;
+package com.ne0nx3r0.rih.boss.entities;
 
 import java.lang.reflect.Field;
 import net.minecraft.server.v1_7_R3.DamageSource;
 import net.minecraft.server.v1_7_R3.Entity;
-import net.minecraft.server.v1_7_R3.EntityEnderman;
+import net.minecraft.server.v1_7_R3.EntityChicken;
 import net.minecraft.server.v1_7_R3.EntityHuman;
-import net.minecraft.server.v1_7_R3.EntityPig;
 import net.minecraft.server.v1_7_R3.GenericAttributes;
 import net.minecraft.server.v1_7_R3.PathfinderGoalFloat;
 import net.minecraft.server.v1_7_R3.PathfinderGoalHurtByTarget;
@@ -20,9 +19,9 @@ import net.minecraft.server.v1_7_R3.PathfinderGoalSelector;
 import net.minecraft.server.v1_7_R3.World;
 import org.bukkit.craftbukkit.v1_7_R3.util.UnsafeList;
 
-public class BossEntityEnderman extends EntityEnderman{
+public class BossEntityChicken extends EntityChicken{
     
-    public BossEntityEnderman(World world) {
+    public BossEntityChicken(World world) {
         super(world);
 
         try {
