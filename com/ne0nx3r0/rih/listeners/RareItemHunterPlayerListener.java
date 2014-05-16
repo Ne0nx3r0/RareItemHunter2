@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class RareItemHunterPlayerListener implements Listener {
-    private BossManager bossManager;
+    private final BossManager bossManager;
 
     public RareItemHunterPlayerListener(RareItemHunterPlugin plugin) {
         this.bossManager = plugin.getBossManager();

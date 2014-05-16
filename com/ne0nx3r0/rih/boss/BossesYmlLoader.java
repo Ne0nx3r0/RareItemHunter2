@@ -179,7 +179,7 @@ public class BossesYmlLoader {
                     continue;
                 }
                 
-                bt.addOnHitSkill(null, level, chance);
+                bt.addOnHitSkill(bst, level, chance);
             }
         }
         

@@ -8,6 +8,7 @@ import com.ne0nx3r0.rih.boss.entities.BossEntityEnderman;
 import com.ne0nx3r0.rih.listeners.RareItemHunterPlayerListener;
 import com.ne0nx3r0.rih.listeners.RareItemHunterBossListener;
 import com.ne0nx3r0.rih.boss.BossManager;
+import com.ne0nx3r0.rih.boss.entities.BossEntitySnowman;
 import com.ne0nx3r0.rih.commands.RareItemHunterCommandExecutor;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -36,7 +37,7 @@ public class RareItemHunterPlugin extends JavaPlugin{
         RareItemHunterPlugin.addBossEntity(BossEntityPig.class, "BossPig", 90);
         RareItemHunterPlugin.addBossEntity(BossEntityChicken.class, "BossChicken", 93);
         RareItemHunterPlugin.addBossEntity(BossEntityOcelot.class, "BossOcelot", 98);
-        RareItemHunterPlugin.addBossEntity(BossEntityOcelot.class, "BossSnowman", 98);
+        RareItemHunterPlugin.addBossEntity(BossEntitySnowman.class, "BossSnowman", 97);
         
         this.bossManager = new BossManager(this);
         

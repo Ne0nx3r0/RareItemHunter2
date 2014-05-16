@@ -33,9 +33,9 @@ public class Freeze extends BossSkillTemplate
         
         World world = lStart.getWorld();
         
-        for(int x = lStart.getBlockX()-range;x < endX; x++){
-            for(int y = lStart.getBlockY()-range;y < endY; y++){
-                for(int z = lStart.getBlockZ()-range;z < endZ; z++){
+        for(int x = lStart.getBlockX()-range; x < endX; x++){
+            for(int y = lStart.getBlockY()-range; y < endY; y++){
+                for(int z = lStart.getBlockZ()-range; z < endZ; z++){
                     Block b = world.getBlockAt(x,y,z);
                     
                     if(b.getType().equals(Material.WATER)){

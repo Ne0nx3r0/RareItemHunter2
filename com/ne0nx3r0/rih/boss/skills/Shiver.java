@@ -14,7 +14,7 @@ public class Shiver extends BossSkillTemplate
 
     @Override
     public boolean activateOnHitSkill(LivingEntity bossEntity, Boss boss, LivingEntity target, int level, int damageTaken){   
-        target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW,20 * level,level));
+        target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * level, 2));
 
         return true;
     }

@@ -76,7 +76,7 @@ public class BossManager {
         return boss;
     }
     
-    private Entity spawnBossEntity(BossEntityType bossType,Location loc){
+    public Entity spawnBossEntity(BossEntityType bossType,Location loc){
         net.minecraft.server.v1_7_R3.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
         
         net.minecraft.server.v1_7_R3.Entity bossEntity;
