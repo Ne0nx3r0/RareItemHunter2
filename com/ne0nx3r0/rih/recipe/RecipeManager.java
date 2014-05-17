@@ -223,10 +223,10 @@ public class RecipeManager {
         
         for(int i=1;i<10;i++){
             if(i > contents.length){
-                recipe[i] = ItemStackConvertor.fromItemStack(new ItemStack(Material.AIR), false);
+                recipe[i-1] = ItemStackConvertor.fromItemStack(new ItemStack(Material.AIR), false);
             }
             else{
-                recipe[i] = ItemStackConvertor.fromItemStack(contents[i], false);
+                recipe[i-1] = ItemStackConvertor.fromItemStack(contents[i], false);
             }
         }
 

@@ -13,6 +13,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
@@ -47,12 +48,42 @@ public class RareItemHunterPlayerListener implements Listener {
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerInventoryClick(InventoryClickEvent e){
-        System.out.println(e.getRawSlot());
         
         if(e.getInventory().getType().equals(InventoryType.WORKBENCH)){
+            if(e.getCurrentItem() == null && e.getCursor() == null){
+                return;
+            }
+            
             Inventory inventory = e.getInventory();
             
-            RareItemProperty rip = this.recipeManager.getPropertyFromResultItem(e.getCurrentItem());
+            RareItemProperty rip = null;
+            
+            if(e.getCurrentItem() != null){
+                rip = this.recipeManager.getPropertyFromResultItem(e.getCurrentItem());
+            }
+            
+            if(rip == null && inventory.getItem(0) != null){
+                rip = this.recipeManager.getPropertyFromResultItem(inventory.getItem(0));
+                
+                if(rip != null){
+                    System.out.println(rip.getName());
+                    // keeps the save item in place
+                    ItemStack cursor = e.getCursor();
+                    ItemStack current = e.getCurrentItem();
+                    
+                    e.setCursor(current);
+                    e.setCurrentItem(cursor);
+                    
+                    ItemStack save = inventory.getItem(0);
+                    inventory.setItem(0, save);
+                    
+                    ((Player) e.getInventory().getHolder()).updateInventory();
+                    
+                    e.setCancelled(true);
+                    
+                    return;
+                }
+            }
             
             if(rip != null){
                 

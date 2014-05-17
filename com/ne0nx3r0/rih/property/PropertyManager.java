@@ -3,11 +3,11 @@ package com.ne0nx3r0.rih.property;
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import java.util.List;
 
-public class RareItemPropertyManager {
+public class PropertyManager {
     private final RareItemHunterPlugin plugin;
     private final List<RareItemProperty> properties;
 
-    public RareItemPropertyManager(RareItemHunterPlugin plugin) {
+    public PropertyManager(RareItemHunterPlugin plugin) {
         this.plugin = plugin;
         
         PropertiesYmlLoader loader = new PropertiesYmlLoader(plugin);
@@ -19,7 +19,6 @@ public class RareItemPropertyManager {
         propertyName = propertyName.toLowerCase();
         
         for(RareItemProperty rip : this.properties){
-            System.out.println(rip.getName().toLowerCase()+" "+propertyName);
             if(rip.getName().toLowerCase().equals(propertyName)){
                 return rip;
             }
