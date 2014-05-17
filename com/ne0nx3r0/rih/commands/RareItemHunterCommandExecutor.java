@@ -8,13 +8,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public class RareItemHunterCommandExecutor implements CommandExecutor {
-    private HashMap<String, RareItemHunterCommand> commands;
+    private final HashMap<String, RareItemHunterCommand> commands;
     
     public RareItemHunterCommandExecutor(RareItemHunterPlugin plugin) {
         this.commands = new HashMap<>();
         
         this.registerCommand(new CommandBoss(plugin));
-        this.registerCommand(new CommandCraft(plugin));
+        this.registerCommand(new CommandRecipe(plugin));
     }
     
     @Override
@@ -43,7 +43,7 @@ public class RareItemHunterCommandExecutor implements CommandExecutor {
     }
     
     private void sendUsage(CommandSender cs) {
-        cs.sendMessage(ChatColor.GRAY+"---"+ChatColor.GREEN+" RareItemHunter "+ChatColor.GRAY+"---");
+        cs.sendMessage(ChatColor.GRAY+"---"+ChatColor.GREEN+" RareItemHunter2 "+ChatColor.GRAY+"---");
         cs.sendMessage("Here are the commands you have access to:");
         
         for(RareItemHunterCommand lc : this.commands.values()) {

@@ -10,6 +10,7 @@ import com.ne0nx3r0.rih.listeners.RareItemHunterBossListener;
 import com.ne0nx3r0.rih.boss.BossManager;
 import com.ne0nx3r0.rih.boss.entities.BossEntitySnowman;
 import com.ne0nx3r0.rih.commands.RareItemHunterCommandExecutor;
+import com.ne0nx3r0.rih.property.RareItemPropertyManager;
 import com.ne0nx3r0.rih.recipe.RecipeManager;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,6 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class RareItemHunterPlugin extends JavaPlugin{
     private BossManager bossManager;
     private RecipeManager recipeManager;
+    private RareItemPropertyManager propertyManager;
     
     @Override
     public void onEnable(){
@@ -41,6 +43,8 @@ public class RareItemHunterPlugin extends JavaPlugin{
         RareItemHunterPlugin.addBossEntity(BossEntityOcelot.class, "BossOcelot", 98);
         RareItemHunterPlugin.addBossEntity(BossEntitySnowman.class, "BossSnowman", 97);
         
+        this.propertyManager = new RareItemPropertyManager(this);
+        
         this.recipeManager = new RecipeManager(this);
         
         this.bossManager = new BossManager(this);
@@ -57,6 +61,10 @@ public class RareItemHunterPlugin extends JavaPlugin{
     
     public RecipeManager getRecipeManager(){
         return this.recipeManager;
+    }
+    
+    public RareItemPropertyManager getPropertymanager(){
+        return this.propertyManager;
     }
     
     

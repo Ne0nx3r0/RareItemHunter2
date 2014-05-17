@@ -3,7 +3,9 @@ package com.ne0nx3r0.rih.listeners;
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.boss.Boss;
 import com.ne0nx3r0.rih.boss.BossManager;
+import com.ne0nx3r0.rih.property.RareItemProperty;
 import com.ne0nx3r0.rih.recipe.RecipeManager;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -45,8 +47,31 @@ public class RareItemHunterPlayerListener implements Listener {
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerInventoryClick(InventoryClickEvent e){
+        System.out.println(e.getRawSlot());
+        
         if(e.getInventory().getType().equals(InventoryType.WORKBENCH)){
             Inventory inventory = e.getInventory();
+            
+            RareItemProperty rip = this.recipeManager.getPropertyFromResultItem(e.getCurrentItem());
+            
+            if(rip != null){
+                
+                e.setCancelled(true);
+                
+                Player p = (Player) e.getInventory().getHolder();
+                
+                if(!this.recipeManager.updateRecipe(rip,e.getInventory().getContents())){
+                    p.sendMessage(ChatColor.RED+"An error occurred while trying to save the recipe!");
+                    
+                    return;
+                }
+                
+                p.closeInventory();
+                
+                p.sendMessage("Recipe updated!");
+                
+                return;
+            }
 
             // filter out non-essence crafting
             for(ItemStack is : inventory.getContents()){
@@ -58,16 +83,16 @@ public class RareItemHunterPlayerListener implements Listener {
 
                     // set the result item accordingly
                     if(isResult != null){                            
-                        inventory.setItem(9, is);
+                        inventory.setItem(0, is);
                     }
                     else{
-                        inventory.setItem(9, new ItemStack(Material.AIR));
+                        inventory.setItem(0, new ItemStack(Material.AIR));
                     }
 
                     // If grabbing the result item destroy the components
                     if(e.getSlotType().equals(SlotType.RESULT) 
                      && !e.getCurrentItem().getType().equals(Material.AIR)){
-                        for(int i=0;i<9;i++){
+                        for(int i=1;i<10;i++){
                             inventory.setItem(i, new ItemStack(Material.AIR));
                         }
                     }
