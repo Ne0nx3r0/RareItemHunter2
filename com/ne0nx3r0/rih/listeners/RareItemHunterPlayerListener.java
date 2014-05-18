@@ -13,18 +13,22 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class RareItemHunterPlayerListener implements Listener {
     private final BossManager bossManager;
     private final RecipeManager recipeManager;
+    private RareItemHunterPlugin plugin;
 
     public RareItemHunterPlayerListener(RareItemHunterPlugin plugin) {
+        this.plugin = plugin;
         this.bossManager = plugin.getBossManager();
         this.recipeManager = plugin.getRecipeManager();
     }
@@ -50,10 +54,6 @@ public class RareItemHunterPlayerListener implements Listener {
     public void onPlayerInventoryClick(InventoryClickEvent e){
         
         if(e.getInventory().getType().equals(InventoryType.WORKBENCH)){
-            if(e.getCurrentItem() == null && e.getCursor() == null){
-                return;
-            }
-            
             Inventory inventory = e.getInventory();
             
             RareItemProperty rip = null;
@@ -66,20 +66,21 @@ public class RareItemHunterPlayerListener implements Listener {
                 rip = this.recipeManager.getPropertyFromResultItem(inventory.getItem(0));
                 
                 if(rip != null){
-                    System.out.println(rip.getName());
-                    // keeps the save item in place
-                    ItemStack cursor = e.getCursor();
-                    ItemStack current = e.getCurrentItem();
+                    //e.setCancelled(true);
+
+                   CraftingInventory cinv = (CraftingInventory) e.getInventory();
+                   
+                   cinv.setResult(inventory.getItem(0));
                     
-                    e.setCursor(current);
-                    e.setCurrentItem(cursor);
-                    
-                    ItemStack save = inventory.getItem(0);
-                    inventory.setItem(0, save);
-                    
-                    ((Player) e.getInventory().getHolder()).updateInventory();
-                    
-                    e.setCancelled(true);
+                    /*
+                    final Player p = (Player) e.getWhoClicked();
+
+                    plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable(){
+                        @Override
+                        public void run() {
+                            p.updateInventory();
+                        }
+                    },2);*/
                     
                     return;
                 }
@@ -97,6 +98,10 @@ public class RareItemHunterPlayerListener implements Listener {
                     return;
                 }
                 
+                for(int i=1;i<10;i++){
+                    e.getInventory().setItem(i, null);
+                }
+                
                 p.closeInventory();
                 
                 p.sendMessage("Recipe updated!");
@@ -105,8 +110,8 @@ public class RareItemHunterPlayerListener implements Listener {
             }
 
             // filter out non-essence crafting
-            for(ItemStack is : inventory.getContents()){
-                if(this.recipeManager.isRareEssence(is)){
+            for(ItemStack is : inventory.getContents()){                
+                if(this.recipeManager.isBlankRareEssence(is)){
                     // safety precaution against errors
                     e.setCancelled(true);
 
@@ -119,6 +124,8 @@ public class RareItemHunterPlayerListener implements Listener {
                     else{
                         inventory.setItem(0, new ItemStack(Material.AIR));
                     }
+                    
+                    Player p = (Player) e.getWhoClicked();
 
                     // If grabbing the result item destroy the components
                     if(e.getSlotType().equals(SlotType.RESULT) 

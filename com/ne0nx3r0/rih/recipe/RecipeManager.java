@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,9 +18,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class RecipeManager {
-    private final String ESSENCE_NAME = ChatColor.GREEN.toString()+ChatColor.GREEN+ChatColor.GREEN+"Rare Essence";
+    private final String ESSENCE_NAME = ChatColor.GREEN+"Rare Essence";
     
-    private final String ESSENCE_DESCRIPTION_0 = ChatColor.DARK_GRAY+"The essence of a fallen boss";
+    private final String ESSENCE_DESCRIPTION_0 = ChatColor.DARK_GRAY.toString()+ChatColor.DARK_GRAY+ChatColor.DARK_GRAY+"The essence of a fallen boss";
     private final String ESSENCE_DESCRIPTION_1 = ChatColor.DARK_GRAY+"View recipes with: "+ChatColor.GRAY+"/ri wi";
     
     private final RareItemHunterPlugin plugin;
@@ -33,36 +32,17 @@ public class RecipeManager {
         this.essenceRecipes = new HashMap<>();
     }
 
-    public boolean isRareEssence(ItemStack is) {
-        if(is.getType().equals(Material.MAGMA_CREAM)){
-            if(!is.hasItemMeta()){
-                ItemMeta meta = is.getItemMeta();
-
-                if(!meta.hasLore()){
-                    List<String> lore = meta.getLore();
-
-                    if(lore.get(0).equals(ESSENCE_NAME)){
-                        return true;
-                    }
-                }
-            }
-        }
-        
-        return false;
-    }
-
     public boolean isBlankRareEssence(ItemStack is) {
         if(is.getType().equals(Material.MAGMA_CREAM)){
-            if(!is.hasItemMeta()){
+            if(is.hasItemMeta()){
                 ItemMeta meta = is.getItemMeta();
 
-                if(!meta.hasLore()){
+                if(meta.hasLore()){
                     List<String> lore = meta.getLore();
 
-                    if(lore.size() == 3
-                    && lore.get(0).equals(ESSENCE_NAME)
-                    && lore.get(1).equals(ESSENCE_DESCRIPTION_0)
-                    && lore.get(2).equals(ESSENCE_DESCRIPTION_1)){
+                    if(lore.size() == 2
+                    && lore.get(0).equals(ESSENCE_DESCRIPTION_0)
+                    && lore.get(1).equals(ESSENCE_DESCRIPTION_1)){
                         return true;
                     }
                 }
@@ -73,15 +53,11 @@ public class RecipeManager {
     }
 
     public ItemStack getResultOf(ItemStack[] contents) {
-        for(int i = 0;i<contents.length;i++){
-            System.out.println(i+" "+contents[i].getType()+" "+contents[i]);
-        }
-        
         // if there's a blank rare essence, check for an essence recipe
-        for(int i=1;i<10;i++){
+        for(int i=1;i<10;i++){            
             if(this.isBlankRareEssence(contents[i])){
                 int hashCode = this.getRecipeHashCode(contents);
-               
+
                 RareItemProperty rip = this.essenceRecipes.get(hashCode);
                 
                 if(rip != null){
@@ -97,7 +73,10 @@ public class RecipeManager {
         StringBuilder sb = new StringBuilder();
         
         for(int i=1;i<10;i++){
-            if(contents.length < i){
+            if(i > contents.length){
+                sb.append(ItemStackConvertor.fromItemStack(new ItemStack(Material.AIR),false));
+            }
+            else{
                 sb.append(ItemStackConvertor.fromItemStack(contents[i],false));
             }
         }
@@ -123,16 +102,15 @@ public class RecipeManager {
         String essenceDescription1 = String.format(ESSENCE_PROPERTY_DESCRIPTION_1,new Object[]{
             rip.getID()
         });
+
+        ItemMeta meta = essence.getItemMeta();
         
-        essence.getItemMeta().setDisplayName(essenceName);
+        meta.setDisplayName(essenceName);
         
         List<String> lore = new ArrayList<>();
-        
-        lore.add(essenceName);
+
         lore.add(essenceDescription0);
         lore.add(essenceDescription1);
-        
-        ItemMeta meta = essence.getItemMeta();
         
         meta.setLore(lore);
         
@@ -144,15 +122,15 @@ public class RecipeManager {
     public ItemStack generateRareEssence(){
         ItemStack essence = new ItemStack(Material.MAGMA_CREAM);
 
-        essence.getItemMeta().setDisplayName(ESSENCE_NAME);
+        ItemMeta meta = essence.getItemMeta();
+        
+        meta.setDisplayName(ESSENCE_NAME);
         
         List<String> lore = new ArrayList<>();
         
-        lore.add(ESSENCE_NAME);
         lore.add(ESSENCE_DESCRIPTION_0);
         lore.add(ESSENCE_DESCRIPTION_1);
         
-        ItemMeta meta = essence.getItemMeta();
         
         meta.setLore(lore);
         
@@ -220,14 +198,16 @@ public class RecipeManager {
 
     public boolean updateRecipe(RareItemProperty rip, ItemStack[] contents) {
         String[] recipe = new String[9];
+        String sRecipe = "";
         
         for(int i=1;i<10;i++){
-            if(i > contents.length){
+            if(i > contents.length || contents[i] == null){
                 recipe[i-1] = ItemStackConvertor.fromItemStack(new ItemStack(Material.AIR), false);
             }
             else{
                 recipe[i-1] = ItemStackConvertor.fromItemStack(contents[i], false);
             }
+            sRecipe += recipe[i-1];
         }
 
         File propertiesFile = new File(plugin.getDataFolder(),"properties.yml");
@@ -248,6 +228,8 @@ public class RecipeManager {
             
             return false;
         }
+
+        this.essenceRecipes.put(sRecipe.hashCode(), rip);
         
         return true;
     }
