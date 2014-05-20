@@ -10,6 +10,7 @@ import com.ne0nx3r0.rih.listeners.RareItemHunterBossListener;
 import com.ne0nx3r0.rih.boss.BossManager;
 import com.ne0nx3r0.rih.boss.entities.BossEntitySnowman;
 import com.ne0nx3r0.rih.commands.RareItemHunterCommandExecutor;
+import com.ne0nx3r0.rih.gui.GuiManager;
 import com.ne0nx3r0.rih.property.PropertyManager;
 import com.ne0nx3r0.rih.recipe.RecipeManager;
 import java.io.File;
@@ -18,12 +19,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.Map;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class RareItemHunterPlugin extends JavaPlugin{
     private BossManager bossManager;
     private RecipeManager recipeManager;
     private PropertyManager propertyManager;
+    private GuiManager guiManager;
     
     @Override
     public void onEnable(){
@@ -49,6 +52,8 @@ public class RareItemHunterPlugin extends JavaPlugin{
         
         this.bossManager = new BossManager(this);
         
+        this.guiManager = new GuiManager(this);
+        
         this.getCommand("ri2").setExecutor(new RareItemHunterCommandExecutor(this));
         
         this.getServer().getPluginManager().registerEvents(new RareItemHunterBossListener(this), this);
@@ -65,6 +70,10 @@ public class RareItemHunterPlugin extends JavaPlugin{
     
     public PropertyManager getPropertymanager(){
         return this.propertyManager;
+    }
+
+    public GuiManager getGuiManager() {
+        return this.guiManager;
     }
     
     

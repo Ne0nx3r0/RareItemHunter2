@@ -54,7 +54,7 @@ public class RecipeManager {
 
     public ItemStack getResultOf(ItemStack[] contents) {
         // if there's a blank rare essence, check for an essence recipe
-        for(int i=1;i<10;i++){            
+        for(int i=0;i<9;i++){            
             if(this.isBlankRareEssence(contents[i])){
                 int hashCode = this.getRecipeHashCode(contents);
 
@@ -139,75 +139,18 @@ public class RecipeManager {
         return essence;
     }
 
-    private final String SAVE_RESULT_ITEM_NAME = ChatColor.GREEN+"Save Recipe";
-    private final String SAVE_RESULT_ITEM_DESCRIPTION_0 = ChatColor.DARK_GRAY+"PID: "+ChatColor.GRAY+"%s";
-    private final String SAVE_RESULT_ITEM_DESCRIPTION_1 = ChatColor.DARK_GRAY+"Property name: "+ChatColor.GREEN+"%s";
-    
-    public ItemStack generateSaveResultItem(RareItemProperty rip) {
-        ItemStack is = new ItemStack(Material.BOOK);
-        
-        ItemMeta meta = is.getItemMeta();
-        
-        meta.setDisplayName(SAVE_RESULT_ITEM_NAME);
-        
-        List<String> lore = new ArrayList<>();
-        
-        lore.add(String.format(SAVE_RESULT_ITEM_DESCRIPTION_0,new Object[]{
-            rip.getID()
-        }));
-        
-        lore.add(String.format(SAVE_RESULT_ITEM_DESCRIPTION_1,new Object[]{
-            rip.getName()
-        }));
-        
-        meta.setLore(lore);
-        
-        is.setItemMeta(meta);
-        
-        return is;
-    }
-    
-    public RareItemProperty getPropertyFromResultItem(ItemStack is) {
-        if(is.getType().equals(Material.BOOK)){
-            if(is.hasItemMeta()){
-                ItemMeta meta = is.getItemMeta();
-                
-                if(meta.hasDisplayName() 
-                        && meta.hasLore() 
-                        && meta.getDisplayName().equals(SAVE_RESULT_ITEM_NAME)){
-                    List<String> lore = meta.getLore();
-                    
-                    String sID = lore.get(0).replace(String.format(SAVE_RESULT_ITEM_DESCRIPTION_0,new Object[]{""}),"");
-                    
-                    int id;
-                    
-                    try{
-                        id = Integer.parseInt(sID);
-                    }
-                    catch(NumberFormatException ex){
-                        return null;
-                    }
-                    
-                    return plugin.getPropertymanager().getProperty(id);
-                }
-            }
-        }
-        
-        return null;
-    }
-
     public boolean updateRecipe(RareItemProperty rip, ItemStack[] contents) {
         String[] recipe = new String[9];
         String sRecipe = "";
         
-        for(int i=1;i<10;i++){
+        for(int i=0;i<9;i++){
             if(i > contents.length || contents[i] == null){
-                recipe[i-1] = ItemStackConvertor.fromItemStack(new ItemStack(Material.AIR), false);
+                recipe[i] = ItemStackConvertor.fromItemStack(new ItemStack(Material.AIR), false);
             }
             else{
-                recipe[i-1] = ItemStackConvertor.fromItemStack(contents[i], false);
+                recipe[i] = ItemStackConvertor.fromItemStack(contents[i], false);
             }
-            sRecipe += recipe[i-1];
+            sRecipe += recipe[i];
         }
 
         File propertiesFile = new File(plugin.getDataFolder(),"properties.yml");
@@ -232,5 +175,38 @@ public class RecipeManager {
         this.essenceRecipes.put(sRecipe.hashCode(), rip);
         
         return true;
+    }
+
+    public RareItemProperty getPropertyFromRareEssence(ItemStack is) {
+        if(is.hasItemMeta()){
+            ItemMeta meta = is.getItemMeta();
+            
+            if(meta.hasLore()){
+                List<String> lore = meta.getLore();
+                
+                String sIDLine = lore.get(0);
+                
+                String startsWith = String.format(this.ESSENCE_PROPERTY_DESCRIPTION_1,new Object[]{""});
+                
+                if(sIDLine.startsWith(startsWith)){
+                    String sId = sIDLine.substring(startsWith.length());
+                    
+                    System.out.println(sId);
+                    
+                    int id;
+                    
+                    try{
+                        id = Integer.parseInt(sId);
+                    }
+                    catch(NumberFormatException ex){
+                        return null;
+                    }
+                    
+                    return this.plugin.getPropertymanager().getProperty(id);
+                } 
+            }
+        }
+        
+        return null;
     }
 }

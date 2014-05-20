@@ -4,6 +4,7 @@ import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.property.RareItemProperty;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 class CommandRecipe extends RareItemHunterCommand{
     private final RareItemHunterPlugin plugin;
@@ -51,11 +52,9 @@ class CommandRecipe extends RareItemHunterCommand{
 
         Player p = (Player) cs;
         
-        p.openWorkbench(p.getLocation(), true);
+        Inventory invEditor = this.plugin.getGuiManager().createRecipeEditor(p, rip);
         
-        p.getOpenInventory().setItem(0, plugin.getRecipeManager().generateSaveResultItem(rip));
-        
-        p.updateInventory();
+        p.openInventory(invEditor);
         
         return true;
     }
