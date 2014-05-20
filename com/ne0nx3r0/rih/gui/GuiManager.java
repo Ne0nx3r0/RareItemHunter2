@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -15,6 +16,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 
 public class GuiManager {
     private final RareItemHunterPlugin plugin;
@@ -118,7 +121,7 @@ public class GuiManager {
     }
     
     public RareItemProperty getPropertyFromResultItem(ItemStack is) {
-        if(is.getType().equals(Material.BOOK)){
+        if(is != null && is.getType().equals(Material.BOOK)){
             if(is.hasItemMeta()){
                 ItemMeta meta = is.getItemMeta();
                 
@@ -202,9 +205,7 @@ public class GuiManager {
     private final String SHRINE_TITLE = ChatColor.DARK_GRAY+"Legendary Shrine";
 
     public Inventory createLegendaryShrineCrafter(Block block, InventoryHolder ih) {
-        Inventory inv = Bukkit.getServer().createInventory(ih, INVENTORY_SIZE, String.format(EDITING_RECIPE,new Object[]{
-            SHRINE_TITLE
-        }));
+        Inventory inv = Bukkit.getServer().createInventory(ih, INVENTORY_SIZE, SHRINE_TITLE);
         
         Material north = block.getRelative(BlockFace.NORTH).getType();
         Material east = block.getRelative(BlockFace.EAST).getType();
@@ -215,35 +216,43 @@ public class GuiManager {
         
         for(int i=0;i<INVENTORY_SIZE;i++){
             switch(i){
-                    //bg
-                default:
+                default://background
                     inv.setItem(i, isBG);
                     break;
-                case 2:
+                case 2://top symbol
                     inv.setItem(i, this.getBlank(north));
                     break;
-                case 18:
+                case 18://left symbol
                     inv.setItem(i, this.getBlank(west));
                     break;
-                case 22:
+                case 22://right symbol
                     inv.setItem(i, this.getBlank(east));
                     break;
-                case 38:
+                case 38://bottom symbol
                     inv.setItem(i, this.getBlank(south));
                     break;
-                case 10:
-                case 11:
-                case 12:
-                case 19:
-                case 20:
-                case 21:
-                case 28:
-                case 29:
-                case 30:
-                    //crafting area
+                case 10:// crafting area
+                case 11:// crafting area
+                case 12:// crafting area
+                case 19:// crafting area
+                case 20:// crafting area center
+                case 21:// crafting area
+                case 28:// crafting area
+                case 29:// crafting area
+                case 30:// crafting area
+                case 25:// result slot
                     break;
-                case 25:
-                    // result slot
+                case 8:// store shrine location in top right itemstack
+                    ItemStack isLoc = new ItemStack(Material.NETHER_BRICK);
+                    
+                    ItemMeta meta = isLoc.getItemMeta();
+                    
+                    meta.setDisplayName(ChatColor.BLACK.toString()+block.getX()+" "+block.getY()+" "+block.getZ());
+                    
+                    isLoc.setItemMeta(meta);
+                    
+                    inv.setItem(8, isLoc);
+                    
                     break;
             }
         }
@@ -260,13 +269,12 @@ public class GuiManager {
         Inventory inv = e.getInventory();
         
         switch(slot){
-                // bg
-            default:
+            default:// GUI BG
                 if(slot <= this.INVENTORY_SIZE){
                     e.setCancelled(true);
                 }
-                // crafting slots, allow action
-            case 10:
+                return;
+            case 10:// crafting slots, allow action
             case 11:
             case 12:
             case 19:
@@ -297,9 +305,8 @@ public class GuiManager {
                 }
                 
                 return;
-                
-                // craft essence
-            case 25:
+
+            case 25:// craft essence
                 e.setCancelled(true);
                     
                 ItemStack result = inv.getItem(25);
@@ -308,17 +315,75 @@ public class GuiManager {
                     return;
                 }
                 
-                RareItemProperty rip = this.plugin.getRecipeManager().getPropertyFromRareEssence(result);
+                final RareItemProperty rip = this.plugin.getRecipeManager().getPropertyFromRareEssence(result);
                 
                 if(rip == null){
                     return;
                 }
                 
-                Player p = (Player) e.getWhoClicked();
+                final Player p = (Player) e.getWhoClicked();
                 
                 p.sendMessage("Would craft "+rip.getName());
                 
                 p.closeInventory();
+                
+                String[] sCoords = inv.getItem(8).getItemMeta().getDisplayName().substring(2).split(" ");
+                
+                final Block block;
+                
+                try{
+                    block = p.getWorld().getBlockAt(
+                            Integer.parseInt(sCoords[0]), 
+                            Integer.parseInt(sCoords[1]), 
+                            Integer.parseInt(sCoords[2])
+                    );
+                }
+                catch(NumberFormatException ex){
+                    return;
+                }
+            
+                if(this.isLegendaryShrineBlock(block)){
+                    final Block bUp = block.getRelative(BlockFace.UP,1);
+                    
+                    bUp.setType(Material.AIR);
+                    
+                    final BlockFace[] affectedFaces = new BlockFace[]{
+                        BlockFace.SELF,
+                        BlockFace.NORTH,
+                        BlockFace.SOUTH,
+                        BlockFace.EAST,
+                        BlockFace.WEST,
+                        BlockFace.NORTH_EAST,
+                        BlockFace.NORTH_WEST,
+                        BlockFace.SOUTH_EAST,
+                        BlockFace.SOUTH_WEST
+                    };
+                    
+                    for(BlockFace bf : affectedFaces){
+                        bUp.getRelative(bf).setType(Material.AIR);
+                    }
+                    
+                    block.getWorld().strikeLightningEffect(block.getLocation());
+                    
+                    block.getWorld().playEffect(block.getLocation(), Effect.EXPLOSION, 5);
+                    
+                    bUp.getRelative(BlockFace.UP).setType(Material.LAVA);
+                    
+                    plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable(){
+                        @Override
+                        public void run() {
+                            bUp.getRelative(BlockFace.UP).setType(Material.AIR);
+                            
+                            block.setMetadata("rihCrafted"+p.getUniqueId().toString(), 
+                                new FixedMetadataValue(plugin, plugin.getRecipeManager().generateRareEssence(rip))
+                            );
+                            
+                            block.getWorld().playEffect(block.getLocation(), Effect.INSTANT_SPELL, 5);
+                    
+                            p.sendMessage(ChatColor.GREEN+"Your item has been crafted!");
+                        }
+                    }, 20*3);
+                }
         }
     }
 
