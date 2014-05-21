@@ -1,28 +1,4 @@
-Fertilize:
-    enabled: true
-    costType: COOLDOWN
-    duration: 0.5
-    recipe:
-        - 
-        -
-        -
-        -
-        -
-        -
-        -
-        -
-        -
-Backstab:
-    enabled: true
-    costType: FOOD
-    cost: 0.5
-    recipe:
-        - 
-        -
-        -
-        -
-        -
-        -
-        -
-        -
-        -  
+# Enables / Disables properties
+#
+#
+#

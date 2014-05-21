@@ -27,10 +27,10 @@ import static org.bukkit.event.entity.EntityDamageEvent.DamageCause.*;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 
-public class RareItemHunterBossListener implements Listener {
+public class BossListener implements Listener {
     private BossManager bossManager;
 
-    public RareItemHunterBossListener(RareItemHunterPlugin plugin) {
+    public BossListener(RareItemHunterPlugin plugin) {
         this.bossManager = plugin.getBossManager();
     }
 

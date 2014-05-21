@@ -11,16 +11,16 @@ public class RareItemProperty {
     private final int id;
     private final String name;
     private final String description;
-    private RareItemPropertyCostType costType;
+    private PropertyCostType costType;
     private double cost;
     private final int maxLevel;
     
-    public RareItemProperty(int id,String name,String description,RareItemPropertyCostType costType,double cost,int maxLevel){
+    public RareItemProperty(int id,String name,String description,PropertyCostType defaultCostType,double defaultCost,int maxLevel){
         this.id = id;
         this.name = name;
         this.description = description;
-        this.costType = costType;
-        this.cost = cost;
+        this.costType = defaultCostType;
+        this.cost = defaultCost;
         this.maxLevel = maxLevel;
     }
 
@@ -48,11 +48,11 @@ public class RareItemProperty {
         this.cost = cost;
     }
     
-    public RareItemPropertyCostType getCostType(){
+    public PropertyCostType getCostType(){
         return this.costType;
     }
 
-    void setCostType(RareItemPropertyCostType costType) {
+    void setCostType(PropertyCostType costType) {
         this.costType = costType;
     }
     

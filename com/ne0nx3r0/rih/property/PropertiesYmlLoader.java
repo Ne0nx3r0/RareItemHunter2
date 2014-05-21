@@ -1,7 +1,7 @@
 package com.ne0nx3r0.rih.property;
 
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
-import com.ne0nx3r0.rih.property.properties.Fertilize;
+import com.ne0nx3r0.rih.property.properties.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,10 +21,11 @@ class PropertiesYmlLoader {
         
         this.allProperties = new HashMap<>();
         
-        this.addAvailableProperty(new Fertilize());
+        this.addToAllProperties(new Fertilize());
+        this.addToAllProperties(new Smelt());
     }
     
-    public final void addAvailableProperty(RareItemProperty rip){
+    public final void addToAllProperties(RareItemProperty rip){
         this.allProperties.put(rip.getName().toLowerCase(), rip);
     }
 
@@ -37,62 +38,53 @@ class PropertiesYmlLoader {
             plugin.copy(plugin.getResource("properties.yml"),propertiesFile);
         }
         
-        FileConfiguration propertiesYml = YamlConfiguration.loadConfiguration(propertiesFile);
+        FileConfiguration yml = YamlConfiguration.loadConfiguration(propertiesFile);
+        
+        for(RareItemProperty rip : this.allProperties.values()){
+            String sID = String.valueOf(rip.getID());
+            
+            if(!yml.isSet(sID)){
+                yml.set(sID+".name", rip.getName());
+                yml.set(sID+".enabled", true);
+                yml.set(sID+".costType", rip.getCostType().name());
+                yml.set(sID+".costOrDuration", rip.getCost());
+            }
+            else {
+                ConfigurationSection propertySection = yml.getConfigurationSection(sID);
 
-        for(String propertyName : propertiesYml.getKeys(false)){
-            RareItemProperty rip = this.allProperties.get(propertyName.toLowerCase());
-            
-            if(rip == null){
-                plugin.getLogger().log(Level.WARNING, "Invalid property name: {0}", new Object[]{propertyName});
+                if(propertySection.getBoolean("enabled",false)){
+                    String sCostType = propertySection.getString("costType");
+                    PropertyCostType costType;
+
+                    try{
+                        costType = PropertyCostType.valueOf(sCostType);
+                    }
+                    catch(Exception ex){
+                        plugin.getLogger().log(Level.WARNING, "Disabling property {0} because of invalid cost type: {1}", new Object[]{rip.getName(), sCostType});
+
+                        continue;
+                    }
+
+                    double cost = propertySection.getDouble("costOrDuration",-1);
+
+                    if(cost == -1){
+                        plugin.getLogger().log(Level.WARNING, "Disabling property {0} because costOrDuration was not specified.", new Object[]{rip.getName()});
+
+                        continue;
+                    }
+
+                    rip.setCostType(costType);
                     
-                continue;
-            }
-            
-            ConfigurationSection propertySection = propertiesYml.getConfigurationSection(propertyName);
-      
-            if(!propertySection.getBoolean("enabled",false)){
-                plugin.getLogger().log(Level.WARNING, "Skipping property: {0} (disabled)", new Object[]{propertyName});
-                
-                continue;
-            }
-            
-            String sCostType = propertySection.getString("costType");
-            RareItemPropertyCostType costType;
-            
-            try{
-                costType = RareItemPropertyCostType.valueOf(sCostType);
-            }
-            catch(Exception ex){
-                plugin.getLogger().log(Level.WARNING, "Ignoring {0} because of invalid cost type: {1}", new Object[]{propertyName, sCostType});
-                
-                continue;
-            }
-            
-            double cost;
-            
-            if(costType.equals(RareItemPropertyCostType.COOLDOWN)){
-                cost = propertySection.getDouble("duration",-1);
-                
-                if(cost == -1){
-                    plugin.getLogger().log(Level.WARNING, "Ignoring {0} because duration was not specified.", new Object[]{propertyName});
+                    rip.setCost(cost);
+
+                    availableProperties.add(rip);
                     
-                    continue;
+                    availableProperties.add(rip);
+                }
+                else {
+                    plugin.getLogger().log(Level.WARNING, "Skipping property: {0} (disabled)", new Object[]{rip.getName()});
                 }
             }
-            else{
-                cost = propertySection.getDouble("cost",-1); 
-                
-                if(cost == -1){
-                    plugin.getLogger().log(Level.WARNING, "Ignoring {0} because cost was not specified.", new Object[]{propertyName});
-                    
-                    continue;
-                }
-            }
-            
-            rip.setCostType(costType);
-            rip.setCost(cost);
-            System.out.println(rip.getName()+" added");
-            availableProperties.add(rip);
         }
         
         return availableProperties;

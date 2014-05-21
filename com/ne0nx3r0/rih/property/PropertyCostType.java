@@ -1,6 +1,6 @@
 package com.ne0nx3r0.rih.property;
 
-public enum RareItemPropertyCostType {
+public enum PropertyCostType {
     FOOD,
     XP,
     HEALTH,

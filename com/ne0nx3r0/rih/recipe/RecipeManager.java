@@ -53,7 +53,7 @@ public class RecipeManager {
     }
 
     public ItemStack getResultOf(ItemStack[] contents) {
-        // if there's a blank rare essence, check for an essence recipe
+        // If there's a blank rare essence, check for an essence recipe
         for(int i=0;i<9;i++){            
             if(this.isBlankRareEssence(contents[i])){
                 int hashCode = this.getRecipeHashCode(contents);
@@ -63,7 +63,40 @@ public class RecipeManager {
                 if(rip != null){
                     return this.generateRareEssence(rip);
                 }
+                
+                return null;
             }
+        }
+        
+        ItemStack isAddPropertiesTo = null;
+        List<RareItemProperty> propertiesToAdd = new ArrayList<>();
+        
+        // allow one itemstack to add properties to
+        // and rare essences of a specific type
+        // otherwise it's an invalid recipe
+        for(ItemStack is : contents) {
+            if(is != null && !is.getType().equals(Material.AIR)){
+                if(is.getType().equals(Material.MAGMA_CREAM)){
+                    RareItemProperty rip = this.getPropertyFromRareEssence(is);
+                    
+                    if(rip == null){
+                        propertiesToAdd.add(rip);
+                    }
+                    else {
+                        return null;
+                    }
+                }
+                else if(isAddPropertiesTo == null){
+                    isAddPropertiesTo = is;
+                }
+                else {
+                    return null;
+                }
+            }
+        }
+        
+        if(isAddPropertiesTo != null && !propertiesToAdd.isEmpty()){
+            
         }
         
         return null;

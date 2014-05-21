@@ -12,6 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -422,5 +423,42 @@ public class GuiManager {
         }
         
         return false;
+    }
+
+    public void shrineClick(PlayerInteractEvent e) {
+            e.setCancelled(true);
+
+            String sKey = "rihCrafted"+e.getPlayer().getUniqueId().toString();
+            
+            if(e.getClickedBlock().hasMetadata(sKey)){
+                ItemStack isCrafted = null;
+                
+                // Should only be one... but we can't concurrently remove it
+                for(MetadataValue meta : e.getClickedBlock().getMetadata(sKey)){
+                    if(meta.getOwningPlugin().equals(this.plugin)){
+                        isCrafted = (ItemStack) meta.value();
+                        
+                        break;
+                    }
+                }
+                
+                if(isCrafted != null){
+                    Player p = e.getPlayer();
+
+                    e.getClickedBlock().removeMetadata(sKey, this.plugin);
+
+                    if(!p.getInventory().addItem(isCrafted).isEmpty()) {
+                        p.getWorld().dropItemNaturally(p.getLocation(), isCrafted);
+                    }
+
+                    e.getPlayer().sendMessage(ChatColor.GREEN+"You retrieved your crafted item!");
+
+                    return;
+                }
+            }
+            
+            Inventory invShrine = this.createLegendaryShrineCrafter(e.getClickedBlock(),e.getPlayer());
+
+            e.getPlayer().openInventory(invShrine);
     }
 }
