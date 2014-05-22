@@ -2,15 +2,12 @@ package com.ne0nx3r0.rih.property;
 
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.property.properties.*;
-import gigadot.rebound.Rebound;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -24,27 +21,24 @@ class PropertiesYmlLoader {
         
         this.allProperties = new HashMap<>();
 
-        System.out.println("################################");
-        System.out.println("was: '"+this.getClass().getPackage().getName()+".properties'");
-        
-        Rebound r = new Rebound(plugin.getLogger(),this.getClass().getPackage().getName()+".properties");
-        Set<Class<? extends RareItemProperty>> classes = r.getSubClassesOf(RareItemProperty.class);
-        
-        System.out.println(classes.size());
-        System.out.println(classes);
-        
-        for(Class<? extends RareItemProperty> c : classes){
-            try {
-                RareItemProperty rip = c.newInstance();
-                
-                System.out.println("found "+rip.getName());
-                
-                this.allProperties.put(rip.getName().toLowerCase(), rip);
-            } 
-            catch (IllegalAccessException | InstantiationException ex) {
-                Logger.getLogger(PropertiesYmlLoader.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        this.addPropertyToAllProperties(new BuildersWand());
+        this.addPropertyToAllProperties(new Durability());
+        this.addPropertyToAllProperties(new Fertilize());
+        this.addPropertyToAllProperties(new FireHandling());
+        this.addPropertyToAllProperties(new HalfBakedIdea());
+        this.addPropertyToAllProperties(new Hardy());
+        this.addPropertyToAllProperties(new MeltObsidian());
+        this.addPropertyToAllProperties(new PaintWool());
+        this.addPropertyToAllProperties(new Regeneration());
+        this.addPropertyToAllProperties(new Smelt());
+        this.addPropertyToAllProperties(new Spore());
+        this.addPropertyToAllProperties(new Strength());
+        this.addPropertyToAllProperties(new ToughLove());
+        this.addPropertyToAllProperties(new WaterBreathing());
+    }
+    
+    public final void addPropertyToAllProperties(RareItemProperty rip){
+        this.allProperties.put(rip.getName().toLowerCase(), rip);
     }
 
     List<RareItemProperty> loadProperties() {
