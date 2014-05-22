@@ -23,7 +23,7 @@ public class RareItemProperty {
         this.cost = defaultCost;
         this.maxLevel = maxLevel;
     }
-
+    
     public String getName() {
         return this.name;
     }
@@ -70,8 +70,4 @@ public class RareItemProperty {
     }
 
     public boolean onArrowHitGround(ProjectileHitEvent e, Player shooter, int level){return false;}
-
-    public void onEquip(Player p, int level){}
-    
-    public void onUnequip(Player p, int level){}
 }

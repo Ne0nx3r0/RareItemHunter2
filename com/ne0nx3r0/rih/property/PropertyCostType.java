@@ -5,5 +5,7 @@ public enum PropertyCostType {
     XP,
     HEALTH,
     MONEY,
-    COOLDOWN;
+    COOLDOWN,
+    AUTOMATIC,
+    PASSIVE;
 }

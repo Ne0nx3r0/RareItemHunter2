@@ -8,5 +8,12 @@ public enum PropertyType {
     HALF_BAKED_IDEA,
     MELT_OBSIDIAN,
     PAINT_WOOL,
-    SPORE
+    SPORE,
+    DURABILITY,
+    HARDY,
+    FLY,
+    REGENERATION,
+    STRENGTH,
+    TOUGH_LOVE,
+    WATER_BREATHING
 }

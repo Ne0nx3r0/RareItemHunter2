@@ -318,73 +318,75 @@ public class GuiManager {
                 
                 final RareItemProperty rip = this.plugin.getRecipeManager().getPropertyFromRareEssence(result);
                 
-                if(rip == null){
-                    return;
-                }
-                
-                final Player p = (Player) e.getWhoClicked();
-                
-                p.sendMessage("Would craft "+rip.getName());
-                
-                p.closeInventory();
-                
-                String[] sCoords = inv.getItem(8).getItemMeta().getDisplayName().substring(2).split(" ");
-                
-                final Block block;
-                
-                try{
-                    block = p.getWorld().getBlockAt(
-                            Integer.parseInt(sCoords[0]), 
-                            Integer.parseInt(sCoords[1]), 
-                            Integer.parseInt(sCoords[2])
-                    );
-                }
-                catch(NumberFormatException ex){
-                    return;
-                }
-            
-                if(this.isLegendaryShrineBlock(block)){
-                    final Block bUp = block.getRelative(BlockFace.UP,1);
-                    
-                    bUp.setType(Material.AIR);
-                    
-                    final BlockFace[] affectedFaces = new BlockFace[]{
-                        BlockFace.SELF,
-                        BlockFace.NORTH,
-                        BlockFace.SOUTH,
-                        BlockFace.EAST,
-                        BlockFace.WEST,
-                        BlockFace.NORTH_EAST,
-                        BlockFace.NORTH_WEST,
-                        BlockFace.SOUTH_EAST,
-                        BlockFace.SOUTH_WEST
-                    };
-                    
-                    for(BlockFace bf : affectedFaces){
-                        bUp.getRelative(bf).setType(Material.AIR);
+                // result is a rare essence they clicked on
+                if(rip != null){
+                    final Player p = (Player) e.getWhoClicked();
+
+                    p.sendMessage("Would craft "+rip.getName());
+
+                    p.closeInventory();
+
+                    String[] sCoords = inv.getItem(8).getItemMeta().getDisplayName().substring(2).split(" ");
+
+                    final Block block;
+
+                    try{
+                        block = p.getWorld().getBlockAt(
+                                Integer.parseInt(sCoords[0]), 
+                                Integer.parseInt(sCoords[1]), 
+                                Integer.parseInt(sCoords[2])
+                        );
+                    }
+                    catch(NumberFormatException ex){
+                        return;
+                    }
+
+                    if(this.isLegendaryShrineBlock(block)){
+                        final Block bUp = block.getRelative(BlockFace.UP,1);
+
+                        bUp.setType(Material.AIR);
+
+                        final BlockFace[] affectedFaces = new BlockFace[]{
+                            BlockFace.SELF,
+                            BlockFace.NORTH,
+                            BlockFace.SOUTH,
+                            BlockFace.EAST,
+                            BlockFace.WEST,
+                            BlockFace.NORTH_EAST,
+                            BlockFace.NORTH_WEST,
+                            BlockFace.SOUTH_EAST,
+                            BlockFace.SOUTH_WEST
+                        };
+
+                        for(BlockFace bf : affectedFaces){
+                            bUp.getRelative(bf).setType(Material.AIR);
+                        }
+
+                        block.getWorld().strikeLightningEffect(block.getLocation());
+
+                        block.getWorld().playEffect(block.getLocation(), Effect.EXPLOSION, 5);
+
+                        bUp.getRelative(BlockFace.UP).setType(Material.LAVA);
+
+                        plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable(){
+                            @Override
+                            public void run() {
+                                bUp.getRelative(BlockFace.UP).setType(Material.AIR);
+
+                                block.setMetadata("rihCrafted"+p.getUniqueId().toString(), 
+                                    new FixedMetadataValue(plugin, plugin.getRecipeManager().generateRareEssence(rip))
+                                );
+
+                                block.getWorld().playEffect(block.getLocation(), Effect.INSTANT_SPELL, 5);
+
+                                p.sendMessage(ChatColor.GREEN+"Your item has been crafted!");
+                            }
+                        }, 20*3);
                     }
                     
-                    block.getWorld().strikeLightningEffect(block.getLocation());
-                    
-                    block.getWorld().playEffect(block.getLocation(), Effect.EXPLOSION, 5);
-                    
-                    bUp.getRelative(BlockFace.UP).setType(Material.LAVA);
-                    
-                    plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable(){
-                        @Override
-                        public void run() {
-                            bUp.getRelative(BlockFace.UP).setType(Material.AIR);
-                            
-                            block.setMetadata("rihCrafted"+p.getUniqueId().toString(), 
-                                new FixedMetadataValue(plugin, plugin.getRecipeManager().generateRareEssence(rip))
-                            );
-                            
-                            block.getWorld().playEffect(block.getLocation(), Effect.INSTANT_SPELL, 5);
-                    
-                            p.sendMessage(ChatColor.GREEN+"Your item has been crafted!");
-                        }
-                    }, 20*3);
+                    return;
                 }
+                
         }
     }
 

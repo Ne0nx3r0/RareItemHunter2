@@ -4,6 +4,8 @@ import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.boss.Boss;
 import com.ne0nx3r0.rih.boss.BossManager;
 import com.ne0nx3r0.rih.gui.GuiManager;
+import com.ne0nx3r0.rih.property.PropertyManager;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -12,15 +14,18 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class PlayerListener implements Listener {
     private final BossManager bossManager;
     private final GuiManager guiManager;
+    private final PropertyManager propertymanager;
 
     public PlayerListener(RareItemHunterPlugin plugin) {
         this.bossManager = plugin.getBossManager();
         this.guiManager = plugin.getGuiManager();
+        this.propertymanager = plugin.getPropertymanager();
     }
     
     @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
@@ -50,7 +55,20 @@ public class PlayerListener implements Listener {
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerInventoryClick(InventoryClickEvent e){
-        if(this.guiManager.isRecipeEditor(e.getInventory())){
+        if(e.getSlotType() == InventoryType.SlotType.ARMOR)
+        {
+            if(e.getCursor() != null 
+            && e.getCursor().getType() != Material.AIR)//equipped item
+            {
+                this.propertymanager.onEquip(e.getCursor());
+            }
+            if(e.getCurrentItem() != null 
+            && e.getCurrentItem().getType() != Material.AIR)//unequipped item
+            { 
+                this.propertymanager.onUnequip(e.getCurrentItem());
+            }
+        }
+        else if(this.guiManager.isRecipeEditor(e.getInventory())){
             this.guiManager.recipeEditorAction(e);
         }
         else if(this.guiManager.isLegendaryShrineScreen(e.getInventory())){
