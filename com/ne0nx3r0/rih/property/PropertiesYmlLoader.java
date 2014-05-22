@@ -2,12 +2,15 @@ package com.ne0nx3r0.rih.property;
 
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.property.properties.*;
+import gigadot.rebound.Rebound;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -20,13 +23,28 @@ class PropertiesYmlLoader {
         this.plugin = plugin;
         
         this.allProperties = new HashMap<>();
+
+        System.out.println("################################");
+        System.out.println("was: '"+this.getClass().getPackage().getName()+".properties'");
         
-        this.addToAllProperties(new Fertilize());
-        this.addToAllProperties(new Smelt());
-    }
-    
-    public final void addToAllProperties(RareItemProperty rip){
-        this.allProperties.put(rip.getName().toLowerCase(), rip);
+        Rebound r = new Rebound(plugin.getLogger(),this.getClass().getPackage().getName()+".properties");
+        Set<Class<? extends RareItemProperty>> classes = r.getSubClassesOf(RareItemProperty.class);
+        
+        System.out.println(classes.size());
+        System.out.println(classes);
+        
+        for(Class<? extends RareItemProperty> c : classes){
+            try {
+                RareItemProperty rip = c.newInstance();
+                
+                System.out.println("found "+rip.getName());
+                
+                this.allProperties.put(rip.getName().toLowerCase(), rip);
+            } 
+            catch (IllegalAccessException | InstantiationException ex) {
+                Logger.getLogger(PropertiesYmlLoader.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     List<RareItemProperty> loadProperties() {
