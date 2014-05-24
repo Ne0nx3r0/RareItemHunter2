@@ -194,7 +194,7 @@ public class RecipeManager {
         
         FileConfiguration propertiesYml = YamlConfiguration.loadConfiguration(propertiesFile);
         
-        propertiesYml.set(rip.getName()+".recipe", recipe);
+        propertiesYml.set(rip.getID()+".recipe", recipe);
         
         try {
             propertiesYml.save(propertiesFile);

@@ -7,17 +7,18 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
 public class GuiManager {
@@ -28,13 +29,19 @@ public class GuiManager {
     }
        
     private final  int INVENTORY_SIZE = 45;
-    private final String EDITING_RECIPE = ChatColor.BLACK+"Editing recipe for "+ChatColor.DARK_GREEN+"%s";
+    private final String EDITING_RECIPE = ChatColor.BLACK+"Recipe: "+ChatColor.DARK_GREEN+"%s";
     
     public Inventory createRecipeEditor(InventoryHolder ih,RareItemProperty rip) {
         
-        Inventory inv = Bukkit.getServer().createInventory(ih, INVENTORY_SIZE, String.format(EDITING_RECIPE,new Object[]{
+        String sTitle = String.format(EDITING_RECIPE,new Object[]{
             rip.getName()
-        }));
+        });
+        
+        if(sTitle.length() > 32){
+            sTitle = sTitle.substring(0,28)+"...";
+        }
+        
+        Inventory inv = Bukkit.getServer().createInventory(ih, INVENTORY_SIZE, sTitle);
         
         ItemStack isBG = this.getBlank(Material.NETHER_BRICK);
         
@@ -156,7 +163,7 @@ public class GuiManager {
         switch(slot){
                 // bg
             default:
-                if(slot <= this.INVENTORY_SIZE){
+                if(slot < this.INVENTORY_SIZE){
                     e.setCancelled(true);
                 }
                 // crafting slots, allow action
@@ -187,7 +194,7 @@ public class GuiManager {
                         recipe[i] = new ItemStack(Material.AIR);
                     }
                     else {
-                        recipe[i] = inv.getItem(i);
+                        recipe[i] = is;
                     }
                 }                        
                         
@@ -269,9 +276,11 @@ public class GuiManager {
         int slot = e.getRawSlot();
         Inventory inv = e.getInventory();
         
+        int[] itemRows = new int[]{10,11,12,19,20,21,28,29,30};
+                
         switch(slot){
             default:// GUI BG
-                if(slot <= this.INVENTORY_SIZE){
+                if(slot < this.INVENTORY_SIZE){
                     e.setCancelled(true);
                 }
                 return;
@@ -285,7 +294,6 @@ public class GuiManager {
             case 29:
             case 30:
                 ItemStack[] potentialRecipe = new ItemStack[9];
-                int[] itemRows = new int[]{10,11,12,19,20,20,28,29,30};
 
                 for(int i=0;i<9;i++){
                     ItemStack is = inv.getItem(itemRows[i]);
@@ -301,7 +309,7 @@ public class GuiManager {
 
                 ItemStack newResult = this.plugin.getRecipeManager().getResultOf(potentialRecipe);
 
-                if(!currentResult.equals(newResult)){
+                if(newResult != null && currentResult != null && !currentResult.equals(newResult)){
                     inv.setItem(25, newResult);
                 }
                 
@@ -314,6 +322,10 @@ public class GuiManager {
                     ItemStack result = inv.getItem(25);
                     
                     if(result != null && !result.getType().equals(Material.AIR)){
+                        for(int i=0;i<9;i++){
+                            inv.setItem(itemRows[i], new ItemStack(Material.AIR));
+                        }   
+                        
                         e.setCancelled(false);
                         
                         String[] sCoords = inv.getItem(8).getItemMeta().getDisplayName().substring(2).split(" ");
@@ -409,5 +421,19 @@ public class GuiManager {
             Inventory invShrine = this.createLegendaryShrineCrafter(e.getClickedBlock(),e.getPlayer());
 
             e.getPlayer().openInventory(invShrine);
+    }
+
+    public void closeScreen(InventoryCloseEvent e) {
+        Inventory inv = e.getInventory();
+        
+        int[] itemRows = new int[]{10,11,12,19,20,21,28,29,30};
+
+        for(int i=0;i<9;i++){
+            ItemStack is = inv.getItem(itemRows[i]);
+            
+            if(is != null && !is.getType().equals(Material.AIR)){
+                e.getPlayer().getWorld().dropItemNaturally(e.getPlayer().getLocation(), is);
+            }
+        }   
     }
 }

@@ -3,11 +3,13 @@ package com.ne0nx3r0.rih.property;
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.property.properties.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -60,6 +62,8 @@ class PropertiesYmlLoader {
                 yml.set(sID+".enabled", true);
                 yml.set(sID+".costType", rip.getCostType().name());
                 yml.set(sID+".costOrDuration", rip.getCost());
+                
+                availableProperties.add(rip);
             }
             else {
                 ConfigurationSection propertySection = yml.getConfigurationSection(sID);
@@ -97,6 +101,12 @@ class PropertiesYmlLoader {
                     plugin.getLogger().log(Level.WARNING, "Skipping property: {0} (disabled)", new Object[]{rip.getName()});
                 }
             }
+        }
+        try {
+            yml.save(propertiesFile);
+        } catch (IOException ex) {
+            plugin.getLogger().severe("Unable to save changes to properties.yml!");
+            plugin.getLogger().log(Level.SEVERE, null, ex);
         }
         
         return availableProperties;

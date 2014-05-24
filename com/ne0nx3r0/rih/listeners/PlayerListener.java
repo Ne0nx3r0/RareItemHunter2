@@ -14,6 +14,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -74,5 +75,12 @@ public class PlayerListener implements Listener {
         else if(this.guiManager.isLegendaryShrineScreen(e.getInventory())){
             this.guiManager.legendaryShrineAction(e);
         }
+    }
+    
+    @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPlayerCloseInventory(InventoryCloseEvent e){
+        if(this.guiManager.isLegendaryShrineScreen(e.getInventory())){
+            this.guiManager.closeScreen(e);
+        }            
     }
 }
