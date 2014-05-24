@@ -101,6 +101,12 @@ class PropertiesYmlLoader {
                     plugin.getLogger().log(Level.WARNING, "Skipping property: {0} (disabled)", new Object[]{rip.getName()});
                 }
             }
+            
+            if(yml.isSet(sID+".recipe")){
+                List<String> recipe = yml.getStringList(sID+".recipe");
+                
+                this.plugin.getRecipeManager().loadRecipe(rip,recipe);
+            }
         }
         try {
             yml.save(propertiesFile);

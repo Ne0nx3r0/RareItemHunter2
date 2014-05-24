@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -30,6 +31,8 @@ public class RecipeManager {
         this.plugin = plugin;
         
         this.essenceRecipes = new HashMap<>();
+        
+        
     }
 
     public boolean isBlankRareEssence(ItemStack is) {
@@ -52,12 +55,15 @@ public class RecipeManager {
         return false;
     }
 
+    private final String PROPERTY_HEADER = ChatColor.DARK_PURPLE+"Rare Item";
+    private final String PROPERTY_LINE = ChatColor.DARK_GRAY+"Property: "+ChatColor.GREEN+"%s "+ChatColor.BLACK+"%s";
+    
     public ItemStack getResultOf(ItemStack[] contents) {
         // If there's a blank rare essence, check for an essence recipe
         for(int i=0;i<9;i++){            
             if(this.isBlankRareEssence(contents[i])){
                 int hashCode = this.getRecipeHashCode(contents);
-
+                
                 RareItemProperty rip = this.essenceRecipes.get(hashCode);
                 
                 if(rip != null){
@@ -96,7 +102,22 @@ public class RecipeManager {
         }
         
         if(isAddPropertiesTo != null && !propertiesToAdd.isEmpty()){
+            ItemMeta meta = isAddPropertiesTo.getItemMeta();
             
+            List<String> lore;
+            
+            if(meta.hasLore()){
+                lore = meta.getLore();
+            }
+            else {
+                lore = new ArrayList<>();
+            }
+            
+            meta.setLore(lore);
+            
+            isAddPropertiesTo.setItemMeta(meta);
+            
+            return isAddPropertiesTo;
         }
         
         return null;
@@ -172,6 +193,16 @@ public class RecipeManager {
         return essence;
     }
 
+    public void loadRecipe(RareItemProperty rip, List<String> recipe) {
+        String sRecipe = "";
+        
+        for(String sItem : recipe){
+            sRecipe += sItem;
+        }
+        
+        this.essenceRecipes.put(sRecipe.hashCode(), rip);
+    }
+    
     public boolean updateRecipe(RareItemProperty rip, ItemStack[] contents) {
         String[] recipe = new String[9];
         String sRecipe = "";
