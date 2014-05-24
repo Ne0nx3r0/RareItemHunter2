@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PropertyManager {
@@ -42,11 +46,23 @@ public class PropertyManager {
         return null;
     }
 
-    public void onEquip(ItemStack is) {
+    public void onEquip(InventoryClickEvent e) {
+        Player p = (Player) e.getWhoClicked();
+        
+        List<Integer> activeProperties = this.activeEffects.get(p.getUniqueId());
+        
         
     }
 
-    public void onUnequip(ItemStack is) {
+    public void onUnequip(InventoryClickEvent e) {
+        
+    }
+
+    public void onUse(PlayerInteractEvent e) {
+        
+    }
+
+    public void onUseEntity(PlayerInteractEntityEvent e) {
         
     }
 }

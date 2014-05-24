@@ -274,9 +274,9 @@ public class GuiManager {
 
     public void legendaryShrineAction(InventoryClickEvent e) {
         int slot = e.getRawSlot();
-        Inventory inv = e.getInventory();
+        final Inventory inv = e.getInventory();
         
-        int[] itemRows = new int[]{10,11,12,19,20,21,28,29,30};
+        final int[] itemRows = new int[]{10,11,12,19,20,21,28,29,30};
                 
         switch(slot){
             default:// GUI BG
@@ -293,26 +293,35 @@ public class GuiManager {
             case 28:
             case 29:
             case 30:
-                ItemStack[] potentialRecipe = new ItemStack[9];
-
-                for(int i=0;i<9;i++){
-                    ItemStack is = inv.getItem(itemRows[i]);
-                    if(is == null || is.getType().equals(Material.AIR)){
-                        potentialRecipe[i] = new ItemStack(Material.AIR);
-                    }
-                    else {
-                        potentialRecipe[i] = is;
-                    }
-                }
-
-                ItemStack currentResult = inv.getItem(25);
-
-                ItemStack newResult = this.plugin.getRecipeManager().getResultOf(potentialRecipe);
-
-                if(newResult != null && currentResult != null && !currentResult.equals(newResult)){
-                    inv.setItem(25, newResult);
-                }
+                // Run immediately after so the result is calculated instead of the current state
                 
+                this.plugin.getServer().getScheduler().runTask(plugin, new Runnable(){
+                    @Override
+                    public void run() {
+                        ItemStack[] potentialRecipe = new ItemStack[9];
+
+                        for(int i=0;i<9;i++){
+                            ItemStack is = inv.getItem(itemRows[i]);
+                            if(is == null || is.getType().equals(Material.AIR)){
+                                potentialRecipe[i] = new ItemStack(Material.AIR);
+                            }
+                            else {
+                                potentialRecipe[i] = is;
+                            }
+                        }
+
+                        ItemStack currentResult = inv.getItem(25);
+                        
+                        ItemStack newResult = plugin.getRecipeManager().getResultOf(potentialRecipe);
+
+                        if(newResult != null){
+                            inv.setItem(25, newResult);
+                        }
+                        else if(currentResult != null && !currentResult.getType().equals(Material.AIR)){
+                            inv.setItem(25, new ItemStack(Material.AIR));
+                        }
+                    }
+                });
                 return;
 
             case 25:// craft essence
@@ -330,7 +339,7 @@ public class GuiManager {
                         
                         String[] sCoords = inv.getItem(8).getItemMeta().getDisplayName().substring(2).split(" ");
 
-                        Player p = (Player) e.getWhoClicked();
+                        final Player p = (Player) e.getWhoClicked();
                         
                         try{
                             Block block = p.getWorld().getBlockAt(
@@ -344,6 +353,15 @@ public class GuiManager {
                             block.getWorld().playEffect(block.getLocation(), Effect.EXPLOSION, 5);
                         }
                         catch(NumberFormatException ex){}
+                        
+                        plugin.getServer().getScheduler().runTask(plugin, new Runnable(){
+
+                            @Override
+                            public void run() {
+                                p.updateInventory();
+                            }
+                        
+                        });
                     }
                 }                
         }

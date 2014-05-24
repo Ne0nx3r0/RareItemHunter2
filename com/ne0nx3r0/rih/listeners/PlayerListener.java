@@ -16,6 +16,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class PlayerListener implements Listener {
@@ -61,12 +62,12 @@ public class PlayerListener implements Listener {
             if(e.getCursor() != null 
             && e.getCursor().getType() != Material.AIR)//equipped item
             {
-                this.propertymanager.onEquip(e.getCursor());
+                this.propertymanager.onEquip(e);
             }
             if(e.getCurrentItem() != null 
             && e.getCurrentItem().getType() != Material.AIR)//unequipped item
             { 
-                this.propertymanager.onUnequip(e.getCurrentItem());
+                this.propertymanager.onUnequip(e);
             }
         }
         else if(this.guiManager.isRecipeEditor(e.getInventory())){
@@ -82,5 +83,17 @@ public class PlayerListener implements Listener {
         if(this.guiManager.isLegendaryShrineScreen(e.getInventory())){
             this.guiManager.closeScreen(e);
         }            
+    }
+    
+    @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPlayerCloseInventory(PlayerInteractEvent e){
+        if(e.hasItem()){
+            this.propertymanager.onUse(e);
+        }        
+    }
+    
+    @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPlayerCloseInventory(PlayerInteractEntityEvent e){
+        this.propertymanager.onUseEntity(e);    
     }
 }

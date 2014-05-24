@@ -19,7 +19,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.Map;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class RareItemHunterPlugin extends JavaPlugin{
@@ -46,9 +45,9 @@ public class RareItemHunterPlugin extends JavaPlugin{
         RareItemHunterPlugin.addBossEntity(BossEntityOcelot.class, "BossOcelot", 98);
         RareItemHunterPlugin.addBossEntity(BossEntitySnowman.class, "BossSnowman", 97);
         
-        this.propertyManager = new PropertyManager(this);
-        
         this.recipeManager = new RecipeManager(this);
+        
+        this.propertyManager = new PropertyManager(this);
         
         this.bossManager = new BossManager(this);
         
