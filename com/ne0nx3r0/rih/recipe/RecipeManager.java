@@ -340,4 +340,62 @@ public class RecipeManager {
         
         return null;
     }
+    
+    public Map<RareItemProperty, Integer> getProperties(ItemStack is) {
+        //TODO: Consider some form of caching
+        if(is.hasItemMeta()){
+            ItemMeta meta = is.getItemMeta();
+            
+            if(meta.hasLore()){
+                List<String> lore = meta.getLore();
+                Map<RareItemProperty,Integer> propertyLevels = new HashMap<>();
+                
+                for(String sLore : lore){
+                    if(sLore.startsWith(PROPERTY_LINE_PREFIX)){
+                        String sPID = sLore.substring(sLore.lastIndexOf(ChatColor.COLOR_CHAR)+2);
+                        int itemPropertyLevel = 1;
+                        
+                        try{
+                            itemPropertyLevel = RomanNumeral.valueOf(sLore.substring(
+                                    sLore.lastIndexOf(ChatColor.GREEN.toString())+2,
+                                    sLore.lastIndexOf(ChatColor.COLOR_CHAR)-1
+                            ));
+                        }
+                        catch(IllegalArgumentException ex){
+                            continue;
+                        }
+                        
+                        int pid;
+                        
+                        try{
+                            pid = Integer.parseInt(sPID);
+                        }
+                        catch(NumberFormatException ex){
+                            continue;
+                        }
+                        
+                        RareItemProperty rip = this.plugin.getPropertymanager().getProperty(pid);
+                        
+                        if(rip != null){
+                            Integer currentLevel = propertyLevels.get(rip);
+                            
+                            if(currentLevel == null){
+                                currentLevel = 1;
+                            }
+                            
+                            int newLevel = currentLevel + itemPropertyLevel;
+
+                            if(currentLevel < rip.getMaxLevel() && propertyLevels.size() < this.MAX_PROPERTIES_PER_ITEM){
+                                propertyLevels.put(rip,newLevel);
+                            }
+                        }
+                    }
+                }
+
+                return propertyLevels;
+            }
+        }
+        
+        return null;
+    }
 }
