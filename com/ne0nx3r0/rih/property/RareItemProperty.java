@@ -1,5 +1,6 @@
 package com.ne0nx3r0.rih.property;
 
+import java.util.List;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
@@ -14,6 +15,7 @@ public class RareItemProperty {
     private PropertyCostType costType;
     private double cost;
     private final int maxLevel;
+    private List<String> recipe;
     
     public RareItemProperty(int id,String name,String description,PropertyCostType defaultCostType,double defaultCost,int maxLevel){
         this.id = id;
@@ -70,4 +72,12 @@ public class RareItemProperty {
     }
 
     public boolean onArrowHitGround(ProjectileHitEvent e, Player shooter, int level){return false;}
+
+    public void setRecipe(List<String> recipe) {
+        this.recipe = recipe;
+    }
+    
+    public List<String> getRecipe(){
+        return this.recipe;
+    }
 }

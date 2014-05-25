@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -121,10 +120,6 @@ public class RecipeManager {
                 lore = meta.getLore();
 
                 for(String sLore : lore){
-                    System.out.println(sLore);
-                    System.out.println(PROPERTY_LINE_PREFIX);
-                    System.out.println(sLore.startsWith(PROPERTY_LINE_PREFIX));
-                    
                     if(sLore.startsWith(PROPERTY_LINE_PREFIX)){
                         String sPID = sLore.substring(sLore.lastIndexOf(ChatColor.COLOR_CHAR)+2);
                         int itemPropertyLevel = 1;
@@ -145,7 +140,6 @@ public class RecipeManager {
                             pid = Integer.parseInt(sPID);
                         }
                         catch(NumberFormatException ex){
-                            System.out.println("invalid pid: "+sPID);
                             continue;
                         }
                         

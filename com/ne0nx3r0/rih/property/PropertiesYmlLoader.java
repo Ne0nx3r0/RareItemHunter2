@@ -105,6 +105,8 @@ class PropertiesYmlLoader {
             if(yml.isSet(sID+".recipe")){
                 List<String> recipe = yml.getStringList(sID+".recipe");
                 
+                rip.setRecipe(recipe);
+                
                 this.plugin.getRecipeManager().loadRecipe(rip,recipe);
             }
         }
