@@ -60,13 +60,12 @@ public class PlayerListener implements Listener {
         if(e.getSlotType() == InventoryType.SlotType.ARMOR)
         {
             if(e.getCursor() != null 
-            && e.getCursor().getType() != Material.AIR)//equipped item
-            {
+            && e.getCursor().getType() != Material.AIR){//equipped item
                 this.propertymanager.onEquip(e);
             }
+            
             if(e.getCurrentItem() != null 
-            && e.getCurrentItem().getType() != Material.AIR)//unequipped item
-            { 
+            && e.getCurrentItem().getType() != Material.AIR){//unequipped item
                 this.propertymanager.onUnequip(e);
             }
         }
@@ -87,13 +86,16 @@ public class PlayerListener implements Listener {
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerCloseInventory(PlayerInteractEvent e){
-        if(e.hasItem()){
-            this.propertymanager.onUse(e);
-        }        
+        this.propertymanager.onUse(e);
     }
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerCloseInventory(PlayerInteractEntityEvent e){
-        this.propertymanager.onUseEntity(e);    
+        this.propertymanager.onUseEntity(e);
+    }
+    
+    @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPlayerCloseInventory(EntityDamageByEntityEvent e){
+        this.propertymanager.onAttackEntity(e);
     }
 }

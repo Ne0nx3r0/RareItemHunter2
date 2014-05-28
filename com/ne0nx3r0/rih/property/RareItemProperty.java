@@ -62,7 +62,9 @@ public class RareItemProperty {
     public boolean onInteract(PlayerInteractEvent e, int level){return false;}
 
     public boolean onInteractEntity(PlayerInteractEntityEvent e, int level){return false;}
-    
+
+// The reason player is specified is because arrow events are forwarded here
+// and damager requires some extra work to grab from those events
     public boolean onDamageOther(EntityDamageByEntityEvent e, Player attacker, int level){return false;}
 
 // Defaults to the same action as a melee attack, but offers optional overwritting.
