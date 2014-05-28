@@ -57,7 +57,7 @@ public class BossListener implements Listener {
     public void onBossDeath(EntityDeathEvent e)
     {
         if(bossManager.isBoss(e.getEntity()))
-        {
+        {       
             e.setDroppedExp(0);
             e.getEntity().getEquipment().clear();
         }
