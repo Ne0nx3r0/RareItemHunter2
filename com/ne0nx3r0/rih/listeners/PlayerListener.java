@@ -45,9 +45,6 @@ public class PlayerListener implements Listener {
     
     @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent e){
-        System.out.println("PDE last entity:");
-        System.out.println(e.getEntity().getLastDamageCause().getEntity());
-        
         Boss boss = this.bossManager.getBoss(e.getEntity().getLastDamageCause().getEntity());
         
         if(boss != null){

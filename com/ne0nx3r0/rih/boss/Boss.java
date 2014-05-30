@@ -3,7 +3,6 @@ package com.ne0nx3r0.rih.boss;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class Boss {
@@ -13,11 +12,19 @@ public class Boss {
     private int kills = 0;
     private final Map<String,Integer> playerDamage;
 
-    Boss(LivingEntity lent, BossTemplate template) {
-        this.entityUUID = lent.getUniqueId();
+    Boss(UUID entityID, BossTemplate template) {
+        this.entityUUID = entityID;
         this.template = template;
         this.currentHealth = template.getMaxHealth();
         this.playerDamage = new HashMap<>();
+    }
+
+    Boss(UUID uuid, BossTemplate template, int currentHealth, int kills, Map<String, Integer> playerDamage) {
+        this.entityUUID = uuid;
+        this.template = template;
+        this.currentHealth = currentHealth;
+        this.kills = kills;
+        this.playerDamage = playerDamage;
     }
     
     public BossTemplate getTemplate(){

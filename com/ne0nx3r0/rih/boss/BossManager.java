@@ -5,6 +5,7 @@ import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 import net.minecraft.server.v1_7_R3.Entity;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
@@ -17,10 +18,29 @@ public class BossManager {
     private final List<Boss> activeBosses;
 
     public BossManager(RareItemHunterPlugin plugin) {
-        BossesYmlLoader loader = new BossesYmlLoader(plugin);
+        BossTemplateLoader loader = new BossTemplateLoader(plugin);
         
         this.bossTemplates = loader.loadBosses();
-        this.activeBosses = new ArrayList<>();
+        
+        BossPersistence bp = new BossPersistence(plugin,this);
+        
+        List<Boss> tempActiveBosses = null;
+        
+        try {
+            tempActiveBosses = bp.loadActiveBosses();
+        }
+        catch(Exception ex){                
+            tempActiveBosses = new ArrayList<>();
+            
+            plugin.getLogger().log(Level.SEVERE, "Unable to load saved bosses!");
+                    
+            plugin.getLogger().log(Level.SEVERE, null, ex);
+        }
+        finally{
+            this.activeBosses = tempActiveBosses;
+        }
+        
+        bp.startSaving(20*30);
     }
     
     public BossTemplate getBossTemplate(String bossName){
@@ -69,7 +89,7 @@ public class BossManager {
             lequips.setItemInHandDropChance(0f);
         }
         
-        Boss boss = new Boss(lent,bt);
+        Boss boss = new Boss(lent.getUniqueId(),bt);
         
         this.activeBosses.add(boss);
         
@@ -136,5 +156,9 @@ public class BossManager {
 
     public void removeBoss(Boss boss) {
         this.activeBosses.remove(boss);
+    }
+
+    public List<Boss> getAllActiveBosses() {
+        return this.activeBosses;
     }
 }

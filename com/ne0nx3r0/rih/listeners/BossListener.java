@@ -28,7 +28,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 
 public class BossListener implements Listener {
-    private BossManager bossManager;
+    private final BossManager bossManager;
 
     public BossListener(RareItemHunterPlugin plugin) {
         this.bossManager = plugin.getBossManager();
@@ -45,7 +45,7 @@ public class BossListener implements Listener {
     }
 
     @EventHandler(priority=EventPriority.NORMAL,ignoreCancelled = true)
-    public void onBossAttemptTame(EntityTameEvent e)
+    public void onAttemptToTameBoss(EntityTameEvent e)
     {
         if(bossManager.isBoss(e.getEntity()))
         {
