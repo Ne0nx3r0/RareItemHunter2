@@ -15,7 +15,7 @@ class CommandBoss extends RareItemHunterCommand{
             "boss",
             "",
             "Testing command",
-            "rih.tester"
+            "rih.admin.boss"
         );
         
         this.bossManager = plugin.getBossManager();
@@ -24,8 +24,8 @@ class CommandBoss extends RareItemHunterCommand{
     @Override
     public String[] getUsage() {
         return new String[]{
-            "/ri2 "+this.getName()+" <bossName> here",
-            "/ri2 "+this.getName()+" <bossName> <spawnPoint>"
+            "/ri "+this.getName()+" <bossName> here",
+            "/ri "+this.getName()+" <bossName> <spawnPoint>"
         };
     }
 

@@ -14,7 +14,7 @@ class CommandRecipe extends RareItemHunterCommand{
             "recipe",
             "<property's name w/ spaces >",
             "modify the recipe for a rare item property",
-            "rih.tester"
+            "rih.admin.recipe"
         );
         
         this.plugin = plugin;

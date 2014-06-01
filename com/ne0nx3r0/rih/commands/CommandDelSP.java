@@ -1,12 +1,6 @@
 package com.ne0nx3r0.rih.commands;
 
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
-import com.ne0nx3r0.rih.boss.spawning.SpawnPoint;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

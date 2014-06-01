@@ -14,7 +14,7 @@ class CommandEssence extends RareItemHunterCommand{
             "essence",
             "[essenceType] [playerName]",
             "Give yourself or another player a rare essence",
-            "rih.tester"
+            "rih.admin.essence"
         );
         
         this.plugin = plugin;
