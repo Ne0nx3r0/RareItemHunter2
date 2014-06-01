@@ -398,4 +398,24 @@ public class RecipeManager {
         
         return null;
     }
+
+    public ItemStack generateLegendaryCompass() {
+        ItemStack compass = new ItemStack(Material.COMPASS);
+        
+        ItemMeta itemMeta = compass.getItemMeta();
+        
+        itemMeta.setDisplayName(ChatColor.DARK_GREEN+"Legendary Compass");
+        
+        List<String> lore = new ArrayList<>();
+        
+        lore.add(ChatColor.DARK_GRAY+"When tapped against the ground");
+        lore.add(ChatColor.DARK_GRAY+"this compass will attune itself");
+        lore.add(ChatColor.DARK_GRAY+"to the nearest legendary boss egg.");
+        
+        itemMeta.setLore(lore);
+        
+        compass.setItemMeta(itemMeta);
+        
+        return compass;
+    }
 }
