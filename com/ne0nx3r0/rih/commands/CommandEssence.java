@@ -12,7 +12,7 @@ class CommandEssence extends RareItemHunterCommand{
     public CommandEssence(RareItemHunterPlugin plugin) {
         super(
             "essence",
-            "[essenceType] [playerName]",
+            "[essenceType|blank] [playerName]",
             "Give yourself or another player a rare essence",
             "rih.admin.essence"
         );
@@ -28,7 +28,7 @@ class CommandEssence extends RareItemHunterCommand{
             return true;
         }
 
-        if(args.length == 1 || args[1].equalsIgnoreCase("blank")){
+        if(args.length == 1 || (args.length == 2 && args[1].equalsIgnoreCase("blank"))){
             this.send(cs, "Giving you a rare essence!");
 
             Player p = (Player) cs;
@@ -76,6 +76,18 @@ class CommandEssence extends RareItemHunterCommand{
                 return true;
             }
             
+            if(propertyName.equalsIgnoreCase("blank")){
+                ItemStack essence = plugin.getRecipeManager().generateRareEssence();
+
+                if(!p.getInventory().addItem(essence).isEmpty()) {
+                    p.getWorld().dropItemNaturally(p.getLocation(), essence);
+                }
+
+                this.send(cs, "Giving you a rare essence!");
+                
+                return true;
+            }
+            
             RareItemProperty rip = this.plugin.getPropertymanager().getProperty(propertyName);
             
             if(rip == null){
@@ -92,7 +104,7 @@ class CommandEssence extends RareItemHunterCommand{
             
             this.send(cs, "Giving "+p.getName()+" a "+rip.getName()+" essence!");
             
-            this.send(cs, "You were given a "+rip.getName()+" essence!");
+            p.sendMessage("You were given a "+rip.getName()+" essence!");
             
             return true;
         }
