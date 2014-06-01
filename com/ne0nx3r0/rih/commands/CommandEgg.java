@@ -60,6 +60,12 @@ class CommandEgg extends RareItemHunterCommand{
             }
             
             lSpawnAt = this.plugin.getSpawnPointManager().getRandomLocationAt(sSpawnAt);
+            
+            if(lSpawnAt == null){
+                this.sendError(cs, "Unable to find a random location to use!");
+                
+                return true;
+            } 
         }
         
         Boss boss = this.plugin.getBossManager().spawnBossAt(bossName,lSpawnAt);

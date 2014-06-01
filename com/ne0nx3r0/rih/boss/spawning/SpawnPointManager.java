@@ -7,9 +7,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class SpawnPointManager {
@@ -109,7 +111,18 @@ public class SpawnPointManager {
             world.getChunkAt(lRandom.getBlockX()/16, lRandom.getBlockZ()/16).load();
         
             while(lRandom.getBlockY() < maxHeight){
-                right here bra
+                Block b = lRandom.getBlock();
+                
+                if(b.getType().equals(Material.WATER)){
+                    break;
+                }
+                else if(b.getType().equals(Material.AIR)
+                && !b.getRelative(BlockFace.DOWN).getType().equals(Material.AIR)
+                && b.getRelative(BlockFace.UP).getType().equals(Material.AIR)){
+                    lSpawnAt = lRandom;
+                }
+                
+                lRandom.add(0, 1, 0);
             }
         }
         
