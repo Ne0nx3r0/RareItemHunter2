@@ -31,13 +31,13 @@ class CommandEgg extends RareItemHunterCommand{
                 sb.append(", ").append(bt.getName());
             }
             
-            sb.substring(2);
-            
+            String sBosses = sb.length() > 2 ? sb.substring(2) : "";
+
             this.send(cs, new String[]{
                 "/ri "+this.getName()+" "+this.getUsageArguments(),
                 "",
                 "Here are the available bosses:",
-                sb.toString()
+                sBosses
             });
             
             return true;

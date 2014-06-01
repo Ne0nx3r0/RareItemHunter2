@@ -1,12 +1,13 @@
 package com.ne0nx3r0.rih.boss.skills;
 
 import com.ne0nx3r0.rih.boss.Boss;
+import net.minecraft.server.v1_7_R3.Entity;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 public class DimensionDoor extends BossSkillTemplate
 {
@@ -18,19 +19,19 @@ public class DimensionDoor extends BossSkillTemplate
     @Override
     public boolean activateOnHitSkill(LivingEntity bossEntity, Boss boss, LivingEntity target, int level, int damageTaken){  
         String bossWorld = bossEntity.getWorld().getName();
-        World warpTo;
+        World worldTo;
         
         if(bossWorld.endsWith("_the_end")){
-            warpTo = bossEntity.getServer().getWorld(bossWorld.substring(bossWorld.indexOf("_the_end")));
+            worldTo = bossEntity.getServer().getWorld(bossWorld.substring(bossWorld.indexOf("_the_end")));
         }
         else if(bossWorld.endsWith("_nether")){
-            warpTo = bossEntity.getServer().getWorld(bossWorld.substring(bossWorld.indexOf("_nether"))+"_the_end");
+            worldTo = bossEntity.getServer().getWorld(bossWorld.substring(bossWorld.indexOf("_nether"))+"_the_end");
         }
         else {
-            warpTo = bossEntity.getServer().getWorld(bossWorld+"_nether");
+            worldTo = bossEntity.getServer().getWorld(bossWorld+"_nether");
         }
         
-        if(warpTo == null){
+        if(worldTo == null){
             return false;
         }
         
@@ -43,12 +44,12 @@ public class DimensionDoor extends BossSkillTemplate
             if(bossLocation.distanceSquared(p.getLocation()) < distance){
                 Location pTo = p.getLocation();
                 
-                pTo.setWorld(warpTo);
+                pTo.setWorld(worldTo);
                 
                 p.teleport(pTo);
 
-                target.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION,30,level));
-                target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,30,level));
+                //target.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION,30,level));
+                //target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,30,level));
                 
                 warped++;
             }
@@ -57,9 +58,13 @@ public class DimensionDoor extends BossSkillTemplate
         if(warped > 0){
             Location bossTo = bossEntity.getLocation();
             
-            bossTo.setWorld(warpTo);
+            Entity bossHandle = ((CraftEntity) bossEntity).getHandle();
             
-            bossEntity.teleport(bossTo);
+            bossHandle.world.removeEntity(bossHandle);
+            bossHandle.dead = false;
+            bossHandle.world = ((CraftWorld) worldTo).getHandle();
+            bossHandle.setLocation(bossTo.getX(), bossTo.getY(), bossTo.getZ(), bossTo.getYaw(), bossTo.getPitch());
+            bossHandle.world.addEntity(bossHandle);
             
             return true;
         }

@@ -48,7 +48,7 @@ public class RareItemHunterCommandExecutor implements CommandExecutor {
     }
     
     private void sendUsage(CommandSender cs) {
-        cs.sendMessage(ChatColor.GRAY+"---"+ChatColor.GREEN+" RareItemHunter2 "+ChatColor.GRAY+"---");
+        cs.sendMessage(ChatColor.GRAY+"---"+ChatColor.DARK_GREEN+" RareItemHunter2 "+ChatColor.GRAY+"---");
         cs.sendMessage("Here are the commands you have access to:");
         
         for(RareItemHunterCommand lc : this.commands.values()) {
