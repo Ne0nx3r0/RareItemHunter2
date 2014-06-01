@@ -22,10 +22,10 @@ public class DimensionDoor extends BossSkillTemplate
         World worldTo;
         
         if(bossWorld.endsWith("_the_end")){
-            worldTo = bossEntity.getServer().getWorld(bossWorld.substring(bossWorld.indexOf("_the_end")));
+            worldTo = bossEntity.getServer().getWorld(bossWorld.substring(0,bossWorld.indexOf("_the_end")));
         }
         else if(bossWorld.endsWith("_nether")){
-            worldTo = bossEntity.getServer().getWorld(bossWorld.substring(bossWorld.indexOf("_nether"))+"_the_end");
+            worldTo = bossEntity.getServer().getWorld(bossWorld.substring(0,bossWorld.indexOf("_nether"))+"_the_end");
         }
         else {
             worldTo = bossEntity.getServer().getWorld(bossWorld+"_nether");
@@ -47,9 +47,6 @@ public class DimensionDoor extends BossSkillTemplate
                 pTo.setWorld(worldTo);
                 
                 p.teleport(pTo);
-
-                //target.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION,30,level));
-                //target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,30,level));
                 
                 warped++;
             }
@@ -63,7 +60,7 @@ public class DimensionDoor extends BossSkillTemplate
             bossHandle.world.removeEntity(bossHandle);
             bossHandle.dead = false;
             bossHandle.world = ((CraftWorld) worldTo).getHandle();
-            bossHandle.setLocation(bossTo.getX(), bossTo.getY(), bossTo.getZ(), bossTo.getYaw(), bossTo.getPitch());
+            bossHandle.setLocation(bossTo.getX(), bossTo.getY()+3, bossTo.getZ(), bossTo.getYaw(), bossTo.getPitch());
             bossHandle.world.addEntity(bossHandle);
             
             return true;
