@@ -161,4 +161,8 @@ public class BossManager {
     public List<Boss> getAllActiveBosses() {
         return this.activeBosses;
     }
+
+    public Iterable<BossTemplate> getAllBossTemplates() {
+        return this.bossTemplates;
+    }
 }

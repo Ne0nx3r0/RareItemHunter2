@@ -23,6 +23,10 @@ public class RareItemHunterCommand {
     public String getName() {
         return this.name;
     }
+    
+    public String getUsageArguments() {
+        return this.usageArguments;
+    }
 
     boolean execute(CommandSender cs, String[] args) {
         return false;
@@ -35,7 +39,7 @@ public class RareItemHunterCommand {
     }
 
     void send(CommandSender cs, String...lines) {
-        cs.sendMessage(ChatColor.GRAY+"--- "+ChatColor.GREEN+this.name+ChatColor.GRAY+" ---");
+        cs.sendMessage(ChatColor.GRAY+"--- "+ChatColor.DARK_GREEN+this.name+ChatColor.GRAY+" ---");
         
         for(String line : lines) {
             cs.sendMessage(line);

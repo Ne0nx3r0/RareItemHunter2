@@ -3,7 +3,7 @@ package com.ne0nx3r0.rih.commands;
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.boss.Boss;
 import com.ne0nx3r0.rih.boss.BossManager;
-import com.ne0nx3r0.rih.boss.spawning.SpawnPoint;
+import com.ne0nx3r0.rih.boss.BossTemplate;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -25,7 +25,20 @@ class CommandEgg extends RareItemHunterCommand{
     @Override
     boolean execute(CommandSender cs, String[] args) {
         if(args.length < 3){
-            this.send(cs, this.getUsage());
+            StringBuilder sb = new StringBuilder();
+            
+            for(BossTemplate bt : this.plugin.getBossManager().getAllBossTemplates()){
+                sb.append(", ").append(bt.getName());
+            }
+            
+            sb.substring(2);
+            
+            this.send(cs, new String[]{
+                "/ri "+this.getName()+" "+this.getUsageArguments(),
+                "",
+                "Here are the available bosses:",
+                sb.toString()
+            });
             
             return true;
         }
