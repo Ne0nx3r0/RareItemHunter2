@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class SpawnPointManager {
@@ -21,7 +22,33 @@ public class SpawnPointManager {
     public SpawnPointManager(RareItemHunterPlugin plugin) {
         this.plugin = plugin;
         
-        this.spawnPoints = new HashMap<>();   
+        this.spawnPoints = new HashMap<>(); 
+        
+        File ymlFile = new File(plugin.getDataFolder(),"spawnPoints.yml");
+
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(ymlFile);
+
+        for(String spName : config.getKeys(false)){
+            try{
+                ConfigurationSection section = config.getConfigurationSection(spName);
+                int x = section.getInt("x");
+                int y = section.getInt("y");
+                int z = section.getInt("z");
+                int radius = section.getInt("radius");
+                World world = plugin.getServer().getWorld(section.getString("world"));
+
+                Location l = new Location(world,x,y,z);
+
+                SpawnPoint sp = new SpawnPoint(spName,l,radius);
+
+                this.spawnPoints.put(spName, sp);
+            }
+            catch(Exception ex){
+                    plugin.getLogger().log(Level.WARNING, "Skipping spawn point {0} because:", spName);
+                    
+                    plugin.getLogger().log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     public Collection<SpawnPoint> getAllSpawnPoints() {

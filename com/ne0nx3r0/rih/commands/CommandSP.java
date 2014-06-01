@@ -36,12 +36,12 @@ class CommandSP extends RareItemHunterCommand{
         
         List<String> messages = new ArrayList<>();
         
-        messages.add(ChatColor.GRAY+"These are the available spawn points:");
+        messages.add("These are the available spawn points:");
         
         for(SpawnPoint sp : spawnPoints){
             Location l = sp.getLocation();
             
-            messages.add(String.format(ChatColor.GREEN+"%s "+ChatColor.GRAY+"- radius of %s centered at (%s,%s,%s)",new Object[]{
+            messages.add(String.format(ChatColor.GREEN+"%s "+ChatColor.GRAY+"- R=%s, X=%s, Y=%s, Z=%s)",new Object[]{
                 sp.getName(),
                 sp.getRadius(),
                 l.getBlockX(),
