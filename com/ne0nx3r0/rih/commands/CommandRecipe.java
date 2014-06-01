@@ -12,7 +12,7 @@ class CommandRecipe extends RareItemHunterCommand{
     public CommandRecipe(RareItemHunterPlugin plugin) {
         super(
             "recipe",
-            "<property's name w/ spaces>",
+            "<property's name w/ spaces >",
             "modify the recipe for a rare item property",
             "rih.tester"
         );

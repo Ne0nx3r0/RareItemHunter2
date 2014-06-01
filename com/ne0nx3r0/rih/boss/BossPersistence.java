@@ -87,7 +87,7 @@ public class BossPersistence {
                 
                 for(Boss boss : plugin.getBossManager().getAllActiveBosses()){
                     String uuid = boss.getUniqueID().toString();
-                
+                    
                     ymlConfig.set(uuid+".template", boss.getTemplate().getName());
                     ymlConfig.set(uuid+".currentHealth", boss.getHealth());
                     ymlConfig.set(uuid+".kills", boss.getKills());

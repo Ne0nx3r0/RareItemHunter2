@@ -1,5 +1,6 @@
 package com.ne0nx3r0.rih;
 
+import com.ne0nx3r0.rih.boss.spawning.SpawnPointManager;
 import com.ne0nx3r0.rih.boss.entities.BossEntityPig;
 import com.ne0nx3r0.rih.boss.entities.BossEntityZombie;
 import com.ne0nx3r0.rih.boss.entities.BossEntityChicken;
@@ -26,6 +27,7 @@ public class RareItemHunterPlugin extends JavaPlugin{
     private RecipeManager recipeManager;
     private PropertyManager propertyManager;
     private GuiManager guiManager;
+    private SpawnPointManager spawnPointManager;
     
     @Override
     public void onEnable(){
@@ -51,6 +53,8 @@ public class RareItemHunterPlugin extends JavaPlugin{
         
         this.bossManager = new BossManager(this);
         
+        this.spawnPointManager = new SpawnPointManager(this);
+        
         this.guiManager = new GuiManager(this);
         
         this.getCommand("ri2").setExecutor(new RareItemHunterCommandExecutor(this));
@@ -69,6 +73,10 @@ public class RareItemHunterPlugin extends JavaPlugin{
     
     public PropertyManager getPropertymanager(){
         return this.propertyManager;
+    }
+
+    public SpawnPointManager getSpawnPointManager() {
+        return this.spawnPointManager;
     }
 
     public GuiManager getGuiManager() {

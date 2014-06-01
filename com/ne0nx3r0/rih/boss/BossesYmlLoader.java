@@ -18,21 +18,20 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
-public class BossTemplateLoader {
+public class BossesYmlLoader {
     private final RareItemHunterPlugin plugin;
     
     // we load the skills here so that only the ones which are used are kept in memory
     // Small gain I guess, but we don't need unused ones around and we only use once instance of each skill
     private final Map<String,BossSkillTemplate> availableSkills;
 
-    public BossTemplateLoader(RareItemHunterPlugin plugin){
+    public BossesYmlLoader(RareItemHunterPlugin plugin){
         this.plugin = plugin;
         
         availableSkills = new HashMap<>();
         
         this.addSkill(new Blink());
         this.addSkill(new Burst());
-        this.addSkill(new DimensionDoor());
         this.addSkill(new Disarm());
         this.addSkill(new Disorient());
         this.addSkill(new FakeWeb());
