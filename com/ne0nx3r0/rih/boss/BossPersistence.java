@@ -29,10 +29,6 @@ public class BossPersistence {
     public List<Boss> loadActiveBosses(){
         File ymlFile = new File(plugin.getDataFolder(),"save.yml");
 
-        if(!ymlFile.exists()){
-            ymlFile.mkdirs();
-        }
-        
         YamlConfiguration config = YamlConfiguration.loadConfiguration(ymlFile);
         
         List<Boss> bosses = new ArrayList<>();
@@ -78,10 +74,6 @@ public class BossPersistence {
             @Override
             public void run() {
                 File ymlFile = new File(plugin.getDataFolder(),"save.yml");
-                
-                if(!ymlFile.exists()){
-                    ymlFile.mkdirs();
-                }
                 
                 YamlConfiguration ymlConfig = YamlConfiguration.loadConfiguration(ymlFile);
                 

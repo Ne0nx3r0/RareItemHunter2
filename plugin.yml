@@ -1,6 +1,6 @@
 name: RareItemHunter2
 main: com.ne0nx3r0.rih.RareItemHunterPlugin
-version: '2.4.28a'
+version: '2.4.30a'
 load: STARTUP
 database: false
 description: Rare Item Hunter

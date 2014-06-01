@@ -53,10 +53,6 @@ public class SpawnPointManager {
             public void run() {
                 File ymlFile = new File(plugin.getDataFolder(),"spawnPoints.yml");
 
-                if(!ymlFile.exists()){
-                   ymlFile.mkdirs();
-                }
-
                 YamlConfiguration config = YamlConfiguration.loadConfiguration(ymlFile);
                 
                 for(SpawnPoint sp : spawnPoints.values()){
@@ -64,7 +60,7 @@ public class SpawnPointManager {
                     config.set(sp.getName()+".x", sp.getLocation().getBlockX());
                     config.set(sp.getName()+".y", sp.getLocation().getBlockY());
                     config.set(sp.getName()+".z", sp.getLocation().getBlockZ());
-                    config.set(sp.getName()+".world", sp.getLocation().getWorld());
+                    config.set(sp.getName()+".world", sp.getLocation().getWorld().getName());
                 }
                 
                 try {
