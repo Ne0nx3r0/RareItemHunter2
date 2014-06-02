@@ -125,8 +125,9 @@ public class SpawnPointManager {
         
         for(int i=0;i<MAX_SPAWN_TRIES;i++){
             Location lRandom = lCenter.clone();
-            
-            lRandom.add(r.nextInt(radius*2)-radius, 0, r.nextInt(radius*2)-radius);
+           
+            // leave space beneath the egg to place bedrock
+            lRandom.add(r.nextInt(radius*2)-radius, 2, r.nextInt(radius*2)-radius);
             
             lRandom.setY(0);
             
@@ -137,15 +138,23 @@ public class SpawnPointManager {
                 Block b = lRandom.getBlock();
                 
                 if(b.getType().equals(Material.WATER)){
+                    lSpawnAt = null;
+                    
                     break;
                 }
                 else if(b.getType().equals(Material.AIR)
                 && !b.getRelative(BlockFace.DOWN).getType().equals(Material.AIR)
                 && b.getRelative(BlockFace.UP).getType().equals(Material.AIR)){
                     lSpawnAt = lRandom;
+                    
+                    break;
                 }
                 
                 lRandom.add(0, 1, 0);
+            }
+            
+            if(lSpawnAt != null){
+                break;
             }
         }
         

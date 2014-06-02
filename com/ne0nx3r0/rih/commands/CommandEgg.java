@@ -4,6 +4,7 @@ import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.boss.Boss;
 import com.ne0nx3r0.rih.boss.BossManager;
 import com.ne0nx3r0.rih.boss.BossTemplate;
+import com.ne0nx3r0.rih.boss.egg.BossEgg;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -81,10 +82,10 @@ class CommandEgg extends RareItemHunterCommand{
             } 
         }
         
-        Boss boss = this.plugin.getBossManager().spawnBossAt(bossName,lSpawnAt);
+        BossEgg egg = this.plugin.getBossManager().spawnBossEggAt(bossName,lSpawnAt,true);
         
-        this.send(cs,String.format("Spawned a %s at %s %s %s!",new Object[]{
-            boss.getTemplate().getName(),
+        this.send(cs,String.format("Spawned a %s egg at %s %s %s!",new Object[]{
+            bossName,
             lSpawnAt.getBlockX(),
             lSpawnAt.getBlockY(),
             lSpawnAt.getBlockZ()

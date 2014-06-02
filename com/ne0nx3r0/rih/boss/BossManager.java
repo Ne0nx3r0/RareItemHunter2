@@ -2,43 +2,42 @@ package com.ne0nx3r0.rih.boss;
 
 import com.ne0nx3r0.rih.boss.entities.*;
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
-import java.util.ArrayList;
+import com.ne0nx3r0.rih.boss.egg.BossEgg;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Level;
 import net.minecraft.server.v1_7_R3.Entity;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 
 public class BossManager {
     private final List<BossTemplate> bossTemplates;
     private final List<Boss> activeBosses;
+    private final List<BossEgg> bossEggs;
+    private final RareItemHunterPlugin plugin;
 
     public BossManager(RareItemHunterPlugin plugin) {
+        this.plugin = plugin;
+        
+// load boss templates
         BossTemplateLoader loader = new BossTemplateLoader(plugin);
         
         this.bossTemplates = loader.loadBosses();
         
+// Load eggs                
         BossPersistence bp = new BossPersistence(plugin,this);
         
-        List<Boss> tempActiveBosses = null;
+        bp.loadBossesAndEggs();
         
-        try {
-            tempActiveBosses = bp.loadActiveBosses();
-        }
-        catch(Exception ex){                
-            tempActiveBosses = new ArrayList<>();
+        this.bossEggs = bp.getEggs();
             
-            plugin.getLogger().log(Level.SEVERE, "Unable to load saved bosses!");
-                    
-            plugin.getLogger().log(Level.SEVERE, null, ex);
-        }
-        finally{
-            this.activeBosses = tempActiveBosses;
-        }
+        this.activeBosses = bp.getActiveBosses();
         
         bp.startSaving(20*30);
     }
@@ -164,5 +163,46 @@ public class BossManager {
 
     public Iterable<BossTemplate> getAllBossTemplates() {
         return this.bossTemplates;
+    }
+
+    public BossEgg spawnBossEggAt(String bossName, Location lSpawnAt, boolean autoHatch) {        
+        BossTemplate bt = this.getBossTemplate(bossName);
+        
+        if(bt == null){
+            return null;
+        }
+        
+        int blockX = lSpawnAt.getBlockX();
+        int blockZ = lSpawnAt.getBlockZ();
+        
+        for(BossEgg egg : this.bossEggs) {
+            // egg in this column already
+            if(egg.getLocation().getBlockX() == blockX || egg.getLocation().getBlockZ() == blockZ)
+            {
+                return null;
+            }
+        }
+        
+        Block block = lSpawnAt.getBlock();
+        
+        block.getRelative(BlockFace.DOWN).setType(Material.BEDROCK);
+
+        block.setType(Material.DRAGON_EGG);
+
+        block.setMetadata("isBossEgg", new FixedMetadataValue(this.plugin,true));
+
+        BossEgg newEgg = new BossEgg(
+            bt.getName(),
+            block.getLocation(),
+            autoHatch
+        );
+
+        this.bossEggs.add(newEgg);
+
+        return newEgg;
+    }
+
+    public Iterable<BossEgg> getAllActiveEggs() {
+        return this.bossEggs;
     }
 }

@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 class CommandBoss extends RareItemHunterCommand{
-    private final BossManager bossManager;
+    private RareItemHunterPlugin plugin;
 
     public CommandBoss(RareItemHunterPlugin plugin) {
         super(
@@ -19,7 +19,7 @@ class CommandBoss extends RareItemHunterCommand{
             "rih.admin.boss"
         );
         
-        this.bossManager = plugin.getBossManager();
+        this.plugin = plugin;
     }
 
     @Override
@@ -27,7 +27,7 @@ class CommandBoss extends RareItemHunterCommand{
         if(args.length < 3){
             StringBuilder sb = new StringBuilder();
             
-            for(BossTemplate bt : bossManager.getAllBossTemplates()){
+            for(BossTemplate bt : this.plugin.getBossManager().getAllBossTemplates()){
                 sb.append(", ").append(bt.getName());
             }
             
@@ -52,7 +52,9 @@ class CommandBoss extends RareItemHunterCommand{
         String bossName = args[1].replace("_"," ");
         String sSpawnAt = args[2];
         
-        if(!this.bossManager.isValidBossName(bossName)){
+        BossManager bm = this.plugin.getBossManager();
+        
+        if(!bm.isValidBossName(bossName)){
             this.sendError(cs,bossName+" is not a valid boss!");
             
             return true;
@@ -64,13 +66,22 @@ class CommandBoss extends RareItemHunterCommand{
             lSpawnAt = ((Player) cs).getLocation();
         }
         else{
-            this.sendError(cs, "Spawn points not implemented yet");
+            if(!this.plugin.getSpawnPointManager().isValidSpawnPoint(sSpawnAt)){
+                this.sendError(cs,bossName+" is not a valid boss!");
+
+                return true;
+            }
             
-            return true;
-            //lSpawnAt = this.spawnPointManager.getRandomLocationAt(sSpawnAt);
+            lSpawnAt = this.plugin.getSpawnPointManager().getRandomLocationAt(sSpawnAt);
+            
+            if(lSpawnAt == null){
+                this.sendError(cs, "Unable to find a random location to use!");
+                
+                return true;
+            } 
         }
         
-        Boss boss = this.bossManager.spawnBossAt(bossName,lSpawnAt);
+        Boss boss = this.plugin.getBossManager().spawnBossAt(bossName,lSpawnAt);
         
         this.send(cs,String.format("Spawned a %s at %s %s %s!",new Object[]{
             boss.getTemplate().getName(),
