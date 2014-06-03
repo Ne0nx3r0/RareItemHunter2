@@ -55,14 +55,19 @@ public class BossManager {
         return this.getBossTemplate(bossName) != null;
     }
 
-    public Boss spawnBossAt(String bossName, Location lSpawnAt) {
-        BossTemplate bt = this.getBossTemplate(bossName);
+    
+    public Boss spawnBossAt(String bossName, Location spawnAt) {
+        BossTemplate template = this.getBossTemplate(bossName);
         
-        if(bt == null){
+        if(template == null){
             return null;
         }
         
-        Entity bossEntity = this.spawnBossEntity(bt.getBossEntityType(), lSpawnAt);
+        return this.spawnBossAt(template, spawnAt);
+    }
+    
+    public Boss spawnBossAt(BossTemplate template, Location spawnAt ){
+        Entity bossEntity = this.spawnBossEntity(template.getBossEntityType(), spawnAt);
 
         LivingEntity lent = (LivingEntity) bossEntity.getBukkitEntity();
         
@@ -71,9 +76,9 @@ public class BossManager {
         
         EntityEquipment lequips = lent.getEquipment();
             
-        if(bt.getEquipment() != null)
+        if(template.getEquipment() != null)
         {
-            lequips.setArmorContents(bt.getEquipment().toArray(new ItemStack[4]));
+            lequips.setArmorContents(template.getEquipment().toArray(new ItemStack[4]));
 
             lequips.setBootsDropChance(0f);
             lequips.setLeggingsDropChance(0f);
@@ -81,14 +86,14 @@ public class BossManager {
             lequips.setHelmetDropChance(0f);
         }
             
-        if(bt.getWeapon() != null)
+        if(template.getWeapon() != null)
         {
-            lequips.setItemInHand(bt.getWeapon());
+            lequips.setItemInHand(template.getWeapon());
 
             lequips.setItemInHandDropChance(0f);
         }
         
-        Boss boss = new Boss(lent.getUniqueId(),bt);
+        Boss boss = new Boss(lent.getUniqueId(),template);
         
         this.activeBosses.add(boss);
         
@@ -192,7 +197,7 @@ public class BossManager {
         block.setMetadata("isBossEgg", new FixedMetadataValue(this.plugin,true));
 
         BossEgg newEgg = new BossEgg(
-            bt.getName(),
+            bt,
             block.getLocation(),
             autoHatch
         );
@@ -204,5 +209,26 @@ public class BossManager {
 
     public Iterable<BossEgg> getAllActiveEggs() {
         return this.bossEggs;
+    }
+
+    public void hatchEggIfBoss(Block block) {
+        if(block.getType().equals(Material.DRAGON_EGG)){
+            Location lBlock = block.getLocation();
+
+            for(BossEgg egg : this.bossEggs){
+                if(lBlock.equals(egg.getLocation())){
+                    BossTemplate template = egg.getTemplate();
+                    
+                    block.setType(Material.AIR);
+                    block.getRelative(BlockFace.DOWN).setType(Material.AIR);
+                    
+                    lBlock.getWorld().strikeLightningEffect(lBlock);
+                    
+                    this.spawnBossAt(template, block.getLocation());
+                    
+                    return;
+                }
+            }
+        }
     }
 }

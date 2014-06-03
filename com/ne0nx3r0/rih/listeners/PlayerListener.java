@@ -7,7 +7,6 @@ import com.ne0nx3r0.rih.gui.GuiManager;
 import com.ne0nx3r0.rih.property.PropertyManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -44,7 +43,7 @@ public class PlayerListener implements Listener {
     }
     
     @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerDeath(PlayerDeathEvent e){
+    public void onPlayerDeathByBoss(PlayerDeathEvent e){
         Boss boss = this.bossManager.getBoss(e.getEntity().getLastDamageCause().getEntity());
         
         if(boss != null){
@@ -56,15 +55,18 @@ public class PlayerListener implements Listener {
     }
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlayerClickShrine(PlayerInteractEvent e){
+    public void onPlayerClickShrineOrEgg(PlayerInteractEvent e){
         if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK) 
         && this.guiManager.isLegendaryShrineBlock(e.getClickedBlock())){
             this.guiManager.shrineClick(e);
         }
+        else if(e.hasBlock()){
+            this.bossManager.hatchEggIfBoss(e.getClickedBlock());
+        }
     }
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlayerInventoryClick(InventoryClickEvent e){
+    public void onPlayerClickRIInventory(InventoryClickEvent e){
         if(e.getSlotType() == InventoryType.SlotType.ARMOR)
         {
             if(e.getCursor() != null 
@@ -86,24 +88,24 @@ public class PlayerListener implements Listener {
     }
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlayerCloseInventory(InventoryCloseEvent e){
+    public void onPlayerCloseShrine(InventoryCloseEvent e){
         if(this.guiManager.isLegendaryShrineScreen(e.getInventory())){
             this.guiManager.closeScreen(e);
         }            
     }
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlayerCloseInventory(PlayerInteractEvent e){
+    public void onPlayerInteractWithRareItem(PlayerInteractEvent e){
         this.propertymanager.onUse(e);
     }
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlayerCloseInventory(PlayerInteractEntityEvent e){
+    public void onPlayerInteractWithRareItem(PlayerInteractEntityEvent e){
         this.propertymanager.onUseEntity(e);
     }
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlayerCloseInventory(EntityDamageByEntityEvent e){
+    public void onPlayerDamageEntityWithRareItem(EntityDamageByEntityEvent e){
         this.propertymanager.onAttackEntity(e);
     }
 }

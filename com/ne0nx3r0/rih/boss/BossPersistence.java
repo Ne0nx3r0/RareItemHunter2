@@ -59,9 +59,10 @@ public class BossPersistence {
                 
                 Location l = new Location(this.plugin.getServer().getWorld(worldName),x,y,z);
                 
-                this.activeEggs.add(new BossEgg(template.getName(),l,autoSpawn));
+                this.activeEggs.add(new BossEgg(template,l,autoSpawn));
             }
-        } 
+        }
+        
         if(config.isSet("bosses")){
             ConfigurationSection configBosses = config.getConfigurationSection("bosses");
             
@@ -121,7 +122,7 @@ public class BossPersistence {
                 for(BossEgg egg : plugin.getBossManager().getAllActiveEggs()){
                     Map<String,Object> tempEgg = new HashMap<>();
                     
-                    tempEgg.put("template", egg.getName());
+                    tempEgg.put("template", egg.getTemplate().getName());
                     tempEgg.put("autospawn", egg.getAutoSpawn());
                     tempEgg.put("x", egg.getLocation().getBlockX());
                     tempEgg.put("y", egg.getLocation().getBlockY());
@@ -134,12 +135,12 @@ public class BossPersistence {
                 ymlConfig.set("eggs", eggs);
                 
                 for(Boss boss : plugin.getBossManager().getAllActiveBosses()){
-                    String uuid = boss.getUniqueID().toString();
+                    String sUuid = boss.getUniqueID().toString();
                     
-                    ymlConfig.set(uuid+".template", boss.getTemplate().getName());
-                    ymlConfig.set(uuid+".currentHealth", boss.getHealth());
-                    ymlConfig.set(uuid+".kills", boss.getKills());
-                    ymlConfig.set(uuid+".playerDamage", boss.getPlayersDamageDone());
+                    ymlConfig.set(sUuid+".template", boss.getTemplate().getName());
+                    ymlConfig.set(sUuid+".currentHealth", boss.getHealth());
+                    ymlConfig.set(sUuid+".kills", boss.getKills());
+                    ymlConfig.set(sUuid+".playerDamage", boss.getPlayersDamageDone());
                 }
                 
                 try {
