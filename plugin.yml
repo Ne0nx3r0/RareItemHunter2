@@ -3,6 +3,7 @@ main: com.ne0nx3r0.rih.RareItemHunterPlugin
 version: '2.4.40a'
 load: STARTUP
 database: false
+softdepend: [Essentials]
 description: Rare Item Hunter
 commands:
     ri2:

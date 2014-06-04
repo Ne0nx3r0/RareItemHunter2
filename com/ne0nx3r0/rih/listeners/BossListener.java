@@ -1,5 +1,7 @@
 package com.ne0nx3r0.rih.listeners;
 
+import com.earth2me.essentials.Essentials;
+import com.earth2me.essentials.User;
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.boss.Boss;
 import com.ne0nx3r0.rih.boss.BossManager;
@@ -12,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -29,9 +32,12 @@ import org.bukkit.event.entity.EntityTameEvent;
 
 public class BossListener implements Listener {
     private final BossManager bossManager;
+    private final Essentials essentials;
 
     public BossListener(RareItemHunterPlugin plugin) {
         this.bossManager = plugin.getBossManager();
+        
+        this.essentials = plugin.getEssentials();
     }
 
     @EventHandler(priority=EventPriority.NORMAL,ignoreCancelled = true)
@@ -148,6 +154,25 @@ public class BossListener implements Listener {
         
         if(attacker != null){
             boss.addPlayerDamage(attacker, (int) damageAmount);
+        
+            // Disable GM if they have turned it on. Suckers. :D
+            if(attacker.getGameMode().equals(GameMode.CREATIVE)) {
+                attacker.setGameMode(GameMode.SURVIVAL);
+            }
+
+            // and flying
+            if(attacker.isFlying()){
+                attacker.setFlying(false);
+            }
+            
+            // and essentials god mode
+            if(this.essentials != null) {
+                User user = essentials.getUser(attacker);
+
+                if(user.isGodModeEnabled()) {
+                    user.setGodModeEnabled(false);
+                }
+            }
         }
         
         int remainingHealth = boss.getHealth();
