@@ -15,5 +15,6 @@ public enum PropertyType {
     REGENERATION,
     STRENGTH,
     TOUGH_LOVE,
-    WATER_BREATHING
+    WATER_BREATHING,
+    PULL
 }

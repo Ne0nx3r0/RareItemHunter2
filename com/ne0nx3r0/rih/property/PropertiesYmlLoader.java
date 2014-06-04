@@ -31,6 +31,7 @@ class PropertiesYmlLoader {
         this.addPropertyToAllProperties(new Hardy());
         this.addPropertyToAllProperties(new MeltObsidian());
         this.addPropertyToAllProperties(new PaintWool());
+        this.addPropertyToAllProperties(new Pull());
         this.addPropertyToAllProperties(new Regeneration());
         this.addPropertyToAllProperties(new Smelt());
         this.addPropertyToAllProperties(new Spore());
