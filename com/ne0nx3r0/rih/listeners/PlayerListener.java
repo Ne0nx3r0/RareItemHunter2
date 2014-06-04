@@ -7,6 +7,7 @@ import com.ne0nx3r0.rih.gui.GuiManager;
 import com.ne0nx3r0.rih.property.PropertyManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -35,7 +36,7 @@ public class PlayerListener implements Listener {
     public void onPlayerDamagedByBoss(EntityDamageByEntityEvent e){
         if(e.getEntity() instanceof Player){
             Boss boss = this.bossManager.getBoss(e.getDamager());
-            
+
             if(boss != null){
                 e.setDamage(boss.getTemplate().getAttackPower());
             }
@@ -44,13 +45,16 @@ public class PlayerListener implements Listener {
     
     @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDeathByBoss(PlayerDeathEvent e){
-        Boss boss = this.bossManager.getBoss(e.getEntity().getLastDamageCause().getEntity());
-        
-        if(boss != null){
-            e.setDeathMessage(String.format("%s"+ChatColor.RED+" was defeated by "+ChatColor.GREEN+"%s",new Object[]{
-                e.getEntity(),
-                boss.getTemplate().getName()
-            }));
+        // this makes no sense since getKiller wants to return a player...
+        if(e.getEntity().getKiller() != null){
+            Boss boss = this.bossManager.getBoss(e.getEntity().getKiller());
+
+            if(boss != null){
+                e.setDeathMessage(String.format("%s"+ChatColor.RED+" was defeated by "+ChatColor.GREEN+"%s",new Object[]{
+                    e.getEntity().getDisplayName(),
+                    boss.getTemplate().getName()
+                }));
+            }
         }
     }
     
