@@ -24,18 +24,19 @@ public class DimensionDoor extends BossSkillTemplate
         if(bossWorld.endsWith("_the_end")){
             worldTo = bossEntity.getServer().getWorld(bossWorld.substring(0,bossWorld.indexOf("_the_end")));
         }
-        else if(bossWorld.endsWith("_nether")){
+        /*else if(bossWorld.endsWith("_nether")){
             worldTo = bossEntity.getServer().getWorld(bossWorld.substring(0,bossWorld.indexOf("_nether"))+"_the_end");
-        }
+        }*/
         else {
-            worldTo = bossEntity.getServer().getWorld(bossWorld+"_nether");
+            //worldTo = bossEntity.getServer().getWorld(bossWorld+"_nether");
+            worldTo = bossEntity.getServer().getWorld(bossWorld+"_the_end");
         }
         
         if(worldTo == null){
             return false;
         }
         
-        int distance = 30^2;
+        int distance = 60^2;
         int warped = 0;
         
         Location bossLocation = bossEntity.getLocation();
@@ -60,7 +61,7 @@ public class DimensionDoor extends BossSkillTemplate
             bossHandle.world.removeEntity(bossHandle);
             bossHandle.dead = false;
             bossHandle.world = ((CraftWorld) worldTo).getHandle();
-            bossHandle.setLocation(bossTo.getX(), bossTo.getY()+3, bossTo.getZ(), bossTo.getYaw(), bossTo.getPitch());
+            bossHandle.setLocation(bossTo.getX(), bossTo.getY()+1, bossTo.getZ(), bossTo.getYaw(), bossTo.getPitch());
             bossHandle.world.addEntity(bossHandle);
             
             return true;
