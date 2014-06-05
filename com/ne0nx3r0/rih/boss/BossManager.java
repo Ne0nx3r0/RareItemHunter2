@@ -21,6 +21,7 @@ public class BossManager {
     private final List<Boss> activeBosses;
     private final List<BossEgg> bossEggs;
     private final RareItemHunterPlugin plugin;
+    private BossGarbageCollection bossGC;
 
     public BossManager(RareItemHunterPlugin plugin) {
         this.plugin = plugin;
@@ -40,6 +41,8 @@ public class BossManager {
         this.activeBosses = bp.getActiveBosses();
         
         bp.startSaving(20*30);
+        
+        this.bossGC = new BossGarbageCollection(plugin,this,20*60*30);
     }
     
     public BossTemplate getBossTemplate(String bossName){
@@ -230,5 +233,9 @@ public class BossManager {
                 }
             }
         }
+    }
+
+    public boolean removeBossEgg(BossEgg egg) {
+        return this.bossEggs.remove(egg);
     }
 }
