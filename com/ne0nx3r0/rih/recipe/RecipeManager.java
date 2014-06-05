@@ -57,6 +57,7 @@ public class RecipeManager {
     }
 
     private final String PROPERTY_HEADER = ChatColor.DARK_PURPLE+"Rare Item";
+    private final String PROPERTY_HEADER_VINTAGE = ChatColor.BLUE+"Vintage Rare Item";
     private final String PROPERTY_LINE_PREFIX = ChatColor.DARK_GRAY+"Property: "+ChatColor.GREEN;
     private final String PROPERTY_LINE = PROPERTY_LINE_PREFIX+"%s "+ChatColor.GREEN+"%s "+ChatColor.BLACK+"%s";
     
@@ -417,5 +418,45 @@ public class RecipeManager {
         compass.setItemMeta(itemMeta);
         
         return compass;
+    }
+
+    public void addPropertyTo(ItemStack is, RareItemProperty rip, int level, boolean vintage) {
+        ItemMeta meta = is.getItemMeta();
+        
+        List<String> lore;
+        Map<RareItemProperty, Integer> propertyLevels;
+        
+        if(meta.hasLore()){
+            lore = meta.getLore();
+            propertyLevels = this.getProperties(is);
+        }
+        else {
+            lore = new ArrayList<>();
+            propertyLevels = new HashMap<>();
+        }
+        
+        // override if already exists
+        propertyLevels.put(rip,level);
+        
+        if(vintage){
+            lore.add(this.PROPERTY_HEADER_VINTAGE);
+        }
+        else{
+            lore.add(this.PROPERTY_HEADER);
+        }
+        
+        for(Entry<RareItemProperty,Integer> entry : propertyLevels.entrySet()){
+            RareItemProperty entryRip = entry.getKey();
+
+            lore.add(String.format(PROPERTY_LINE,new Object[]{
+                entryRip.getName(),
+                RomanNumeral.convertToRoman(entry.getValue()),
+                entryRip.getID()
+            }));
+        }
+        
+        meta.setLore(lore);
+        
+        is.setItemMeta(meta);
     }
 }
