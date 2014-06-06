@@ -21,7 +21,6 @@ public class BossManager {
     private final List<Boss> activeBosses;
     private final List<BossEgg> bossEggs;
     private final RareItemHunterPlugin plugin;
-    private BossGarbageCollection bossGC;
 
     public BossManager(RareItemHunterPlugin plugin) {
         this.plugin = plugin;
@@ -42,7 +41,7 @@ public class BossManager {
         
         bp.startSaving(20*30);
         
-        this.bossGC = new BossGarbageCollection(plugin,this,20*60*30);
+        BossGarbageCollection bossGC = new BossGarbageCollection(plugin,this,20*60*30);
     }
     
     public BossTemplate getBossTemplate(String bossName){
@@ -99,6 +98,8 @@ public class BossManager {
         Boss boss = new Boss(lent.getUniqueId(),template);
         
         this.activeBosses.add(boss);
+        
+        lent.setCustomName(template.getName());
         
         return boss;
     }
