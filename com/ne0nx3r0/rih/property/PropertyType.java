@@ -16,5 +16,14 @@ public enum PropertyType {
     STRENGTH,
     TOUGH_LOVE,
     WATER_BREATHING,
-    PULL
+    PULL,
+    WEAKEN,
+    POISON,
+    CALL_LIGHTNING,
+    VAMPIRIC_REGENERATION,
+    BLINDING,
+    CONFUSE,
+    BACKSTAB,
+    DISARM,
+    SLOW
 }

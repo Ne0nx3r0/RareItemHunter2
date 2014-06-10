@@ -37,6 +37,18 @@ class PropertiesYmlLoader {
         this.addPropertyToAllProperties(new Strength());
         this.addPropertyToAllProperties(new ToughLove());
         this.addPropertyToAllProperties(new WaterBreathing());
+        
+        // migrated skills
+        this.addPropertyToAllProperties(new Backstab());
+        this.addPropertyToAllProperties(new Blinding());
+        this.addPropertyToAllProperties(new CallLightning());
+        this.addPropertyToAllProperties(new Confuse());
+        this.addPropertyToAllProperties(new Disarm());
+        this.addPropertyToAllProperties(new WaterBreathing());
+        this.addPropertyToAllProperties(new Poison());
+        this.addPropertyToAllProperties(new Slow());
+        this.addPropertyToAllProperties(new VampiricRegeneration());
+        this.addPropertyToAllProperties(new Weaken());
     }
     
     public final void addPropertyToAllProperties(RareItemProperty rip){
