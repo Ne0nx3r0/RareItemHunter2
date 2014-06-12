@@ -11,9 +11,14 @@ public class Durability extends ItemPropertyRepeatingEffect
     
     public Durability()
     {
-        super(PropertyType.DURABILITY.ordinal(),"Durability","Automagically repairs equipped armor over time",PropertyCostType.AUTOMATIC,5,5);
-        
-        //this.createRepeatingAppliedEffect(this, 20*10);
+        super(
+            PropertyType.DURABILITY.ordinal(),
+            "Durability",
+            "Automagically repairs equipped armor and held weapons by 2% per level every 10 seconds",
+            PropertyCostType.AUTOMATIC,
+            10,
+            8
+        );
     }
 
     @Override
@@ -23,17 +28,31 @@ public class Durability extends ItemPropertyRepeatingEffect
         
         for(int i = 0; i < armor.length; i++)
         {
-            if(armor[i].getDurability() > 0)
-            {
-                int iNewArmor = armor[i].getDurability() - 1 * level;
-                
-                if(iNewArmor < 0)
-                {
-                    iNewArmor = 0;
-                }
-                
-                armor[i].setDurability((short) iNewArmor);
+            this.repairItem(armor[i], level);
+        }
+        
+        ItemStack heldItem = player.getItemInHand();
+        
+        if(heldItem != null){
+            this.repairItem(heldItem, level);
+        }
+    }
+    
+    public void repairItem(ItemStack is,int level){
+        // excludes stuff like dyes
+        if(is.getType().getMaxDurability() > 20 && is.getDurability() > 0){
+            int maxDurability = is.getType().getMaxDurability();
+            
+            // 5% per level
+            int repairAmount = maxDurability / 100 * level * 2;
+            
+            int newDurability = is.getDurability() - repairAmount;
+            
+            if(newDurability < 0){
+                newDurability = 0;
             }
+            
+            is.setDurability((short) newDurability);
         }
     }
 }
