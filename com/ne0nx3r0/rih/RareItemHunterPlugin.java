@@ -2,15 +2,9 @@ package com.ne0nx3r0.rih;
 
 import com.earth2me.essentials.Essentials;
 import com.ne0nx3r0.rih.boss.spawning.SpawnPointManager;
-import com.ne0nx3r0.rih.boss.entities.BossEntityPig;
-import com.ne0nx3r0.rih.boss.entities.BossEntityZombie;
-import com.ne0nx3r0.rih.boss.entities.BossEntityChicken;
-import com.ne0nx3r0.rih.boss.entities.BossEntityOcelot;
-import com.ne0nx3r0.rih.boss.entities.BossEntityEnderman;
 import com.ne0nx3r0.rih.listeners.PlayerListener;
 import com.ne0nx3r0.rih.listeners.BossListener;
 import com.ne0nx3r0.rih.boss.BossManager;
-import com.ne0nx3r0.rih.boss.entities.BossEntitySnowman;
 import com.ne0nx3r0.rih.commands.RareItemHunterCommandExecutor;
 import com.ne0nx3r0.rih.gui.GuiManager;
 import com.ne0nx3r0.rih.property.PropertyManager;
@@ -19,13 +13,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
-import java.util.Map;
-import java.util.logging.Level;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import com.ne0nx3r0.rih.boss.entities.EntityLoader;
 
 public class RareItemHunterPlugin extends JavaPlugin{
     private BossManager bossManager;
@@ -47,12 +39,8 @@ public class RareItemHunterPlugin extends JavaPlugin{
             copy(getResource("config.yml"), configFile);
         }
         
-        RareItemHunterPlugin.addBossEntity(BossEntityZombie.class, "BossZombie", 54);
-        RareItemHunterPlugin.addBossEntity(BossEntityEnderman.class, "BossEnderman", 58);
-        RareItemHunterPlugin.addBossEntity(BossEntityPig.class, "BossPig", 90);
-        RareItemHunterPlugin.addBossEntity(BossEntityChicken.class, "BossChicken", 93);
-        RareItemHunterPlugin.addBossEntity(BossEntityOcelot.class, "BossOcelot", 98);
-        RareItemHunterPlugin.addBossEntity(BossEntitySnowman.class, "BossSnowman", 97);
+        // load entities to the server - are you at all surprised that's what happens with this line?
+        new EntityLoader().load();
         
         this.essentials = ((Essentials) Bukkit.getPluginManager().getPlugin("Essentials"));
         
@@ -136,68 +124,6 @@ public class RareItemHunterPlugin extends JavaPlugin{
         catch (Exception e)
         {
             e.printStackTrace();
-        }
-    }
-    
-    
-    
-    
-    
-// Begin strange registration code
-
-// registery... thingy...
-    protected static Field mapStringToClassField, mapClassToStringField, mapClassToIdField, mapStringToIdField;
-    //protected static Field mapIdToClassField;
- 
-    static
-    {
-        try
-        {
-            mapStringToClassField = net.minecraft.server.v1_7_R3.EntityTypes.class.getDeclaredField("c");
-            mapClassToStringField = net.minecraft.server.v1_7_R3.EntityTypes.class.getDeclaredField("d");
-            //mapIdtoClassField = net.minecraft.server.v1_7_R1.EntityTypes.class.getDeclaredField("e");
-            mapClassToIdField = net.minecraft.server.v1_7_R3.EntityTypes.class.getDeclaredField("f");
-            mapStringToIdField = net.minecraft.server.v1_7_R3.EntityTypes.class.getDeclaredField("g");
-
-            mapStringToClassField.setAccessible(true);
-            mapClassToStringField.setAccessible(true);
-            //mapIdToClassField.setAccessible(true);
-            mapClassToIdField.setAccessible(true);
-            mapStringToIdField.setAccessible(true);
-        }
-        catch(Exception e) {e.printStackTrace();}
-    }
-    
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    protected static void addBossEntity(Class entityClass, String name, int id)
-    {
-        if (mapStringToClassField == null || mapStringToIdField == null || mapClassToStringField == null || mapClassToIdField == null)
-        {
-            return;
-        }
-        else
-        {
-            try
-            {
-                Map mapStringToClass = (Map) mapStringToClassField.get(null);
-                Map mapStringToId = (Map) mapStringToIdField.get(null);
-                Map mapClasstoString = (Map) mapClassToStringField.get(null);
-                Map mapClassToId = (Map) mapClassToIdField.get(null);
-
-                mapStringToClass.put(name, entityClass);
-                mapStringToId.put(name, Integer.valueOf(id));
-                mapClasstoString.put(entityClass, name);
-                mapClassToId.put(entityClass, Integer.valueOf(id));
-
-                mapStringToClassField.set(null, mapStringToClass);
-                mapStringToIdField.set(null, mapStringToId);
-                mapClassToStringField.set(null, mapClasstoString);
-                mapClassToIdField.set(null, mapClassToId);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
         }
     }
 }
