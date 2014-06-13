@@ -21,7 +21,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.Map;
+import java.util.logging.Level;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class RareItemHunterPlugin extends JavaPlugin{
@@ -31,6 +34,7 @@ public class RareItemHunterPlugin extends JavaPlugin{
     private GuiManager guiManager;
     private SpawnPointManager spawnPointManager;
     private Essentials essentials;
+    private Economy economy;
     
     @Override
     public void onEnable(){
@@ -51,6 +55,8 @@ public class RareItemHunterPlugin extends JavaPlugin{
         RareItemHunterPlugin.addBossEntity(BossEntitySnowman.class, "BossSnowman", 97);
         
         this.essentials = ((Essentials) Bukkit.getPluginManager().getPlugin("Essentials"));
+        
+        this.setupEconomy();
         
         this.recipeManager = new RecipeManager(this);
         
@@ -181,5 +187,18 @@ public class RareItemHunterPlugin extends JavaPlugin{
 
     public Essentials getEssentials() {
         return this.essentials;
+    }
+    
+    public Economy getEconomy(){
+        return this.economy;
+    }
+
+    private void setupEconomy() {
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+
+        if(economyProvider != null)
+        {
+            this.economy = economyProvider.getProvider();
+        }
     }
 }

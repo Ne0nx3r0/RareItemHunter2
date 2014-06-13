@@ -3,10 +3,12 @@ package com.ne0nx3r0.rih.property;
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.recipe.RecipeManager;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
+import net.milkbowl.vault.economy.Economy;
 import net.minecraft.server.v1_7_R3.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -19,7 +21,9 @@ public class PropertyManager {
     private final RareItemHunterPlugin plugin;
     private final List<RareItemProperty> properties;
     private final Map<UUID,Map<RareItemProperty,Integer>> activeEffects;
+    private final Map<UUID,Map<RareItemProperty,Long>> cooldowns;
     private final RecipeManager recipeManager;
+    private final Economy economy;
 
     public PropertyManager(RareItemHunterPlugin plugin) {
         this.plugin = plugin;
@@ -30,6 +34,37 @@ public class PropertyManager {
         this.properties = loader.loadProperties();
         
         this.activeEffects = new HashMap<>();
+        
+        this.economy = plugin.getEconomy();
+        
+        this.cooldowns = new HashMap<>();
+        
+        plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable(){
+            @Override
+            public void run() {
+                long currentTime = System.currentTimeMillis();
+                
+                Iterator<Entry<UUID, Map<RareItemProperty, Long>>> allPlayersIter = cooldowns.entrySet().iterator();
+                
+                while(allPlayersIter.hasNext()){                    
+                    Map<RareItemProperty, Long> playerCooldowns = allPlayersIter.next().getValue();
+                    
+                    Iterator<Map.Entry<RareItemProperty,Long>> iter = playerCooldowns.entrySet().iterator();
+                    
+                    while (iter.hasNext()) {
+                        Map.Entry<RareItemProperty,Long> entry = iter.next();
+                        
+                        if(currentTime > entry.getValue()){
+                            iter.remove();
+                        }
+                    }
+                    
+                    if(playerCooldowns.isEmpty()){
+                        allPlayersIter.remove();
+                    }
+                }
+            }
+        }, 20, 20);
     }
 
     public RareItemProperty getProperty(String propertyName) {
@@ -94,7 +129,11 @@ public class PropertyManager {
                 for(Entry<RareItemProperty,Integer> propertyLevel : propertyLevels.entrySet()){
                     RareItemProperty rip = propertyLevel.getKey();
                 
-                    rip.onInteract(e, propertyLevel.getValue());
+                    if(this.hasCost(e.getPlayer(),rip)){                 
+                        if(rip.onInteract(e, propertyLevel.getValue())){
+                            this.used(e.getPlayer(),rip);
+                        }
+                    }
                 }
             }
         }
@@ -130,5 +169,62 @@ public class PropertyManager {
                 }
             }
         }
+    }
+
+    private boolean hasCost(Player player, RareItemProperty rip) {
+        switch(rip.getCostType()){
+            case LEVEL:
+                return player.getLevel() < rip.getCost();
+                
+            case FOOD:
+                return player.getFoodLevel() < rip.getCost();
+                
+            case COOLDOWN:
+                Map<RareItemProperty, Long> playerCooldowns = this.cooldowns.get(player.getUniqueId());
+                
+                if(playerCooldowns != null){
+                    return playerCooldowns.containsKey(rip);
+                }
+                
+                return false;
+            case HEALTH:
+                return player.getHealth() > rip.getCost();
+                
+            case MONEY:
+                return economy.has(player.getName(), rip.getCost());
+        }
+
+        return false;
+    }
+
+    private void used(Player player, RareItemProperty rip) {
+        switch(rip.getCostType()){
+            case LEVEL:
+                player.setLevel((int) (player.getLevel()-rip.getCost()));
+                
+            case FOOD:
+                player.setFoodLevel((int) (player.getFoodLevel()-rip.getCost()));
+                
+            case COOLDOWN:
+                this.setCooldown(player, rip);
+                
+            case HEALTH:
+                player.setHealth(player.getHealth() - rip.getCost());
+                
+            case MONEY:
+                economy.withdrawPlayer(player.getName(), rip.getCost());
+        }
+    }
+    
+    public void setCooldown(Player player,RareItemProperty rip){
+        Map<RareItemProperty, Long> playerCooldowns = this.cooldowns.get(player.getUniqueId());
+                
+        if(playerCooldowns == null){
+            playerCooldowns = new HashMap<>();
+            
+            this.cooldowns.put(player.getUniqueId(), playerCooldowns);
+        }
+
+        playerCooldowns.put(rip,System.currentTimeMillis() + (long) (rip.getCost() * 1000));
     }
 }
