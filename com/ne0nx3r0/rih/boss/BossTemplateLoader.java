@@ -92,6 +92,8 @@ public class BossTemplateLoader {
             int hp = bossSection.getInt("hp");
 
             int attackPower = bossSection.getInt("attackPower");
+            
+            double speed = bossSection.getDouble("speed");
 
             int difficulty = bossSection.getInt("difficulty");
             
@@ -135,6 +137,7 @@ public class BossTemplateLoader {
                 bossEntityType,
                 hp,
                 attackPower,
+                speed,
                 difficulty,
                 equipment,
                 weapon

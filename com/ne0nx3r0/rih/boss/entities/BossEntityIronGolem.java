@@ -57,7 +57,6 @@ public class BossEntityIronGolem extends EntityIronGolem{
         this.getAttributeInstance(GenericAttributes.b).setValue(40.0D);
         
         // movement speed
-        //this.getAttributeInstance(GenericAttributes.d).setValue(0.23000000417232513D);
         this.getAttributeInstance(GenericAttributes.d).setValue(0.53000000417232513D);
         
         // attack damage

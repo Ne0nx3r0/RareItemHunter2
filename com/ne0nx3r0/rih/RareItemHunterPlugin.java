@@ -98,13 +98,7 @@ public class RareItemHunterPlugin extends JavaPlugin{
             this.economy = economyProvider.getProvider();
         }
     }
-    
 
-    
-    
-    
-    
-    
 // Public helper methods
     
     public void copy(InputStream in, File file)

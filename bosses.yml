@@ -1,7 +1,7 @@
 Bobcat:
-# valid types:
-# ocelot, chicken
   type: ocelot
+# 1 - ~16, 4 = ~regular zombie speed
+  speed: 8
 # 1-10
   difficulty: 4
   hp: 2000
@@ -22,6 +22,7 @@ Fisherman:
   type: zombie
   hp: 1800
   attackPower: 18
+  speed: 6
   difficulty: 5
   onHit:
     - 40% chance Pull level 5 
@@ -39,6 +40,7 @@ Cucco:
   type: chicken
   hp: 800
   attackPower: 24
+  speed: 8
   difficulty: 5
   onHit:
     - 40% chance Pull level 5 
@@ -48,6 +50,7 @@ Cucco:
   
 "Spicy Bacon":
   type: pig
+  speed: 5
   hp: 1600
   attackPower: 20
   difficulty: 5
@@ -59,6 +62,7 @@ Cucco:
     
 "Renderman":
   type: enderman
+  speed: 4
   hp: 1800
   attackPower: 10
   difficulty: 5
@@ -69,14 +73,35 @@ Cucco:
     - every 10 seconds Pull level 5 
     
 "Frosty":
+  speed: 4
   type: snowman
   hp: 1000
   attackPower: 10
   difficulty: 5
   onHit:
     - 50% chance Freeze level 5 
-    - 50% chance Shiver level 5
+    - 50% chance Shiver level 1
   onHeartbeat:
     - every 10 seconds Pull level 5
     
+"Planeswalking Pig":
+  type: pig
+  hp: 1600
+  speed: 4
+  attackPower: 12
+  difficulty: 5
+  onHit:
+    - 25% chance Dimension Door level 5 
+    - 50% chance Jump Attack level 5
+  onHeartbeat:
+    - every 10 seconds Pull level 5
     
+"Laputa":
+    speed: 2
+    type: irongolem
+    attackPower: 20
+    difficulty: 5
+    onHit:
+      - 40% chance Jump Attack level 5
+    onHeartbeat:
+      - every 3 seconds Shoot Fireball level 5

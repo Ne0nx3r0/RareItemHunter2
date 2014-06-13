@@ -1,7 +1,6 @@
 
 package com.ne0nx3r0.rih.boss.entities;
 
-import com.ne0nx3r0.rih.boss.BossTemplate;
 import java.lang.reflect.Field;
 import net.minecraft.server.v1_7_R3.EntityHuman;
 import net.minecraft.server.v1_7_R3.EntityZombie;

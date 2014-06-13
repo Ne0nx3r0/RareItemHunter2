@@ -17,11 +17,13 @@ public class BossTemplate {
     private List<ItemStack> equipment;
     private ItemStack weapon;
     private List<BossSkillInstance> onHitSkills;
+    private double speed;
         
-    public BossTemplate(String name,BossEntityType entityType,int maxHealth,int attackPower,int difficulty,List<ItemStack> equipment,ItemStack weapon)
+    public BossTemplate(String name,BossEntityType entityType,int maxHealth,int attackPower,double speed,int difficulty,List<ItemStack> equipment,ItemStack weapon)
     {
         this.name = name;
         this.attackPower = attackPower;
+        this.speed = speed;
         this.maxHealth = maxHealth;
         this.bossEntityType = entityType;
         this.difficulty = difficulty;
@@ -77,5 +79,9 @@ public class BossTemplate {
     
     public ItemStack getWeapon(){
         return this.weapon;
+    }
+    
+    public double getSpeed(){
+        return this.speed;
     }
 }

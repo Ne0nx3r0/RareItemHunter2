@@ -6,12 +6,13 @@ import com.ne0nx3r0.rih.boss.egg.BossEgg;
 import java.util.List;
 import java.util.UUID;
 import net.minecraft.server.v1_7_R3.Entity;
+import net.minecraft.server.v1_7_R3.EntityLiving;
+import net.minecraft.server.v1_7_R3.GenericAttributes;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
-import org.bukkit.entity.Egg;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
@@ -70,7 +71,7 @@ public class BossManager {
     }
     
     public Boss spawnBossAt(BossTemplate template, Location spawnAt ){
-        Entity bossEntity = this.spawnBossEntity(template.getBossEntityType(), spawnAt);
+        Entity bossEntity = this.spawnBossEntity(template.getBossEntityType(), spawnAt,template.getSpeed());
 
         LivingEntity lent = (LivingEntity) bossEntity.getBukkitEntity();
         
@@ -105,7 +106,7 @@ public class BossManager {
         return boss;
     }
     
-    public Entity spawnBossEntity(BossEntityType bossType,Location loc){
+    private Entity spawnBossEntity(BossEntityType bossType,Location loc,double speed){
         net.minecraft.server.v1_7_R3.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
         
         net.minecraft.server.v1_7_R3.Entity bossEntity;
@@ -130,7 +131,15 @@ public class BossManager {
             case SNOWMAN: 
                 bossEntity = new BossEntitySnowman(nmsWorld);
                 break;
+            case IRONGOLEM: 
+                bossEntity = new BossEntityIronGolem(nmsWorld);
+                break;
         }
+        
+        // set movement speed
+        // Zombie is
+        // 0.23000000417232513D
+        ((EntityLiving) bossEntity).getAttributeInstance(GenericAttributes.d).setValue(speed * 0.05D);
         
         bossEntity.setPosition(loc.getX(), loc.getY(), loc.getZ());
         
