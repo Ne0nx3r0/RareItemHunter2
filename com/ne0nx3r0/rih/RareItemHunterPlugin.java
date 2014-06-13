@@ -94,6 +94,22 @@ public class RareItemHunterPlugin extends JavaPlugin{
         return this.guiManager;
     }
     
+    public Essentials getEssentials() {
+        return this.essentials;
+    }
+    
+    public Economy getEconomy(){
+        return this.economy;
+    }
+
+    private void setupEconomy() {
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+
+        if(economyProvider != null)
+        {
+            this.economy = economyProvider.getProvider();
+        }
+    }
     
 
     
@@ -182,23 +198,6 @@ public class RareItemHunterPlugin extends JavaPlugin{
             {
                 e.printStackTrace();
             }
-        }
-    }
-
-    public Essentials getEssentials() {
-        return this.essentials;
-    }
-    
-    public Economy getEconomy(){
-        return this.economy;
-    }
-
-    private void setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-
-        if(economyProvider != null)
-        {
-            this.economy = economyProvider.getProvider();
         }
     }
 }
