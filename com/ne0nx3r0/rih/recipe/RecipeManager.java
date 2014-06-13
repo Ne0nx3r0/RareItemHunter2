@@ -17,6 +17,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class RecipeManager {
@@ -28,12 +29,39 @@ public class RecipeManager {
     private final RareItemHunterPlugin plugin;
     private final Map<Integer,RareItemProperty> essenceRecipes;
     private final int MAX_PROPERTIES_PER_ITEM = 8;
+    private ItemStack compass;
 
     public RecipeManager(RareItemHunterPlugin plugin) {
         this.plugin = plugin;
         
         // loaded by the property manager
         this.essenceRecipes = new HashMap<>();
+
+        this.compass = new ItemStack(Material.COMPASS);
+        ItemMeta itemMeta = compass.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.DARK_GREEN+"Legendary Compass");
+        
+        List<String> lore = new ArrayList<>();
+        
+        lore.add(ChatColor.DARK_GRAY+"When tapped against the ground");
+        lore.add(ChatColor.DARK_GRAY+"this compass will attune itself");
+        lore.add(ChatColor.DARK_GRAY+"to the nearest legendary boss egg.");
+        
+        itemMeta.setLore(lore);
+        
+        compass.getData().setData((byte) -41);
+        
+        compass.setItemMeta(itemMeta);
+        
+        ShapelessRecipe compassRecipe = new ShapelessRecipe(compass);
+        
+        compassRecipe.addIngredient(Material.COMPASS);
+        compassRecipe.addIngredient(Material.GOLD_INGOT);
+        compassRecipe.addIngredient(Material.EMERALD);
+        compassRecipe.addIngredient(Material.IRON_INGOT);
+        compassRecipe.addIngredient(Material.DIAMOND);
+        
+        plugin.getServer().addRecipe(compassRecipe);
     }
 
     public boolean isBlankRareEssence(ItemStack is) {
@@ -400,26 +428,6 @@ public class RecipeManager {
         return null;
     }
 
-    public ItemStack generateLegendaryCompass() {
-        ItemStack compass = new ItemStack(Material.COMPASS);
-        
-        ItemMeta itemMeta = compass.getItemMeta();
-        
-        itemMeta.setDisplayName(ChatColor.DARK_GREEN+"Legendary Compass");
-        
-        List<String> lore = new ArrayList<>();
-        
-        lore.add(ChatColor.DARK_GRAY+"When tapped against the ground");
-        lore.add(ChatColor.DARK_GRAY+"this compass will attune itself");
-        lore.add(ChatColor.DARK_GRAY+"to the nearest legendary boss egg.");
-        
-        itemMeta.setLore(lore);
-        
-        compass.setItemMeta(itemMeta);
-        
-        return compass;
-    }
-
     public void addPropertyTo(ItemStack is, RareItemProperty rip, int level, boolean vintage) {
         ItemMeta meta = is.getItemMeta();
         
@@ -458,5 +466,14 @@ public class RecipeManager {
         meta.setLore(lore);
         
         is.setItemMeta(meta);
+    }
+
+    public ItemStack generateLegendaryCompass()
+    {
+        return this.compass.clone();
+    }
+    
+    public boolean isLegendaryCompass(ItemStack is){
+        return is.equals(this.compass);
     }
 }

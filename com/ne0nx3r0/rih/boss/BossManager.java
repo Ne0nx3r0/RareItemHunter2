@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
+import org.bukkit.entity.Egg;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
@@ -238,5 +239,20 @@ public class BossManager {
 
     public boolean removeBossEgg(BossEgg egg) {
         return this.bossEggs.remove(egg);
+    }
+
+    public Location getClosestBossOrEggTo(Location compassLocation) {
+        Location lClosest = null;
+        
+        int closestDistance = -1;
+     
+        for(BossEgg egg : this.bossEggs){
+            if(compassLocation.distanceSquared(egg.getLocation()) < closestDistance
+            || closestDistance == -1){
+                lClosest = egg.getLocation();
+            }
+        }
+        
+        return lClosest;
     }
 }

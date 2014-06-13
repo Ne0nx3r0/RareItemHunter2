@@ -5,7 +5,9 @@ import com.ne0nx3r0.rih.boss.Boss;
 import com.ne0nx3r0.rih.boss.BossManager;
 import com.ne0nx3r0.rih.gui.GuiManager;
 import com.ne0nx3r0.rih.property.PropertyManager;
+import com.ne0nx3r0.rih.recipe.RecipeManager;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,11 +26,13 @@ public class PlayerListener implements Listener {
     private final BossManager bossManager;
     private final GuiManager guiManager;
     private final PropertyManager propertymanager;
+    private RecipeManager recipeManager;
 
     public PlayerListener(RareItemHunterPlugin plugin) {
         this.bossManager = plugin.getBossManager();
         this.guiManager = plugin.getGuiManager();
         this.propertymanager = plugin.getPropertymanager();
+        this.recipeManager = plugin.getRecipeManager();
     }
     
     @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
@@ -98,7 +102,15 @@ public class PlayerListener implements Listener {
     }
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlayerInteractWithRareItem(PlayerInteractEvent e){
+    public void onPlayerInteract(PlayerInteractEvent e){
+        if(e.hasItem() && this.recipeManager.isLegendaryCompass(e.getItem())){
+            Location lClosest = this.bossManager.getClosestBossOrEggTo(e.getPlayer().getLocation());
+            
+            if(lClosest != null){
+                e.getPlayer().setCompassTarget(lClosest);
+            }
+        }
+        
         this.propertymanager.onUse(e);
     }
     
