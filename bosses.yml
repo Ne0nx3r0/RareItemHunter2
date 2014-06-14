@@ -97,7 +97,8 @@ Cucco:
     - every 10 seconds Pull level 5
     
 "Laputa":
-    speed: 2
+    hp: 2000
+    speed: 3
     type: irongolem
     attackPower: 20
     difficulty: 5

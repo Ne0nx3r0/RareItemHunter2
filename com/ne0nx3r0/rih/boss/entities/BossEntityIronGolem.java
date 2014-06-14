@@ -60,7 +60,7 @@ public class BossEntityIronGolem extends EntityIronGolem{
         this.getAttributeInstance(GenericAttributes.d).setValue(0.53000000417232513D);
         
         // attack damage
-        this.getAttributeInstance(GenericAttributes.e).setValue(3.0D);
+        //this.getAttributeInstance(GenericAttributes.e).setValue(3.0D);
         
         //this.bb().b(bp).setValue(this.random.nextDouble() * 0.10000000149011612D);
     }
