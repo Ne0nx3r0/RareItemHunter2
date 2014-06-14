@@ -98,7 +98,7 @@ Cucco:
     
 "Laputa":
     hp: 2000
-    speed: 3
+    speed: 3.5
     type: irongolem
     attackPower: 20
     difficulty: 5
