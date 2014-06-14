@@ -15,6 +15,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -48,9 +49,12 @@ public class PlayerListener implements Listener {
     
     @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDeathByBoss(PlayerDeathEvent e){
-        // this makes no sense since getKiller wants to return a player...
-        if(e.getEntity().getKiller() != null){
-            Boss boss = this.bossManager.getBoss(e.getEntity().getKiller());
+        EntityDamageEvent lastDamageCause = e.getEntity().getLastDamageCause();
+        
+        if(lastDamageCause instanceof EntityDamageByEntityEvent){
+            EntityDamageByEntityEvent eLastHit = (EntityDamageByEntityEvent) lastDamageCause;
+            
+            Boss boss = this.bossManager.getBoss(eLastHit.getDamager());
 
             if(boss != null){
                 e.setDeathMessage(String.format("%s"+ChatColor.RED+" was defeated by "+ChatColor.GREEN+"%s",new Object[]{

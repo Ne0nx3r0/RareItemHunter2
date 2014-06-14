@@ -63,11 +63,7 @@ public class BossListener implements Listener {
     public void onBossDeath(EntityDeathEvent e)
     {
         if(bossManager.isBoss(e.getEntity()))
-        {       
-            Boss boss = this.bossManager.getBoss(e.getEntity());
-            
-            e.getEntity().setCustomName(boss.getTemplate().getName());
-            
+        {                   
             e.setDroppedExp(0);
             e.getEntity().getEquipment().clear();
         }
