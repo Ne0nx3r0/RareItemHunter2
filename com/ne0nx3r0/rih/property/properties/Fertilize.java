@@ -16,7 +16,7 @@ public class Fertilize extends RareItemProperty
     @Override
     public boolean onInteract(PlayerInteractEvent e,int level)
     {
-        if(e.getClickedBlock() != null && e.getClickedBlock().getType() == Material.DIRT)
+        if(e.hasBlock() && e.getClickedBlock().getType() == Material.DIRT)
         {
             e.getClickedBlock().setType(Material.GRASS);
 

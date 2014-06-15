@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -85,7 +86,7 @@ public class RecipeManager {
     }
 
     private final String PROPERTY_HEADER = ChatColor.DARK_PURPLE+"Rare Item";
-    private final String PROPERTY_HEADER_VINTAGE = ChatColor.BLUE+"Vintage Rare Item";
+    private final String PROPERTY_HEADER_VINTAGE = ChatColor.LIGHT_PURPLE+"Vintage Rare Item";
     private final String PROPERTY_LINE_PREFIX = ChatColor.DARK_GRAY+"Property: "+ChatColor.GREEN;
     private final String PROPERTY_LINE = PROPERTY_LINE_PREFIX+"%s "+ChatColor.GREEN+"%s "+ChatColor.BLACK+"%s";
     
@@ -383,7 +384,6 @@ public class RecipeManager {
                     if(sLore.startsWith(PROPERTY_LINE_PREFIX)){
                         String sPID = sLore.substring(sLore.lastIndexOf(ChatColor.COLOR_CHAR)+2);
                         int itemPropertyLevel = 1;
-                        
                         try{
                             itemPropertyLevel = RomanNumeral.valueOf(sLore.substring(
                                     sLore.lastIndexOf(ChatColor.GREEN.toString())+2,
@@ -413,14 +413,12 @@ public class RecipeManager {
                             }
                             
                             int newLevel = currentLevel + itemPropertyLevel;
-
-                            if(currentLevel < rip.getMaxLevel() && propertyLevels.size() < this.MAX_PROPERTIES_PER_ITEM){
-                                propertyLevels.put(rip,newLevel);
-                            }
+                            
+                            propertyLevels.put(rip,newLevel);
                         }
                     }
                 }
-
+                
                 return propertyLevels;
             }
         }
@@ -431,15 +429,13 @@ public class RecipeManager {
     public void addPropertyTo(ItemStack is, RareItemProperty rip, int level, boolean vintage) {
         ItemMeta meta = is.getItemMeta();
         
-        List<String> lore;
+        List<String> lore = new ArrayList<>();
         Map<RareItemProperty, Integer> propertyLevels;
         
         if(meta.hasLore()){
-            lore = meta.getLore();
             propertyLevels = this.getProperties(is);
         }
         else {
-            lore = new ArrayList<>();
             propertyLevels = new HashMap<>();
         }
         

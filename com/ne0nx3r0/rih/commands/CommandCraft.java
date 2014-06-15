@@ -2,6 +2,7 @@ package com.ne0nx3r0.rih.commands;
 
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.property.RareItemProperty;
+import com.ne0nx3r0.util.RomanNumeral;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -66,12 +67,12 @@ class CommandCraft extends RareItemHunterCommand{
         if(args[1].equalsIgnoreCase("vintage")){
             vintage = true;
             
-            for(int i=2;i<args.length;i++){
+            for(int i=2;i<args.length-1;i++){
                 propertyName += " "+args[i];
             }
         }
         else {
-            for(int i=1;i<args.length;i++){
+            for(int i=1;i<args.length-1;i++){
                 propertyName += " "+args[i];
             }
         }
@@ -92,6 +93,8 @@ class CommandCraft extends RareItemHunterCommand{
         }
         
         this.plugin.getRecipeManager().addPropertyTo(is,rip,level,vintage);
+        
+        this.send(cs, "Added "+rip.getName()+" "+RomanNumeral.convertToRoman(level)+" to your item!");
         
         return true;
     }

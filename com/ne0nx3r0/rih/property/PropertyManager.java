@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import net.milkbowl.vault.economy.Economy;
 import net.minecraft.server.v1_7_R3.Material;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -124,7 +125,7 @@ public class PropertyManager {
     public void onUse(PlayerInteractEvent e) {
         if(e.hasItem()){
             Map<RareItemProperty, Integer> propertyLevels = this.recipeManager.getProperties(e.getItem());
-
+            
             if(propertyLevels != null && !propertyLevels.isEmpty()){
                 for(Entry<RareItemProperty,Integer> propertyLevel : propertyLevels.entrySet()){
                     RareItemProperty rip = propertyLevel.getKey();
@@ -133,6 +134,39 @@ public class PropertyManager {
                         if(rip.onInteract(e, propertyLevel.getValue())){
                             this.used(e.getPlayer(),rip);
                         }
+                    }
+                    else {
+                        String thingNeeded = "";
+                        
+                        switch(rip.getCostType()){
+                            case FOOD:
+                                thingNeeded = rip.getCost()+" food";
+                                break;
+                            case LEVEL: 
+                                thingNeeded = rip.getCost()+" levels";
+                                break;
+                            case HEALTH: 
+                                thingNeeded = rip.getCost()+" health";
+                                break;
+                            case MONEY: 
+                                thingNeeded = this.economy.format(rip.getCost());
+                                break;
+                            case COOLDOWN: 
+                                int seconds = (int) ((this.cooldowns.get(e.getPlayer().getUniqueId()).get(rip) - System.currentTimeMillis()) / 1000);
+                                
+                                if(seconds < 1){
+                                    seconds = 1;
+                                }
+                                
+                                thingNeeded = "to wait "+seconds+" seconds";
+                                break;
+                            case AUTOMATIC: 
+                                return;
+                            case PASSIVE: 
+                                return;
+                        }
+                        
+                        e.getPlayer().sendMessage(ChatColor.RED+"You need "+thingNeeded+" to use "+rip.getName()+"!");
                     }
                 }
             }
@@ -183,10 +217,16 @@ public class PropertyManager {
                 Map<RareItemProperty, Long> playerCooldowns = this.cooldowns.get(player.getUniqueId());
                 
                 if(playerCooldowns != null){
-                    return playerCooldowns.containsKey(rip);
+                    Long cooldown = playerCooldowns.get(rip);
+                    
+                    if(cooldown != null){
+                        return cooldown < System.currentTimeMillis();
+                    }
+                    
+                    return true;
                 }
                 
-                return false;
+                return true;
             case HEALTH:
                 return player.getHealth() > rip.getCost();
                 
@@ -201,18 +241,23 @@ public class PropertyManager {
         switch(rip.getCostType()){
             case LEVEL:
                 player.setLevel((int) (player.getLevel()-rip.getCost()));
+                break;
                 
             case FOOD:
                 player.setFoodLevel((int) (player.getFoodLevel()-rip.getCost()));
+                break;
                 
             case COOLDOWN:
                 this.setCooldown(player, rip);
+                break;
                 
             case HEALTH:
                 player.setHealth(player.getHealth() - rip.getCost());
+                break;
                 
             case MONEY:
                 economy.withdrawPlayer(player.getName(), rip.getCost());
+                break;
         }
     }
     

@@ -32,6 +32,7 @@ class PropertiesYmlLoader {
         this.addPropertyToAllProperties(new PaintWool());
         this.addPropertyToAllProperties(new Pull());
         this.addPropertyToAllProperties(new Regeneration());
+        this.addPropertyToAllProperties(new RepairItem());
         this.addPropertyToAllProperties(new Smelt());
         this.addPropertyToAllProperties(new Spore());
         this.addPropertyToAllProperties(new Strength());

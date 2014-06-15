@@ -100,7 +100,7 @@ Cucco:
     hp: 2000
     speed: 3.5
     type: irongolem
-    attackPower: 20
+    attackPower: 14
     difficulty: 5
     onHit:
       - 40% chance Jump Attack level 5

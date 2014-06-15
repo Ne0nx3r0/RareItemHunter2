@@ -226,6 +226,10 @@ public class BossListener implements Listener {
             }
 
             this.bossManager.removeBoss(boss);
+            
+            eBoss.damage(eBoss.getHealth()+100);
+
+            return;
         }
 
         // attempt to use a random onhit skill
