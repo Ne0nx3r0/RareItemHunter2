@@ -2,25 +2,25 @@ package com.ne0nx3r0.rih.boss;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class Boss {
-    private final UUID entityUUID;
+    private LivingEntity livingEntity;
     private final BossTemplate template;
     private int currentHealth;
     private int kills = 0;
     private final Map<String,Integer> playerDamage;
 
-    Boss(UUID entityID, BossTemplate template) {
-        this.entityUUID = entityID;
+    Boss(LivingEntity entity, BossTemplate template) {
+        this.livingEntity = entity;
         this.template = template;
         this.currentHealth = template.getMaxHealth();
         this.playerDamage = new HashMap<>();
     }
 
-    Boss(UUID uuid, BossTemplate template, int currentHealth, int kills, Map<String, Integer> playerDamage) {
-        this.entityUUID = uuid;
+    Boss(LivingEntity entity, BossTemplate template, int currentHealth, int kills, Map<String, Integer> playerDamage) {
+        this.livingEntity = entity;
         this.template = template;
         this.currentHealth = currentHealth;
         this.kills = kills;
@@ -31,8 +31,12 @@ public class Boss {
         return this.template;
     }
     
-    public UUID getUniqueID(){
-        return this.entityUUID;
+    public LivingEntity getEntity(){
+        return this.livingEntity;
+    }
+    
+    public void setEntity(LivingEntity livingEntity){
+        this.livingEntity = livingEntity;
     }
     
     public int getHealth(){

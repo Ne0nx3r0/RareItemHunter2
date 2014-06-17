@@ -46,6 +46,13 @@ public class PlayerListener implements Listener {
             }
         }
     }
+    /*
+    @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerDamaged(EntityDamageEvent e){
+        if(this.propertymanager.hasPropertyActive("Hardy")){
+            e.setDamage(e.getDamage()-);
+        }
+    }*/
     
     @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDeathByBoss(PlayerDeathEvent e){
@@ -119,7 +126,7 @@ public class PlayerListener implements Listener {
     }
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlayerInteractWithRareItem(PlayerInteractEntityEvent e){
+    public void onPlayerInteractWithEntity(PlayerInteractEntityEvent e){
         this.propertymanager.onUseEntity(e);
     }
     

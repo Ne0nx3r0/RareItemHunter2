@@ -185,10 +185,17 @@ public class BossTemplateLoader {
                 
                 bt.addOnHitSkill(bst, level, chance);
             }
+        
+            for(String sTimer : bossSection.getStringList("onHeartbeatSkills")){
+                // every 5 seconds Disorient level 3
+                
+                String sSeconds = sTimer.substring(sTimer.indexOf("every ")+6, sTimer.indexOf(" seconds"));
+                String sSkillName = sTimer.substring(sTimer.indexOf("seconds ")+8, sTimer.indexOf(" level"));
+                String sLevel = sTimer.substring(sTimer.lastIndexOf(" ")+1);
+                
+                
+            }
         }
-        
-        
-        
         return bossTemplates;
     }
     

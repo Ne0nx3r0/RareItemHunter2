@@ -6,14 +6,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.logging.Level;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.LivingEntity;
 
 public class BossPersistence {
     private final RareItemHunterPlugin plugin;
@@ -47,8 +51,6 @@ public class BossPersistence {
                     continue;
                 }
                 
-                System.out.println(eggSave.get("autospawn").toString());
-                
                 boolean autoSpawn = eggSave.get("autospawn").toString().equals("true");
                 
                 int x = Integer.parseInt(eggSave.get("x").toString());
@@ -64,6 +66,8 @@ public class BossPersistence {
         }
         
         if(config.isSet("bosses")){
+            Map<UUID,Boss> tempActiveBosses = new HashMap<>();
+            
             ConfigurationSection configBosses = config.getConfigurationSection("bosses");
             
             for(String sUuid : configBosses.getKeys(false)){
@@ -89,14 +93,44 @@ public class BossPersistence {
                     playerDamage.put(pd.getKey(), Integer.parseInt(pd.getValue().toString()));
                 }
 
-                this.activeBosses.add(new Boss(
-                        UUID.fromString(sUuid),
+                tempActiveBosses.put(UUID.fromString(sUuid),
+                    new Boss(
+                        null,// Don't like this? It doesn't like you either.
                         template,
                         currentHealth,
                         kills,
                         playerDamage
-                ));
+                    )
+                );
             }
+            
+            // set the entities for each boss
+            for(World world : Bukkit.getServer().getWorlds()){
+                for(LivingEntity lent : world.getLivingEntities()){
+                    Iterator<Entry<UUID, Boss>> iterator = tempActiveBosses.entrySet().iterator();
+                    
+                    while(iterator.hasNext()){
+                        Entry<UUID, Boss> entry = iterator.next();
+                        
+                        if(lent.getUniqueId().equals(entry.getKey())){
+                            entry.getValue().setEntity(lent);
+                        }
+                    }
+                }
+            }
+            
+            // remove any bosses who don't appear to have an entity anymore (dead?)
+            Iterator<Entry<UUID, Boss>> iterator = tempActiveBosses.entrySet().iterator();
+
+            while(iterator.hasNext()){
+                Entry<UUID, Boss> entry = iterator.next();
+
+                if(entry.getValue().getEntity() == null){
+                    iterator.remove();
+                }
+            }
+            
+            this.activeBosses.addAll(tempActiveBosses.values());
         }
     }
 
@@ -135,7 +169,7 @@ public class BossPersistence {
                 ymlConfig.set("eggs", eggs);
                 
                 for(Boss boss : plugin.getBossManager().getAllActiveBosses()){
-                    String sUuid = boss.getUniqueID().toString();
+                    String sUuid = boss.getEntity().toString();
                     
                     ymlConfig.set(sUuid+".template", boss.getTemplate().getName());
                     ymlConfig.set(sUuid+".currentHealth", boss.getHealth());

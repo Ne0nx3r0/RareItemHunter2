@@ -41,9 +41,12 @@ public class BossManager {
             
         this.activeBosses = bp.getActiveBosses();
         
-        bp.startSaving(20*30);
+        bp.startSaving(20*60*10);
         
+        // Todo: This am not conventional
         BossGarbageCollection bossGC = new BossGarbageCollection(plugin,this,20*60*30);
+        
+        
     }
     
     public BossTemplate getBossTemplate(String bossName){
@@ -97,7 +100,7 @@ public class BossManager {
             lequips.setItemInHandDropChance(0f);
         }
         
-        Boss boss = new Boss(lent.getUniqueId(),template);
+        Boss boss = new Boss(lent,template);
         
         this.activeBosses.add(boss);
         
@@ -152,7 +155,7 @@ public class BossManager {
         UUID uuid = entity.getUniqueId();
         
         for(Boss boss : this.activeBosses){
-            if(boss.getUniqueID().equals(uuid)){
+            if(boss.getEntity().equals(uuid)){
                 return true;
             }
         }
@@ -164,7 +167,7 @@ public class BossManager {
         UUID uuid = entity.getUniqueId();
         
         for(Boss boss : this.activeBosses){
-            if(boss.getUniqueID().equals(uuid)){
+            if(boss.getEntity().equals(uuid)){
                 return boss;
             }
         }

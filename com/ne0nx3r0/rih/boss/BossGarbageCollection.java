@@ -23,12 +23,12 @@ class BossGarbageCollection {
                     Map<UUID,Boss> bossesFound = new HashMap<>();
                     
                     for(Boss boss : bm.getAllActiveBosses()){
-                        bossesFound.put(boss.getUniqueID(), boss);
+                        bossesFound.put(boss.getEntity().getUniqueId(), boss);
                     }
                     
                     // Yikes. 
                     // I just don't know how else to detect 
-                    // all possible ways to remove an entity
+                    // all possible ways someone might have removed an entity
                     //
                     // Note: some bosses can teleport to new worlds
                     for(World world : plugin.getServer().getWorlds()){
