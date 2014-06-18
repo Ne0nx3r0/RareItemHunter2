@@ -9,6 +9,9 @@ import com.ne0nx3r0.rih.boss.BossTemplate;
 import com.ne0nx3r0.rih.boss.skills.BossSkillInstance;
 import com.ne0nx3r0.rih.boss.skills.BossSkillTemplate;
 import com.ne0nx3r0.util.FireworkVisualEffect;
+import com.ne0nx3r0.util.RandomCollection;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -29,12 +32,16 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import static org.bukkit.event.entity.EntityDamageEvent.DamageCause.*;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class BossListener implements Listener {
     private final BossManager bossManager;
     private final Essentials essentials;
+    private RareItemHunterPlugin plugin;
 
     public BossListener(RareItemHunterPlugin plugin) {
+        this.plugin = plugin;
+        
         this.bossManager = plugin.getBossManager();
         
         this.essentials = plugin.getEssentials();
@@ -102,7 +109,7 @@ public class BossListener implements Listener {
             }
         }
 
-        this.bossDamaged((LivingEntity) e.getEntity(),boss, null, e.getDamage());
+        this.handleBossDamage((LivingEntity) e.getEntity(),boss, null, e.getDamage());
 
         e.setDamage(1d);
 
@@ -141,7 +148,7 @@ public class BossListener implements Listener {
             }
         }
         
-        this.bossDamaged((LivingEntity) e.getEntity(),boss, pAttacker, e.getDamage());
+        this.handleBossDamage((LivingEntity) e.getEntity(),boss, pAttacker, e.getDamage());
         
         e.setDamage(1d);
         
@@ -150,7 +157,7 @@ public class BossListener implements Listener {
         lent.setHealth(lent.getMaxHealth());
     }
     
-    public void bossDamaged(LivingEntity eBoss,Boss boss,Player attacker,double damageAmount){
+    public void handleBossDamage(LivingEntity eBoss,Boss boss,Player attacker,double damageAmount){
         
         if(attacker != null){
             boss.addPlayerDamage(attacker, (int) damageAmount);
@@ -228,7 +235,45 @@ public class BossListener implements Listener {
             this.bossManager.removeBoss(boss);
             
             eBoss.damage(eBoss.getHealth()+100);
+            
+// Prepare a list of players close enough to get an essence
+            RandomCollection<Player> randomPlayer = new RandomCollection();
+            int maxDistanceFromBossToGetReward = 50^2;
+            Location lBoss = eBoss.getLocation();
+            
+            Iterator<Map.Entry<String, Integer>> iter = boss.getPlayersDamageDone().entrySet().iterator();
+            
+            while(iter.hasNext()){
+                Map.Entry<String, Integer> entry = iter.next();
+                
+                Player p = plugin.getServer().getPlayer(entry.getKey());
+                
+                if(p != null){
+                    if(p.getLocation().getWorld().equals(lBoss.getWorld())
+                    && lBoss.distanceSquared(p.getLocation()) < maxDistanceFromBossToGetReward){
+                        randomPlayer.add(entry.getValue(), p);
+                    }
+                }
+            }
+            
+            Player pLucky = randomPlayer.next();
+            
+            ItemStack essence = this.plugin.getRecipeManager().generateRareEssence();
+            
+            if(!pLucky.getInventory().addItem(essence).isEmpty()) {
+                pLucky.getWorld().dropItemNaturally(pLucky.getLocation(), essence);
+            }
+            
+            plugin.getServer().broadcastMessage(ChatColor.DARK_GREEN+boss.getTemplate().getName()+ChatColor.RESET+"'s essence captured by "+pLucky.getDisplayName()+ChatColor.RESET+"!");
+            
+            StringBuilder playerDamages = new StringBuilder();
+            
+            for(Map.Entry<String, Integer> entry : boss.getPlayersDamageDone().entrySet()){
+                playerDamages.append(", ").append(entry.getKey()).append("(").append(entry.getValue()).append(")");
+            }
 
+            plugin.getServer().broadcastMessage("Player damage to boss: "+playerDamages.substring(2));
+            
             return;
         }
 
