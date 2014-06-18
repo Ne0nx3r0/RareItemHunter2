@@ -8,6 +8,13 @@ public class Strength extends RareItemProperty
 {
     public Strength()
     {
-        super(PropertyType.STRENGTH.ordinal(),"Strength","+1 damage/lvl",PropertyCostType.PASSIVE,0,3);
+        super(
+            PropertyType.STRENGTH.ordinal(),
+            "Strength",
+            "+1 damage/lvl",
+            PropertyCostType.PASSIVE,
+            0,
+            3
+        );
     }
 }

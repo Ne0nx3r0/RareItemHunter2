@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import net.milkbowl.vault.economy.Economy;
 import net.minecraft.server.v1_7_R3.Material;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -41,6 +42,8 @@ public class PropertyManager {
         this.cooldowns = new HashMap<>();
         
         plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable(){
+            private int runCount = 1;
+            
             @Override
             public void run() {
                 long currentTime = System.currentTimeMillis();
@@ -62,6 +65,29 @@ public class PropertyManager {
                     
                     if(playerCooldowns.isEmpty()){
                         allPlayersIter.remove();
+                    }
+                }
+                
+                runCount++;
+                
+                if(runCount > 100){
+                    runCount = 1;
+                }
+                
+                for(Entry<UUID, Map<RareItemProperty, Integer>> playerActiveEffects : activeEffects.entrySet()){
+                    for(Entry<RareItemProperty, Integer> activeEffect : playerActiveEffects.getValue().entrySet()){
+                        if(activeEffect.getKey().getCostType().equals(PropertyCostType.AUTOMATIC) 
+                        && activeEffect.getKey() instanceof ItemPropertyRepeatingEffect){
+                            Player p = Bukkit.getServer().getPlayer(playerActiveEffects.getKey());
+                            
+                            if(p != null){
+                                ItemPropertyRepeatingEffect ripre = (ItemPropertyRepeatingEffect) activeEffect.getKey();
+                                
+                                if(runCount % ripre.getCost() == 0){
+                                    ripre.applyEffectToPlayer(p,activeEffect.getValue());
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -92,6 +118,17 @@ public class PropertyManager {
         Player p = (Player) e.getWhoClicked();
         
         Map<RareItemProperty, Integer> itemProperties = this.recipeManager.getProperties(e.getCursor());
+// remove any properties that are not automatic/passive
+        Iterator<Entry<RareItemProperty, Integer>> iter = itemProperties.entrySet().iterator();
+        
+        while(iter.hasNext()){
+            Entry<RareItemProperty, Integer> next = iter.next();
+            PropertyCostType costType = next.getKey().getCostType();
+            
+            if(costType == PropertyCostType.PASSIVE || costType == PropertyCostType.AUTOMATIC){
+                iter.remove();
+            }
+        }
         
         if(itemProperties != null && !itemProperties.isEmpty()){
             Map<RareItemProperty,Integer> activeProperties = this.activeEffects.get(p.getUniqueId());
