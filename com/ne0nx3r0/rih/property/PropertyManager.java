@@ -322,4 +322,8 @@ public class PropertyManager {
 
         playerCooldowns.put(rip,System.currentTimeMillis() + (long) (rip.getCost() * 1000));
     }
+
+    public Iterable<RareItemProperty> getAllProperties() {
+        return this.properties;
+    }
 }

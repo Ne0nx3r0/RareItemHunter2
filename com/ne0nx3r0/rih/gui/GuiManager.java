@@ -492,6 +492,7 @@ public class GuiManager {
                 case 28:// crafting area
                 case 29:// crafting area
                 case 30:// crafting area
+                    break;
                 case 25:// result slot
                     ItemStack is = new ItemStack(Material.MAGMA_CREAM);
                     
@@ -533,7 +534,12 @@ public class GuiManager {
                     
                     meta.setDisplayName(ChatColor.GREEN+rip.getName());
                     
-                    lore.add(rip.getDescription());
+                    String[] lines = org.apache.commons.lang.WordUtils.wrap(rip.getDescription(), 30, "#!#", true).split("#!#");
+                    
+                    for(String line : lines){
+                        lore.add(line);
+                    }
+                    
                     lore.add(ChatColor.GRAY+"Max Level: "+ChatColor.GREEN+rip.getMaxLevel());
                     lore.add(ChatColor.GRAY+"Cost: "+ChatColor.GREEN+thingNeeded);
                     
@@ -549,13 +555,12 @@ public class GuiManager {
         
         List<String> recipe = rip.getRecipe();
         
-        if(recipe == null){
-            return null;
+        if(recipe != null){
+            for(int i=0;i<recipe.size();i++){
+                inv.setItem(ITEM_CRAFTING_SLOTS[i], ItemStackConvertorRI2.fromString(recipe.get(i)));
+            }
         }
         
-        for(int i=0;i<recipe.size();i++){
-            inv.setItem(ITEM_CRAFTING_SLOTS[i], ItemStackConvertorRI2.fromString(recipe.get(i)));
-        }
         
         return inv;
     }

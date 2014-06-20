@@ -27,6 +27,7 @@ public class RareItemHunterCommandExecutor implements CommandExecutor {
         this.registerCommand(new CommandDelSP(plugin));
         
         this.registerCommand(new CommandWhatIs(plugin));
+        this.registerCommand(new CommandConvert(plugin));
     }
     
     @Override

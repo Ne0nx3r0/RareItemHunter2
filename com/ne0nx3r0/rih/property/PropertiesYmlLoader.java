@@ -108,8 +108,6 @@ class PropertiesYmlLoader {
                     rip.setCost(cost);
 
                     availableProperties.add(rip);
-                    
-                    availableProperties.add(rip);
                 }
                 else {
                     plugin.getLogger().log(Level.WARNING, "Skipping property: {0} (disabled)", new Object[]{rip.getName()});

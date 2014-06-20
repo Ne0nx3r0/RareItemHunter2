@@ -2,6 +2,7 @@ package com.ne0nx3r0.rih.commands;
 
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.property.RareItemProperty;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -29,7 +30,22 @@ class CommandWhatIs extends RareItemHunterCommand{
         }
 
         if(args.length < 2){
-            this.send(cs, this.getUsage());
+            StringBuilder properties = new StringBuilder();
+            
+            for(RareItemProperty rip : this.plugin.getPropertymanager().getAllProperties()){
+                properties.append(ChatColor.GRAY).append(", ").append(ChatColor.WHITE).append(rip.getName());
+            }
+            
+            if(properties.length() == 0){
+                this.sendError(cs, "No available properties!");
+                
+                return true;
+            }
+            
+            this.send(
+                cs, 
+                ChatColor.GRAY+"Available properties: "+properties.substring(4)
+            );
             
             return true;
         }
@@ -51,12 +67,6 @@ class CommandWhatIs extends RareItemHunterCommand{
         }
 
         Player p = (Player) cs;
-        
-        if(rip.getRecipe() == null){
-            this.sendError(cs,"No recipe exists for "+rip.getName());
-            
-            return true;
-        }
         
         Inventory invEditor = this.plugin.getGuiManager().createPropertyViewer(p, rip);
         
