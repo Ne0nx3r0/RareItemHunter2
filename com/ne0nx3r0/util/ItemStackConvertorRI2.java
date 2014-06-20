@@ -18,7 +18,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 public class ItemStackConvertorRI2 {
-    public static String fromItemStack(ItemStack is,boolean includeName) {
+    public static String fromItemStack(ItemStack is,boolean includeName) {        
         StringBuilder f = new StringBuilder();
         f.append("type=").append(is.getType()).append(";");
         if (is.getDurability() != 0)

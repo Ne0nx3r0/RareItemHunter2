@@ -30,7 +30,7 @@ public class RecipeManager {
     private final RareItemHunterPlugin plugin;
     private final Map<Integer,RareItemProperty> essenceRecipes;
     private final int MAX_PROPERTIES_PER_ITEM = 8;
-    private ItemStack compass;
+    private final ItemStack compass;
 
     public RecipeManager(RareItemHunterPlugin plugin) {
         this.plugin = plugin;
@@ -304,17 +304,23 @@ public class RecipeManager {
     
     public boolean updateRecipe(RareItemProperty rip, ItemStack[] contents) {
         String[] recipe = new String[9];
+        List<String> recipeList = new ArrayList<>();
         String sRecipe = "";
         
         for(int i=0;i<9;i++){
             if(i > contents.length || contents[i] == null){
-                recipe[i] = ItemStackConvertorRI2.fromItemStack(new ItemStack(Material.AIR), false);
+                recipe[i] = ItemStackConvertorRI2.fromItemStack(new ItemStack(Material.AIR), true);
             }
             else{
-                recipe[i] = ItemStackConvertorRI2.fromItemStack(contents[i], false);
+                recipe[i] = ItemStackConvertorRI2.fromItemStack(contents[i], true);
             }
+            
             sRecipe += recipe[i];
+            
+            recipeList.add(recipe[i]);
         }
+        
+        rip.setRecipe(recipeList);
 
         File propertiesFile = new File(plugin.getDataFolder(),"properties.yml");
 

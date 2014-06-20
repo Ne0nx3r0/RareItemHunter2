@@ -459,7 +459,7 @@ public class GuiManager {
         }   
     }
 
-    private final String WHAT_IS_TITLE = ChatColor.DARK_GRAY+"Legendary Shrine";
+    private final String WHAT_IS_TITLE = ChatColor.DARK_GRAY+"Property Viewer";
     
     public Inventory createPropertyViewer(Player p, RareItemProperty rip) {
         Inventory inv = Bukkit.getServer().createInventory(p, INVENTORY_SIZE, WHAT_IS_TITLE);
@@ -481,7 +481,7 @@ public class GuiManager {
                     inv.setItem(i, this.getBlank(Material.EMERALD_BLOCK));
                     break;
                 case 38://bottom symbol
-                    inv.setItem(i, this.getBlank(Material.DIAMOND));
+                    inv.setItem(i, this.getBlank(Material.GOLD_BLOCK));
                     break;
                 case 10:// crafting area
                 case 11:// crafting area
@@ -496,12 +496,6 @@ public class GuiManager {
                     ItemStack is = new ItemStack(Material.MAGMA_CREAM);
                     
                     ItemMeta meta = is.getItemMeta();
-                    
-                    List<String> lore = new ArrayList<>();
-                    
-                    lore.add(ChatColor.GREEN+rip.getName());
-                    lore.add(ChatColor.GRAY+rip.getDescription());
-                    lore.add(ChatColor.GRAY+"Max Level: "+rip.getMaxLevel());
                     
                     String thingNeeded = "";
 
@@ -525,7 +519,7 @@ public class GuiManager {
                                 seconds = 1;
                             }
 
-                            thingNeeded = "to wait "+seconds+" seconds";
+                            thingNeeded = seconds+" second cooldown";
                             break;
                         case AUTOMATIC: 
                             thingNeeded = "Automatic every "+rip.getCost()+" seconds";
@@ -535,7 +529,13 @@ public class GuiManager {
                             break;
                     }
                     
-                    lore.add(ChatColor.GRAY+"Cost: "+thingNeeded);
+                    List<String> lore = new ArrayList<>();
+                    
+                    meta.setDisplayName(ChatColor.GREEN+rip.getName());
+                    
+                    lore.add(rip.getDescription());
+                    lore.add(ChatColor.GRAY+"Max Level: "+ChatColor.GREEN+rip.getMaxLevel());
+                    lore.add(ChatColor.GRAY+"Cost: "+ChatColor.GREEN+thingNeeded);
                     
                     meta.setLore(lore);
                     
