@@ -15,7 +15,7 @@ public class Regeneration extends ItemPropertyRepeatingEffect
             "Regeneration",
             "Regenerate 1 HP / lvl every 5 seconds",
             PropertyCostType.AUTOMATIC,
-            0,
+            5,
             5
         );
     }

@@ -103,6 +103,10 @@ public class PlayerListener implements Listener {
         else if(this.guiManager.isLegendaryShrineScreen(e.getInventory())){
             this.guiManager.legendaryShrineAction(e);
         }
+        else if(this.guiManager.isPropertyViewer(e.getInventory())){
+            // read only
+            e.setCancelled(true);
+        }
     }
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)

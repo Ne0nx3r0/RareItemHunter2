@@ -85,8 +85,10 @@ public class GuiManager {
         
         List<String> recipe = rip.getRecipe();
         
-        for(int i=0;i<recipe.size();i++){
-            inv.setItem(ITEM_CRAFTING_SLOTS[i], ItemStackConvertorRI2.fromString(recipe.get(i)));
+        if(recipe != null){
+            for(int i=0;i<recipe.size();i++){
+                inv.setItem(ITEM_CRAFTING_SLOTS[i], ItemStackConvertorRI2.fromString(recipe.get(i)));
+            }
         }
         
         return inv;
@@ -455,5 +457,110 @@ public class GuiManager {
                 e.getPlayer().getWorld().dropItemNaturally(e.getPlayer().getLocation(), is);
             }
         }   
+    }
+
+    private final String WHAT_IS_TITLE = ChatColor.DARK_GRAY+"Legendary Shrine";
+    
+    public Inventory createPropertyViewer(Player p, RareItemProperty rip) {
+        Inventory inv = Bukkit.getServer().createInventory(p, INVENTORY_SIZE, WHAT_IS_TITLE);
+        
+        ItemStack isBG = this.getBlank(Material.NETHER_BRICK);
+        
+        for(int i=0;i<INVENTORY_SIZE;i++){
+            switch(i){
+                default://background
+                    inv.setItem(i, isBG);
+                    break;
+                case 2://top symbol
+                    inv.setItem(i, this.getBlank(Material.DIAMOND_BLOCK));
+                    break;
+                case 18://left symbol
+                    inv.setItem(i, this.getBlank(Material.IRON_BLOCK));
+                    break;
+                case 22://right symbol
+                    inv.setItem(i, this.getBlank(Material.EMERALD_BLOCK));
+                    break;
+                case 38://bottom symbol
+                    inv.setItem(i, this.getBlank(Material.DIAMOND));
+                    break;
+                case 10:// crafting area
+                case 11:// crafting area
+                case 12:// crafting area
+                case 19:// crafting area
+                case 20:// crafting area center
+                case 21:// crafting area
+                case 28:// crafting area
+                case 29:// crafting area
+                case 30:// crafting area
+                case 25:// result slot
+                    ItemStack is = new ItemStack(Material.MAGMA_CREAM);
+                    
+                    ItemMeta meta = is.getItemMeta();
+                    
+                    List<String> lore = new ArrayList<>();
+                    
+                    lore.add(ChatColor.GREEN+rip.getName());
+                    lore.add(ChatColor.GRAY+rip.getDescription());
+                    lore.add(ChatColor.GRAY+"Max Level: "+rip.getMaxLevel());
+                    
+                    String thingNeeded = "";
+
+                    switch(rip.getCostType()){
+                        case FOOD:
+                            thingNeeded = rip.getCost()+" food per use";
+                            break;
+                        case LEVEL: 
+                            thingNeeded = rip.getCost()+" level"+(rip.getCost()>1?"s":"")+" per use";
+                            break;
+                        case HEALTH: 
+                            thingNeeded = rip.getCost()+" health per use";
+                            break;
+                        case MONEY: 
+                            thingNeeded = this.plugin.getEconomy().format(rip.getCost())+" per use";
+                            break;
+                        case COOLDOWN: 
+                            double seconds = rip.getCost();
+
+                            if(seconds < 1){
+                                seconds = 1;
+                            }
+
+                            thingNeeded = "to wait "+seconds+" seconds";
+                            break;
+                        case AUTOMATIC: 
+                            thingNeeded = "Automatic every "+rip.getCost()+" seconds";
+                            break;
+                        case PASSIVE: 
+                            thingNeeded = "None / Passive";
+                            break;
+                    }
+                    
+                    lore.add(ChatColor.GRAY+"Cost: "+thingNeeded);
+                    
+                    meta.setLore(lore);
+                    
+                    is.setItemMeta(meta);
+                    
+                    inv.setItem(i, is);
+                    
+                    break;
+            }
+        }
+        
+        List<String> recipe = rip.getRecipe();
+        
+        if(recipe == null){
+            return null;
+        }
+        
+        for(int i=0;i<recipe.size();i++){
+            inv.setItem(ITEM_CRAFTING_SLOTS[i], ItemStackConvertorRI2.fromString(recipe.get(i)));
+        }
+        
+        return inv;
+    }
+
+    public boolean isPropertyViewer(Inventory inventory) {
+        return inventory.getTitle().equals(this.WHAT_IS_TITLE);
     }
 }

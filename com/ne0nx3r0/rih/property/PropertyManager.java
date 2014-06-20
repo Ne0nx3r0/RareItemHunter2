@@ -82,8 +82,8 @@ public class PropertyManager {
                             
                             if(p != null){
                                 ItemPropertyRepeatingEffect ripre = (ItemPropertyRepeatingEffect) activeEffect.getKey();
-                                
-                                if(runCount % ripre.getCost() == 0){
+
+                                if(runCount % (int) ripre.getCost() == 0){
                                     ripre.applyEffectToPlayer(p,activeEffect.getValue());
                                 }
                             }
@@ -118,6 +118,11 @@ public class PropertyManager {
         Player p = (Player) e.getWhoClicked();
         
         Map<RareItemProperty, Integer> itemProperties = this.recipeManager.getProperties(e.getCursor());
+        
+        if(itemProperties == null){
+            return;
+        }
+        
 // remove any properties that are not automatic/passive
         Iterator<Entry<RareItemProperty, Integer>> iter = itemProperties.entrySet().iterator();
         
@@ -125,21 +130,23 @@ public class PropertyManager {
             Entry<RareItemProperty, Integer> next = iter.next();
             PropertyCostType costType = next.getKey().getCostType();
             
-            if(costType == PropertyCostType.PASSIVE || costType == PropertyCostType.AUTOMATIC){
+            if(costType != PropertyCostType.PASSIVE && costType != PropertyCostType.AUTOMATIC){
                 iter.remove();
             }
         }
         
-        if(itemProperties != null && !itemProperties.isEmpty()){
+        if(!itemProperties.isEmpty()){
             Map<RareItemProperty,Integer> activeProperties = this.activeEffects.get(p.getUniqueId());
 
+            System.out.println();
+            
             if(activeProperties == null){
                 activeProperties = new HashMap<>();
                 
                 this.activeEffects.put(p.getUniqueId(), activeProperties);
             }
             
-            activeProperties.putAll(activeProperties);
+            activeProperties.putAll(itemProperties);
         }
     }
 
@@ -153,7 +160,13 @@ public class PropertyManager {
 
             if(activeProperties != null){
                 for(RareItemProperty rip : activeProperties.keySet()){
-                    activeProperties.remove(rip);
+                    if(rip.getCostType() == PropertyCostType.AUTOMATIC || rip.getCostType() == PropertyCostType.PASSIVE){
+                        activeProperties.remove(rip);
+                    }
+                }
+                
+                if(activeProperties.isEmpty()){
+                    this.activeEffects.remove(p.getUniqueId());
                 }
             }
         }
@@ -180,7 +193,7 @@ public class PropertyManager {
                                 thingNeeded = rip.getCost()+" food";
                                 break;
                             case LEVEL: 
-                                thingNeeded = rip.getCost()+" levels";
+                                thingNeeded = rip.getCost()+" level"+(rip.getCost()>1?"s":"");
                                 break;
                             case HEALTH: 
                                 thingNeeded = rip.getCost()+" health";
@@ -245,10 +258,10 @@ public class PropertyManager {
     private boolean hasCost(Player player, RareItemProperty rip) {
         switch(rip.getCostType()){
             case LEVEL:
-                return player.getLevel() < rip.getCost();
+                return player.getLevel() >= rip.getCost();
                 
             case FOOD:
-                return player.getFoodLevel() < rip.getCost();
+                return player.getFoodLevel() >= rip.getCost();
                 
             case COOLDOWN:
                 Map<RareItemProperty, Long> playerCooldowns = this.cooldowns.get(player.getUniqueId());
@@ -265,7 +278,7 @@ public class PropertyManager {
                 
                 return true;
             case HEALTH:
-                return player.getHealth() > rip.getCost();
+                return player.getHealth() >= rip.getCost();
                 
             case MONEY:
                 return economy.has(player.getName(), rip.getCost());

@@ -28,6 +28,7 @@ class PropertiesYmlLoader {
         this.addPropertyToAllProperties(new FireHandling());
         this.addPropertyToAllProperties(new HalfBakedIdea());
         this.addPropertyToAllProperties(new Hardy());
+        this.addPropertyToAllProperties(new Invisibility());
         this.addPropertyToAllProperties(new MeltObsidian());
         this.addPropertyToAllProperties(new PaintWool());
         this.addPropertyToAllProperties(new Pull());

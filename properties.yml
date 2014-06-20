@@ -1,4 +1,263 @@
 # Enables / Disables properties
-#
-#
-#
+'8':
+  name: Disarm
+  enabled: true
+  costType: FOOD
+  costOrDuration: 2.0
+'22':
+  name: Paint Wool
+  enabled: true
+  costType: COOLDOWN
+  costOrDuration: 0.5
+  recipe:
+  - type=WOOL;dura=11;amount=1;
+  - type=WOOL;amount=1;
+  - type=WOOL;amount=1;
+  - type=WOOL;dura=11;amount=1;
+  - 'type=MAGMA_CREAM;amount=1;lore=§8§8§8The essence of a fallen bossline:§8View
+    recipes with: §7/ri wi'
+  - type=WOOL;dura=14;amount=1;
+  - type=WOOL;dura=15;amount=1;
+  - type=WOOL;dura=15;amount=1;
+  - type=WOOL;dura=14;amount=1;
+'1':
+  name: Blinding
+  enabled: true
+  costType: FOOD
+  costOrDuration: 2.0
+'25':
+  name: Regeneration
+  enabled: true
+  costType: AUTOMATIC
+  costOrDuration: 5.0
+  recipe:
+  - type=POTION;dura=8257;amount=1;
+  - type=GOLDEN_APPLE;dura=1;amount=1;
+  - type=POTION;dura=8257;amount=1;
+  - type=GOLDEN_APPLE;dura=1;amount=1;
+  - 'type=MAGMA_CREAM;amount=1;lore=§8§8§8The essence of a fallen bossline:§8View
+    recipes with: §7/ri wi'
+  - type=GOLDEN_APPLE;dura=1;amount=1;
+  - type=POTION;dura=8257;amount=1;
+  - type=GOLDEN_APPLE;dura=1;amount=1;
+  - type=POTION;dura=8257;amount=1;
+'30':
+  name: Strength
+  enabled: true
+  costType: PASSIVE
+  costOrDuration: 0.0
+  recipe:
+  - type=POTION;dura=8265;amount=1;
+  - type=IRON_BLOCK;amount=1;
+  - type=POTION;dura=8265;amount=1;
+  - type=IRON_BLOCK;amount=1;
+  - 'type=MAGMA_CREAM;amount=1;lore=§8§8§8The essence of a fallen bossline:§8View
+    recipes with: §7/ri wi'
+  - type=IRON_BLOCK;amount=1;
+  - type=POTION;dura=8265;amount=1;
+  - type=NETHER_STAR;amount=1;
+  - type=POTION;dura=8265;amount=1;
+'9':
+  name: Durability
+  enabled: true
+  costType: AUTOMATIC
+  costOrDuration: 10.0
+  recipe:
+  - type=POTION;dura=8257;amount=1;
+  - type=IRON_BLOCK;amount=1;
+  - type=POTION;dura=8257;amount=1;
+  - type=IRON_BLOCK;amount=1;
+  - 'type=MAGMA_CREAM;amount=1;lore=§8§8§8The essence of a fallen bossline:§8View
+    recipes with: §7/ri wi'
+  - type=IRON_BLOCK;amount=1;
+  - type=POTION;dura=8257;amount=1;
+  - type=IRON_BLOCK;amount=1;
+  - type=POTION;dura=8257;amount=1;
+'24':
+  name: Pull
+  enabled: true
+  costType: FOOD
+  costOrDuration: 1.0
+'2':
+  name: Builder's Wand
+  enabled: true
+  costType: COOLDOWN
+  costOrDuration: 1.0
+  recipe:
+  - type=REDSTONE;amount=1;
+  - type=PISTON_STICKY_BASE;amount=1;
+  - type=REDSTONE;amount=1;
+  - type=PISTON_STICKY_BASE;amount=1;
+  - 'type=MAGMA_CREAM;amount=1;lore=§8§8§8The essence of a fallen bossline:§8View
+    recipes with: §7/ri wi'
+  - type=PISTON_STICKY_BASE;amount=1;
+  - type=REDSTONE;amount=1;
+  - type=PISTON_STICKY_BASE;amount=1;
+  - type=REDSTONE;amount=1;
+'26':
+  name: Repair Item
+  enabled: true
+  costType: LEVEL
+  costOrDuration: 2.0
+'41':
+  name: Water Breathing
+  enabled: true
+  costType: PASSIVE
+  costOrDuration: 0.0
+  recipe:
+  - type=POTION;dura=8266;amount=1;
+  - type=WATER_LILY;amount=1;
+  - type=POTION;dura=8266;amount=1;
+  - type=WATER_LILY;amount=1;
+  - 'type=MAGMA_CREAM;amount=1;lore=§8§8§8The essence of a fallen bossline:§8View
+    recipes with: §7/ri wi'
+  - type=WATER_LILY;amount=1;
+  - type=POTION;dura=8266;amount=1;
+  - type=WATER_LILY;amount=1;
+  - type=POTION;dura=8266;amount=1;
+'23':
+  name: Poison
+  enabled: true
+  costType: FOOD
+  costOrDuration: 2.0
+'11':
+  name: Fire Handling
+  enabled: true
+  costType: HEALTH
+  costOrDuration: 2.0
+  recipe:
+  - type=OBSIDIAN;amount=1;
+  - type=POTION;dura=8259;amount=1;
+  - type=OBSIDIAN;amount=1;
+  - type=POTION;dura=8259;amount=1;
+  - 'type=MAGMA_CREAM;amount=1;lore=§8§8§8The essence of a fallen bossline:§8View
+    recipes with: §7/ri wi'
+  - type=POTION;dura=8259;amount=1;
+  - type=OBSIDIAN;amount=1;
+  - type=NETHER_STAR;amount=1;
+  - type=OBSIDIAN;amount=1;
+'17':
+  name: Hardy
+  enabled: true
+  costType: PASSIVE
+  costOrDuration: 0.0
+  recipe:
+  - type=DIAMOND_BLOCK;amount=1;
+  - type=ANVIL;amount=1;
+  - type=DIAMOND_BLOCK;amount=1;
+  - type=ANVIL;amount=1;
+  - 'type=MAGMA_CREAM;amount=1;lore=§8§8§8The essence of a fallen bossline:§8View
+    recipes with: §7/ri wi'
+  - type=ANVIL;amount=1;
+  - type=DIAMOND_BLOCK;amount=1;
+  - type=NETHER_STAR;amount=1;
+  - type=DIAMOND_BLOCK;amount=1;
+'4':
+  name: Call Lightning
+  enabled: true
+  costType: FOOD
+  costOrDuration: 4.0
+'39':
+  name: Tough Love
+  enabled: true
+  costType: PASSIVE
+  costOrDuration: 0.0
+'16':
+  name: Half-Baked Idea
+  enabled: true
+  costType: FOOD
+  costOrDuration: 2.0
+'42':
+  name: Weaken
+  enabled: true
+  costType: FOOD
+  costOrDuration: 1.0
+'6':
+  name: Confuse
+  enabled: true
+  costType: FOOD
+  costOrDuration: 1.0
+'40':
+  name: Vampiric Regeneration
+  enabled: true
+  costType: FOOD
+  costOrDuration: 1.0
+'29':
+  name: Spore
+  enabled: true
+  costType: COOLDOWN
+  costOrDuration: 1.0
+  recipe:
+  - type=SEEDS;amount=1;
+  - type=COBBLESTONE;amount=1;
+  - type=SEEDS;amount=1;
+  - type=COBBLESTONE;amount=1;
+  - 'type=MAGMA_CREAM;amount=1;lore=§8§8§8The essence of a fallen bossline:§8View
+    recipes with: §7/ri wi'
+  - type=COBBLESTONE;amount=1;
+  - type=SEEDS;amount=1;
+  - type=COBBLESTONE;amount=1;
+  - type=SEEDS;amount=1;
+'21':
+  name: Melt Obsidian
+  enabled: true
+  costType: COOLDOWN
+  costOrDuration: 1.0
+  recipe:
+  - type=OBSIDIAN;amount=1;
+  - type=LAVA_BUCKET;amount=1;
+  - type=OBSIDIAN;amount=1;
+  - type=LAVA_BUCKET;amount=1;
+  - 'type=MAGMA_CREAM;amount=1;lore=§8§8§8The essence of a fallen bossline:§8View
+    recipes with: §7/ri wi'
+  - type=LAVA_BUCKET;amount=1;
+  - type=OBSIDIAN;amount=1;
+  - type=LAVA_BUCKET;amount=1;
+  - type=OBSIDIAN;amount=1;
+'28':
+  name: Smelt
+  enabled: true
+  costType: COOLDOWN
+  costOrDuration: 1.0
+  recipe:
+  - type=FURNACE;amount=1;
+  - type=FURNACE;amount=1;
+  - type=FURNACE;amount=1;
+  - type=FURNACE;amount=1;
+  - 'type=MAGMA_CREAM;amount=1;lore=§8§8§8The essence of a fallen bossline:§8View
+    recipes with: §7/ri wi'
+  - type=FURNACE;amount=1;
+  - type=FURNACE;amount=1;
+  - type=FURNACE;amount=1;
+  - type=FURNACE;amount=1;
+'10':
+  name: Fertilize
+  enabled: true
+  costType: COOLDOWN
+  costOrDuration: 0.5
+  recipe:
+  - type=SEEDS;amount=1;
+  - type=DIRT;amount=1;
+  - type=SEEDS;amount=1;
+  - type=DIRT;amount=1;
+  - 'type=MAGMA_CREAM;amount=1;lore=§8§8§8The essence of a fallen bossline:§8View
+    recipes with: §7/ri wi'
+  - type=DIRT;amount=1;
+  - type=SEEDS;amount=1;
+  - type=DIRT;amount=1;
+  - type=SEEDS;amount=1;
+'27':
+  name: Slow
+  enabled: true
+  costType: FOOD
+  costOrDuration: 1.0
+'0':
+  name: Backstab
+  enabled: true
+  costType: FOOD
+  costOrDuration: 2.0
+'19':
+  name: Invisibility
+  enabled: true
+  costType: LEVEL
+  costOrDuration: 1.0

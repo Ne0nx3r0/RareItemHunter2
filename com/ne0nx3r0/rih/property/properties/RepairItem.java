@@ -17,7 +17,7 @@ public class RepairItem extends RareItemProperty
             "Repair Item",
             "Repairs the #1 hotbar slot item",
             PropertyCostType.LEVEL,
-            2,
+            1,
             5
         );
     }
