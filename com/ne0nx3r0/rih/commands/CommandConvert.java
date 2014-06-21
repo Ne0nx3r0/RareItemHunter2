@@ -49,14 +49,6 @@ class CommandConvert extends RareItemHunterCommand{
                 return true;
             }
             
-            if(isHeld.equals(this.getRi1Compass())){
-                p.setItemInHand(plugin.getRecipeManager().generateLegendaryCompass());
-
-                this.send(cs,"Converted your compass!");
-                
-                return true;
-            }
-            
             RareItemProperty essenceProperty = this.getPropertyFromRi1Essence(isHeld);
             
             if(essenceProperty != null){
@@ -206,25 +198,5 @@ class CommandConvert extends RareItemHunterCommand{
         }
         
         return null;
-    }
-    
-    public ItemStack getRi1Compass(){
-        ItemStack compass = new ItemStack(Material.COMPASS);
-        ItemMeta itemMeta = compass.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.DARK_GREEN+"Legendary Compass");
-        
-        List<String> lore = new ArrayList<>();
-        
-        lore.add(ChatColor.DARK_GRAY+"When tapped against the ground");
-        lore.add(ChatColor.DARK_GRAY+"this compass will attune itself");
-        lore.add(ChatColor.DARK_GRAY+"to the nearest legendary boss egg.");
-        
-        itemMeta.setLore(lore);
-        
-        compass.getData().setData((byte) -41);
-        
-        compass.setItemMeta(itemMeta);
-        
-        return compass;
     }
 }
