@@ -123,7 +123,6 @@ class CommandConvert extends RareItemHunterCommand{
         TYPE_PREFIXES.add(ChatColor.GRAY+"Spell: "+ChatColor.LIGHT_PURPLE);
         TYPE_PREFIXES.add(ChatColor.GRAY+"Ability: "+ChatColor.GOLD);
         TYPE_PREFIXES.add(ChatColor.GRAY+"Visual: "+ChatColor.DARK_PURPLE);
-        TYPE_PREFIXES.add(ChatColor.DARK_PURPLE.toString());
         
         Map<RareItemProperty,Integer> newProperties = new HashMap<>();
         
@@ -138,7 +137,12 @@ class CommandConvert extends RareItemHunterCommand{
 
                     try{
                         level = RomanNumeral.valueOf(sLevel);
+                        
+                        player.sendMessage("----");
+                        player.sendMessage("-"+sPropertyString+"-");
                         sPropertyString = sPropertyString.substring(0,sPropertyString.lastIndexOf(" "));
+                        player.sendMessage("-"+sPropertyString+"-");
+                        
                     }
                     catch(Exception ex){}
 
@@ -183,7 +187,6 @@ class CommandConvert extends RareItemHunterCommand{
             TYPE_PREFIXES.add(ChatColor.GRAY+"Spell: "+ChatColor.LIGHT_PURPLE);
             TYPE_PREFIXES.add(ChatColor.GRAY+"Ability: "+ChatColor.GOLD);
             TYPE_PREFIXES.add(ChatColor.GRAY+"Visual: "+ChatColor.DARK_PURPLE);
-            TYPE_PREFIXES.add(ChatColor.DARK_PURPLE.toString());
             
             String sPropertyString = is.getItemMeta().getLore().get(0);
             

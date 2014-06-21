@@ -22,34 +22,47 @@ class PropertiesYmlLoader {
         
         this.allProperties = new HashMap<>();
 
+        this.addPropertyToAllProperties(new Backstab());
+        this.addPropertyToAllProperties(new Blinding());
         this.addPropertyToAllProperties(new BuildersWand());
+        this.addPropertyToAllProperties(new Burst());
+        this.addPropertyToAllProperties(new CallLightning());
+        this.addPropertyToAllProperties(new CatsFeet());
+        this.addPropertyToAllProperties(new Confuse());
+        this.addPropertyToAllProperties(new CraftItem());
+        this.addPropertyToAllProperties(new Disarm());
         this.addPropertyToAllProperties(new Durability());
         this.addPropertyToAllProperties(new Fertilize());
         this.addPropertyToAllProperties(new FireHandling());
+        this.addPropertyToAllProperties(new FireResistance());
+        this.addPropertyToAllProperties(new GreaterBurst());
+        this.addPropertyToAllProperties(new GrowTree());
         this.addPropertyToAllProperties(new HalfBakedIdea());
         this.addPropertyToAllProperties(new Hardy());
+        this.addPropertyToAllProperties(new Haste());
         this.addPropertyToAllProperties(new Invisibility());
+        this.addPropertyToAllProperties(new MagicBag());
         this.addPropertyToAllProperties(new MeltObsidian());
         this.addPropertyToAllProperties(new PaintWool());
+        this.addPropertyToAllProperties(new Poison());
         this.addPropertyToAllProperties(new Pull());
         this.addPropertyToAllProperties(new Regeneration());
         this.addPropertyToAllProperties(new RepairItem());
+        this.addPropertyToAllProperties(new Slow());
         this.addPropertyToAllProperties(new Smelt());
         this.addPropertyToAllProperties(new Spore());
         this.addPropertyToAllProperties(new Strength());
+        this.addPropertyToAllProperties(new SummonBat());
+        this.addPropertyToAllProperties(new SummonChicken());
+        this.addPropertyToAllProperties(new SummonCow());
+        this.addPropertyToAllProperties(new SummonMooshroom());
+        this.addPropertyToAllProperties(new SummonOcelot());
+        this.addPropertyToAllProperties(new SummonPig());
+        this.addPropertyToAllProperties(new SummonSheep());
+        this.addPropertyToAllProperties(new SummonSlime());
         this.addPropertyToAllProperties(new ToughLove());
-        this.addPropertyToAllProperties(new WaterBreathing());
-        
-        // migrated skills
-        this.addPropertyToAllProperties(new Backstab());
-        this.addPropertyToAllProperties(new Blinding());
-        this.addPropertyToAllProperties(new CallLightning());
-        this.addPropertyToAllProperties(new Confuse());
-        this.addPropertyToAllProperties(new Disarm());
-        this.addPropertyToAllProperties(new WaterBreathing());
-        this.addPropertyToAllProperties(new Poison());
-        this.addPropertyToAllProperties(new Slow());
         this.addPropertyToAllProperties(new VampiricRegeneration());
+        this.addPropertyToAllProperties(new WaterBreathing());
         this.addPropertyToAllProperties(new Weaken());
     }
     
