@@ -1,6 +1,6 @@
 name: RareItemHunter2
 main: com.ne0nx3r0.rih.RareItemHunterPlugin
-version: '2.6.10a'
+version: '2.6.15a'
 load: STARTUP
 database: false
 softdepend: [Essentials]
@@ -8,6 +8,8 @@ description: Rare Item Hunter
 commands:
     ri:
       description: RareItems commands
+    hat:
+      description: put an item on your head
 permissions: 
 # All
   rih.tester:

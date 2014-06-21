@@ -5,7 +5,11 @@ import com.ne0nx3r0.rih.boss.Boss;
 import com.ne0nx3r0.rih.boss.BossManager;
 import com.ne0nx3r0.rih.gui.GuiManager;
 import com.ne0nx3r0.rih.property.PropertyManager;
+import com.ne0nx3r0.rih.property.PropertyType;
+import com.ne0nx3r0.rih.property.RareItemProperty;
 import com.ne0nx3r0.rih.recipe.RecipeManager;
+import java.util.Map;
+import java.util.Map.Entry;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,18 +20,22 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class PlayerListener implements Listener {
     private final BossManager bossManager;
     private final GuiManager guiManager;
     private final PropertyManager propertymanager;
-    private RecipeManager recipeManager;
+    private final RecipeManager recipeManager;
 
     public PlayerListener(RareItemHunterPlugin plugin) {
         this.bossManager = plugin.getBossManager();
@@ -46,13 +54,32 @@ public class PlayerListener implements Listener {
             }
         }
     }
-    /*
+
     @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDamaged(EntityDamageEvent e){
-        if(this.propertymanager.hasPropertyActive("Hardy")){
-            e.setDamage(e.getDamage()-);
+        if(e.getEntity() instanceof Player){
+            Player p = (Player) e.getEntity();
+            Map<RareItemProperty, Integer> playerActiveEffects = this.propertymanager.getPlayerActiveEffects(p);
+                  
+            if(playerActiveEffects != null){
+                for(Entry<RareItemProperty, Integer> entry : playerActiveEffects.entrySet()){
+                    if(entry.getKey().getID() == PropertyType.WATER_BREATHING.ordinal()){
+                        if(e.getCause() == DamageCause.DROWNING){
+
+                            p.setRemainingAir(20);
+
+                            e.setCancelled(true);
+
+                            return;
+                        }
+                    }
+                    else if(entry.getKey().getID() == PropertyType.HARDY.ordinal()){
+                        e.setDamage(e.getDamage()-entry.getValue());
+                    }
+                }
+            }
         }
-    }*/
+    }
     
     @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDeathByBoss(PlayerDeathEvent e){
@@ -89,12 +116,12 @@ public class PlayerListener implements Listener {
         {
             if(e.getCursor() != null 
             && e.getCursor().getType() != Material.AIR){//equipped item
-                this.propertymanager.onEquip(e);
+                this.propertymanager.onEquip((Player) e.getWhoClicked(),e.getCursor());
             }
             
             if(e.getCurrentItem() != null 
             && e.getCurrentItem().getType() != Material.AIR){//unequipped item
-                this.propertymanager.onUnequip(e);
+                this.propertymanager.onUnequip((Player) e.getWhoClicked(),e.getCurrentItem());
             }
         }
         else if(this.guiManager.isRecipeEditor(e.getInventory())){
@@ -116,17 +143,25 @@ public class PlayerListener implements Listener {
         }            
     }
     
-    @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority=EventPriority.NORMAL)
     public void onPlayerInteract(PlayerInteractEvent e){
-        if(e.hasItem() && this.recipeManager.isLegendaryCompass(e.getItem())){
+        if(this.recipeManager.isLegendaryCompass(e.getPlayer().getItemInHand())){            
             Location lClosest = this.bossManager.getClosestBossOrEggTo(e.getPlayer().getLocation());
             
             if(lClosest != null){
                 e.getPlayer().setCompassTarget(lClosest);
+                
+                e.getPlayer().sendMessage(ChatColor.GREEN+"The compass glows and points sharply!");
+            }
+            else {
+                e.getPlayer().setCompassTarget(e.getPlayer().getLocation().getWorld().getSpawnLocation());
+                
+                e.getPlayer().sendMessage(ChatColor.DARK_GRAY+"The compass glows for a moment and then fades");
             }
         }
-        
-        this.propertymanager.onUse(e);
+        else if(!e.isCancelled()){
+            this.propertymanager.onUse(e);
+        }
     }
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
@@ -137,5 +172,31 @@ public class PlayerListener implements Listener {
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerDamageEntityWithRareItem(EntityDamageByEntityEvent e){
         this.propertymanager.onAttackEntity(e);
+        
+        if(e.getDamager() instanceof Player){
+            Player pAttacker = (Player) e.getDamager();
+            
+            Map<RareItemProperty, Integer> playerActiveEffects = this.propertymanager.getPlayerActiveEffects(pAttacker);
+                  
+            if(playerActiveEffects != null){
+                for(Entry<RareItemProperty, Integer> entry : playerActiveEffects.entrySet()){
+                    if(entry.getKey().getID() == PropertyType.STRENGTH.ordinal()){
+                        e.setDamage(e.getDamage()+entry.getValue());
+                    }
+                }
+            }
+        }
+    }
+    
+    @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPlayerJoin(PlayerJoinEvent e){
+        for(ItemStack is : e.getPlayer().getInventory().getArmorContents()){
+            this.propertymanager.onEquip(e.getPlayer(), is);
+        }
+    }
+    
+    @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPlayerQuit(PlayerQuitEvent e){
+        this.propertymanager.onQuit(e.getPlayer());
     }
 }

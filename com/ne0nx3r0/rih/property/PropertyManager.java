@@ -14,7 +14,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -92,6 +91,13 @@ public class PropertyManager {
                 }
             }
         }, 20, 20);
+        
+        //re-activate any effects of players that already are wearing stuff
+        for(Player p : Bukkit.getOnlinePlayers()){
+            for(ItemStack is: p.getInventory().getArmorContents()){
+                this.onEquip(p, is);
+            }
+        }
     }
 
     public RareItemProperty getProperty(String propertyName) {
@@ -114,10 +120,8 @@ public class PropertyManager {
         return null;
     }
 
-    public void onEquip(InventoryClickEvent e) {
-        Player p = (Player) e.getWhoClicked();
-        
-        Map<RareItemProperty, Integer> itemProperties = this.recipeManager.getProperties(e.getCursor());
+    public void onEquip(Player p,ItemStack is) {
+        Map<RareItemProperty, Integer> itemProperties = this.recipeManager.getProperties(is);
         
         if(itemProperties == null){
             return;
@@ -150,10 +154,8 @@ public class PropertyManager {
         }
     }
 
-    public void onUnequip(InventoryClickEvent e) {
-        Player p = (Player) e.getWhoClicked();
-        
-        Map<RareItemProperty, Integer> itemProperties = this.recipeManager.getProperties(e.getCurrentItem());
+    public void onUnequip(Player p,ItemStack is) {
+        Map<RareItemProperty, Integer> itemProperties = this.recipeManager.getProperties(is);
         
         if(itemProperties != null && !itemProperties.isEmpty()){
             Map<RareItemProperty,Integer> activeProperties = this.activeEffects.get(p.getUniqueId());
@@ -325,5 +327,13 @@ public class PropertyManager {
 
     public Iterable<RareItemProperty> getAllProperties() {
         return this.properties;
+    }
+
+    public Map<RareItemProperty, Integer> getPlayerActiveEffects(Player p) {
+        return this.activeEffects.get(p.getUniqueId());
+    }
+
+    public void onQuit(Player player) {
+        this.activeEffects.remove(player.getUniqueId());
     }
 }

@@ -10,7 +10,7 @@ public class CraftItem extends RareItemProperty
     public CraftItem()
     {
         super(
-            PropertyType.DURABILITY.ordinal(),
+            PropertyType.CRAFT_ITEM.ordinal(),
             "Craft Item",
             "Opens a crafting table",
             PropertyCostType.COOLDOWN,

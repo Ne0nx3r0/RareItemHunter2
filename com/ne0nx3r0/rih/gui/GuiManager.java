@@ -300,7 +300,6 @@ public class GuiManager {
             case 29:
             case 30:
                 // Run immediately after so the result is calculated instead of the current state
-                
                 this.plugin.getServer().getScheduler().runTask(plugin, new Runnable(){
                     @Override
                     public void run() {
@@ -412,35 +411,6 @@ public class GuiManager {
 
     public void shrineClick(PlayerInteractEvent e) {
             e.setCancelled(true);
-
-            String sKey = "rihCrafted"+e.getPlayer().getUniqueId().toString();
-            
-            if(e.getClickedBlock().hasMetadata(sKey)){
-                ItemStack isCrafted = null;
-                
-                // Should only be one... but we can't concurrently remove it
-                for(MetadataValue meta : e.getClickedBlock().getMetadata(sKey)){
-                    if(meta.getOwningPlugin().equals(this.plugin)){
-                        isCrafted = (ItemStack) meta.value();
-                        
-                        break;
-                    }
-                }
-                
-                if(isCrafted != null){
-                    Player p = e.getPlayer();
-
-                    e.getClickedBlock().removeMetadata(sKey, this.plugin);
-
-                    if(!p.getInventory().addItem(isCrafted).isEmpty()) {
-                        p.getWorld().dropItemNaturally(p.getLocation(), isCrafted);
-                    }
-
-                    e.getPlayer().sendMessage(ChatColor.GREEN+"You retrieved your crafted item!");
-
-                    return;
-                }
-            }
             
             Inventory invShrine = this.createLegendaryShrineCrafter(e.getClickedBlock(),e.getPlayer());
 
@@ -454,7 +424,11 @@ public class GuiManager {
             ItemStack is = inv.getItem(ITEM_CRAFTING_SLOTS[i]);
             
             if(is != null && !is.getType().equals(Material.AIR)){
-                e.getPlayer().getWorld().dropItemNaturally(e.getPlayer().getLocation(), is);
+                Player p = (Player) e.getPlayer();
+                
+                if(!p.getInventory().addItem(is).isEmpty()) {
+                    p.getWorld().dropItemNaturally(p.getLocation(), is);
+                }
             }
         }   
     }

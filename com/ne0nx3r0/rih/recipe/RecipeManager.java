@@ -95,7 +95,7 @@ public class RecipeManager {
         for(int i=0;i<9;i++){            
             if(this.isBlankRareEssence(contents[i])){
                 int hashCode = this.getRecipeHashCode(contents);
-
+                
                 RareItemProperty rip = this.essenceRecipes.get(hashCode);
                 
                 if(rip != null){
@@ -309,10 +309,10 @@ public class RecipeManager {
         
         for(int i=0;i<9;i++){
             if(i > contents.length || contents[i] == null){
-                recipe[i] = ItemStackConvertorRI2.fromItemStack(new ItemStack(Material.AIR), true);
+                recipe[i] = ItemStackConvertorRI2.fromItemStack(new ItemStack(Material.AIR), false);
             }
             else{
-                recipe[i] = ItemStackConvertorRI2.fromItemStack(contents[i], true);
+                recipe[i] = ItemStackConvertorRI2.fromItemStack(contents[i], false);
             }
             
             sRecipe += recipe[i];
@@ -475,7 +475,7 @@ public class RecipeManager {
         return this.compass.clone();
     }
     
-    public boolean isLegendaryCompass(ItemStack is){
-        return is.equals(this.compass);
+    public boolean isLegendaryCompass(ItemStack is){        
+        return is.isSimilar(this.compass);
     }
 }

@@ -98,7 +98,18 @@
   name: Repair Item
   enabled: true
   costType: LEVEL
-  costOrDuration: 2.0
+  costOrDuration: 1.0
+  recipe:
+  - type=POTION;dura=8225;amount=1;
+  - type=ANVIL;amount=1;
+  - type=POTION;dura=8225;amount=1;
+  - type=ANVIL;amount=1;
+  - 'type=MAGMA_CREAM;amount=1;name=§aRare Essence;lore=§8§8§8The essence of a fallen
+    bossline:§8View recipes with: §7/ri wi'
+  - type=ANVIL;amount=1;
+  - type=POTION;dura=8225;amount=1;
+  - type=IRON_BLOCK;amount=1;
+  - type=POTION;dura=8225;amount=1;
 '41':
   name: Water Breathing
   enabled: true

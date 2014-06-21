@@ -41,12 +41,13 @@ public class BossManager {
             
         this.activeBosses = bp.getActiveBosses();
         
-        bp.startSaving(20*60*10);
+        bp.startSaving(20*30);
         
         // Todo: This am not conventional
         BossGarbageCollection bossGC = new BossGarbageCollection(plugin,this,20*60*30);
         
-        
+        // boss autospawner
+        this.plugin.getServer().getScheduler().runTaskTimer(plugin, new BossAutoSpawner(plugin), 20*4, 20*4);
     }
     
     public BossTemplate getBossTemplate(String bossName){
@@ -257,8 +258,9 @@ public class BossManager {
         int closestDistance = -1;
      
         for(BossEgg egg : this.bossEggs){
-            if(compassLocation.distanceSquared(egg.getLocation()) < closestDistance
-            || closestDistance == -1){
+            if(egg.getLocation().getWorld().equals(compassLocation.getWorld())
+            && (compassLocation.distanceSquared(egg.getLocation()) < closestDistance
+            || closestDistance == -1)){
                 lClosest = egg.getLocation();
             }
         }

@@ -40,7 +40,7 @@ public class RepairItem extends RareItemProperty
             
             isSlotOne.setDurability(sDurability);
             
-            e.getPlayer().sendMessage("Item repaired by "+(level*20-10)+"%!");
+            e.getPlayer().sendMessage("Item repaired by "+(level*20)+"%!");
             
             return true;
         }
@@ -73,7 +73,7 @@ public class RepairItem extends RareItemProperty
 
                 isSlotOne.setDurability(sDurability);
 
-                e.getPlayer().sendMessage("Item in "+pClicked.getName()+"'s hand repaired by "+(level*20-10)+"%!");
+                e.getPlayer().sendMessage("Item in "+pClicked.getName()+"'s hand repaired by "+(level*20)+"%!");
 
                 return true;
             }

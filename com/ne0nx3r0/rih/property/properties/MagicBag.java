@@ -12,7 +12,7 @@ public class MagicBag extends RareItemProperty
         super(
             PropertyType.MAGIC_BAG.ordinal(),
             "Magic Bag",
-            "Repairs the #1 hotbar slot item",
+            "Don't listen to haters. This item will give you instant access to your enderchest.",
             PropertyCostType.COOLDOWN,
             4,
             1

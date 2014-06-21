@@ -28,10 +28,16 @@ public class RareItemHunterCommandExecutor implements CommandExecutor {
         
         this.registerCommand(new CommandWhatIs(plugin));
         this.registerCommand(new CommandConvert(plugin));
+        
+        this.registerCommand(new CommandHat(plugin));
     }
     
     @Override
     public boolean onCommand(CommandSender cs, Command cmnd, String alias, String[] args) {
+        if(cmnd.getName().equalsIgnoreCase("hat")){
+            args = new String[]{"hat"};
+        }
+        
         if(args.length == 0 || args[0].equals("?")) {
             this.sendUsage(cs);
             
@@ -60,7 +66,7 @@ public class RareItemHunterCommandExecutor implements CommandExecutor {
         cs.sendMessage("Here are the commands you have access to:");
         
         for(RareItemHunterCommand lc : this.commands.values()) {
-            if(cs.hasPermission(lc.getPermissionNode())) {
+            if(cs.hasPermission(lc.getPermissionNode()) && !lc.getName().equals("hat")) {// no need to show them the hat command
                 cs.sendMessage(lc.getUsage());
             }
         }

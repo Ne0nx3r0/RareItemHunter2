@@ -29,7 +29,7 @@ public class CallLightning extends RareItemProperty
     public boolean onDamageOther(final EntityDamageByEntityEvent e,Player p,int level)
     {
         if(!e.getCause().equals(DamageCause.LIGHTNING)
-        && new Random().nextInt(100) > level * 10
+        && new Random().nextInt(100) < level * 10
         && e.getEntity() instanceof LivingEntity)
         {
             int maxTargets = level * 2;
