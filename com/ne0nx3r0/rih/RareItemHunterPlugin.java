@@ -56,7 +56,7 @@ public class RareItemHunterPlugin extends JavaPlugin{
         
         this.guiManager = new GuiManager(this);
         
-        this.getCommand("ri2").setExecutor(new RareItemHunterCommandExecutor(this));
+        this.getCommand("ri").setExecutor(new RareItemHunterCommandExecutor(this));
         
         this.getServer().getPluginManager().registerEvents(new BossListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
