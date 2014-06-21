@@ -138,11 +138,7 @@ class CommandConvert extends RareItemHunterCommand{
                     try{
                         level = RomanNumeral.valueOf(sLevel);
                         
-                        player.sendMessage("----");
-                        player.sendMessage("-"+sPropertyString+"-");
                         sPropertyString = sPropertyString.substring(0,sPropertyString.lastIndexOf(" "));
-                        player.sendMessage("-"+sPropertyString+"-");
-                        
                     }
                     catch(Exception ex){}
 
