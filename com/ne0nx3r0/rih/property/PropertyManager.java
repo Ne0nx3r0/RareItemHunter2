@@ -93,9 +93,13 @@ public class PropertyManager {
         }, 20, 20);
         
         //re-activate any effects of players that already are wearing stuff
-        for(Player p : Bukkit.getOnlinePlayers()){
-            for(ItemStack is: p.getInventory().getArmorContents()){
-                this.onEquip(p, is);
+        if(Bukkit.getOnlinePlayers().length > 0){
+            for(Player p : Bukkit.getOnlinePlayers()){
+                if(p.getInventory() != null){
+                    for(ItemStack is: p.getInventory().getArmorContents()){
+                        this.onEquip(p, is);
+                    }
+                }
             }
         }
     }
