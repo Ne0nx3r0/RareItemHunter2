@@ -5,6 +5,7 @@ import com.ne0nx3r0.rih.boss.Boss;
 import com.ne0nx3r0.rih.boss.BossManager;
 import com.ne0nx3r0.rih.boss.BossTemplate;
 import com.ne0nx3r0.rih.boss.egg.BossEgg;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -90,6 +91,8 @@ class CommandEgg extends RareItemHunterCommand{
             lSpawnAt.getBlockY(),
             lSpawnAt.getBlockZ()
         }));
+        
+        this.plugin.getServer().broadcastMessage(ChatColor.GREEN+"A legendary boss egg has appeared!");
         
         return true;
     }
