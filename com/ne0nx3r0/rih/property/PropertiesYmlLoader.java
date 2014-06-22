@@ -41,12 +41,15 @@ class PropertiesYmlLoader {
         this.addPropertyToAllProperties(new HalfBakedIdea());
         this.addPropertyToAllProperties(new Hardy());
         this.addPropertyToAllProperties(new Haste());
+        this.addPropertyToAllProperties(new HeartFX());
         this.addPropertyToAllProperties(new Invisibility());
         this.addPropertyToAllProperties(new MagicBag());
         this.addPropertyToAllProperties(new MeltObsidian());
+        this.addPropertyToAllProperties(new MermaidsGift());
         this.addPropertyToAllProperties(new PaintWool());
         this.addPropertyToAllProperties(new Poison());
         this.addPropertyToAllProperties(new Pull());
+        this.addPropertyToAllProperties(new RainbowFuryFX());
         this.addPropertyToAllProperties(new Regeneration());
         this.addPropertyToAllProperties(new RepairItem());
         this.addPropertyToAllProperties(new Slow());

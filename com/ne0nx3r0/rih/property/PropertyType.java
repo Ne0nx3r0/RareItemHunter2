@@ -45,5 +45,7 @@ public enum PropertyType {
     WATER_BREATHING,
     WEAKEN,
     FLAME_FX,
-    HEARTS_FX
+    HEARTS_FX,
+    RAINBOW_FURY_FX,
+    MERMAIDS_GIFT
 }

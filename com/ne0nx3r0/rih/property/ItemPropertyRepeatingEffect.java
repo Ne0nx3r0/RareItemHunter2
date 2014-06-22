@@ -9,4 +9,6 @@ public class ItemPropertyRepeatingEffect extends RareItemProperty
     }
     
     public void applyEffectToPlayer(Player p,int level){}
+    
+    public void removeEffectFromPlayer(Player p){}
 }

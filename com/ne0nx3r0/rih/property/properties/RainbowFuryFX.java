@@ -6,14 +6,14 @@ import com.ne0nx3r0.rih.property.PropertyType;
 import com.ne0nx3r0.util.ParticleEffect;
 import org.bukkit.entity.Player;
 
-public class HeartFX extends ItemPropertyRepeatingEffect
+public class RainbowFuryFX extends ItemPropertyRepeatingEffect
 {
-    public HeartFX()
+    public RainbowFuryFX()
     {
         super(
-            PropertyType.HEARTS_FX.ordinal(),
-            "Hearts FX",
-            "Shows a visual hearts effect around you",
+            PropertyType.RAINBOW_FURY_FX.ordinal(),
+            "Rainbow Fury FX",
+            "Shows a smattering of colored explosions",
             PropertyCostType.AUTOMATIC,
             3,
             1
@@ -23,13 +23,13 @@ public class HeartFX extends ItemPropertyRepeatingEffect
     @Override
     public void applyEffectToPlayer(Player player, int level)
     {	
-        ParticleEffect.HEART.display(
-            player.getLocation().add(0,1.5,0), //center
-            0.4F, //offsetX
-            0.75F, //offsetY
-            0.4F, //offsetZ
-            0.1F, //speed
-            8 // amount of particles
+        ParticleEffect.RED_DUST.display(
+            player.getLocation().add(0,1,0), //center
+            0.6F, //offsetX
+            0.25F, //offsetY
+            0.6F, //offsetZ
+            100F, //speed
+            12 // amount of particles
         );
     }
 }

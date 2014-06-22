@@ -154,8 +154,6 @@ public final class PropertyManager {
         
         if(!itemProperties.isEmpty()){
             Map<RareItemProperty,Integer> activeProperties = this.activeEffects.get(p.getUniqueId());
-
-            System.out.println();
             
             if(activeProperties == null){
                 activeProperties = new HashMap<>();
@@ -174,9 +172,13 @@ public final class PropertyManager {
             Map<RareItemProperty,Integer> activeProperties = this.activeEffects.get(p.getUniqueId());
 
             if(activeProperties != null){
-                for(RareItemProperty rip : activeProperties.keySet()){
+                for(RareItemProperty rip : itemProperties.keySet()){
                     if(rip.getCostType() == PropertyCostType.AUTOMATIC || rip.getCostType() == PropertyCostType.PASSIVE){
                         activeProperties.remove(rip);
+                        
+                        if(rip instanceof ItemPropertyRepeatingEffect){
+                            ((ItemPropertyRepeatingEffect) rip).removeEffectFromPlayer(p);
+                        }
                     }
                 }
                 
