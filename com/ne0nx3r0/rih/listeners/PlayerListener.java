@@ -34,13 +34,13 @@ import org.bukkit.inventory.ItemStack;
 public class PlayerListener implements Listener {
     private final BossManager bossManager;
     private final GuiManager guiManager;
-    private final PropertyManager propertymanager;
+    private final PropertyManager propertyManager;
     private final RecipeManager recipeManager;
 
     public PlayerListener(RareItemHunterPlugin plugin) {
         this.bossManager = plugin.getBossManager();
         this.guiManager = plugin.getGuiManager();
-        this.propertymanager = plugin.getPropertymanager();
+        this.propertyManager = plugin.getPropertymanager();
         this.recipeManager = plugin.getRecipeManager();
     }
     
@@ -59,7 +59,7 @@ public class PlayerListener implements Listener {
     public void onPlayerDamaged(EntityDamageEvent e){
         if(e.getEntity() instanceof Player){
             Player p = (Player) e.getEntity();
-            Map<RareItemProperty, Integer> playerActiveEffects = this.propertymanager.getPlayerActiveEffects(p);
+            Map<RareItemProperty, Integer> playerActiveEffects = this.propertyManager.getPlayerActiveEffects(p);
                   
             if(playerActiveEffects != null){
                 for(Entry<RareItemProperty, Integer> entry : playerActiveEffects.entrySet()){
@@ -116,12 +116,12 @@ public class PlayerListener implements Listener {
         {
             if(e.getCursor() != null 
             && e.getCursor().getType() != Material.AIR){//equipped item
-                this.propertymanager.onEquip((Player) e.getWhoClicked(),e.getCursor());
+                this.propertyManager.onEquip((Player) e.getWhoClicked(),e.getCursor());
             }
             
             if(e.getCurrentItem() != null 
             && e.getCurrentItem().getType() != Material.AIR){//unequipped item
-                this.propertymanager.onUnequip((Player) e.getWhoClicked(),e.getCurrentItem());
+                this.propertyManager.onUnequip((Player) e.getWhoClicked(),e.getCurrentItem());
             }
         }
         else if(this.guiManager.isRecipeEditor(e.getInventory())){
@@ -160,23 +160,23 @@ public class PlayerListener implements Listener {
             }
         }
         else if(!e.isCancelled()){
-            this.propertymanager.onUse(e);
+            this.propertyManager.onUse(e);
         }
     }
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerInteractWithEntity(PlayerInteractEntityEvent e){
-        this.propertymanager.onUseEntity(e);
+        this.propertyManager.onUseEntity(e);
     }
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerDamageEntityWithRareItem(EntityDamageByEntityEvent e){
-        this.propertymanager.onAttackEntity(e);
+        this.propertyManager.onAttackEntity(e);
         
         if(e.getDamager() instanceof Player){
             Player pAttacker = (Player) e.getDamager();
             
-            Map<RareItemProperty, Integer> playerActiveEffects = this.propertymanager.getPlayerActiveEffects(pAttacker);
+            Map<RareItemProperty, Integer> playerActiveEffects = this.propertyManager.getPlayerActiveEffects(pAttacker);
                   
             if(playerActiveEffects != null){
                 for(Entry<RareItemProperty, Integer> entry : playerActiveEffects.entrySet()){
@@ -191,12 +191,14 @@ public class PlayerListener implements Listener {
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent e){
         for(ItemStack is : e.getPlayer().getInventory().getArmorContents()){
-            this.propertymanager.onEquip(e.getPlayer(), is);
+            if(is != null && is.getType() != Material.AIR){
+                this.propertyManager.onEquip(e.getPlayer(), is);
+            }
         }
     }
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent e){
-        this.propertymanager.onQuit(e.getPlayer());
+        this.propertyManager.onQuit(e.getPlayer());
     }
 }

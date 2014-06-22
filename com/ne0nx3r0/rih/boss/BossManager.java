@@ -3,6 +3,7 @@ package com.ne0nx3r0.rih.boss;
 import com.ne0nx3r0.rih.boss.entities.*;
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.boss.egg.BossEgg;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import net.minecraft.server.v1_7_R3.Entity;
@@ -230,8 +231,12 @@ public class BossManager {
     public void hatchEggIfBoss(Block block) {
         if(block.getType().equals(Material.DRAGON_EGG)){
             Location lBlock = block.getLocation();
-
-            for(BossEgg egg : this.bossEggs){
+            
+            Iterator<BossEgg> iter = this.bossEggs.iterator();
+            
+            while(iter.hasNext()){
+                BossEgg egg = iter.next();
+                
                 if(lBlock.equals(egg.getLocation())){
                     BossTemplate template = egg.getTemplate();
                     
@@ -241,6 +246,8 @@ public class BossManager {
                     lBlock.getWorld().strikeLightningEffect(lBlock);
                     
                     this.spawnBossAt(template, block.getLocation());
+                    
+                    iter.remove();
                     
                     return;
                 }

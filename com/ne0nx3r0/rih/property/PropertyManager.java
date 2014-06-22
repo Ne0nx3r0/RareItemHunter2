@@ -9,16 +9,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import net.milkbowl.vault.economy.Economy;
-import net.minecraft.server.v1_7_R3.Material;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class PropertyManager {
+public final class PropertyManager {
     private final RareItemHunterPlugin plugin;
     private final List<RareItemProperty> properties;
     private final Map<UUID,Map<RareItemProperty,Integer>> activeEffects;
@@ -92,16 +92,25 @@ public class PropertyManager {
             }
         }, 20, 20);
         
-        //re-activate any effects of players that already are wearing stuff
-        if(Bukkit.getOnlinePlayers().length > 0){
-            for(Player p : Bukkit.getOnlinePlayers()){
-                if(p.getInventory() != null){
-                    for(ItemStack is: p.getInventory().getArmorContents()){
-                        this.onEquip(p, is);
+        // kludgemaster flex
+        final PropertyManager pm = this;
+        
+        plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable(){
+            @Override
+            public void run() {
+                if(Bukkit.getOnlinePlayers().length > 0){
+                    for(Player p : Bukkit.getOnlinePlayers()){
+                        if(p.getInventory() != null){
+                            for(ItemStack is: p.getInventory().getArmorContents()){
+                                if(is != null && is.getType() != Material.AIR){
+                                    pm.onEquip(p, is);
+                                }
+                            }
+                        }
                     }
                 }
             }
-        }
+        }, 20);
     }
 
     public RareItemProperty getProperty(String propertyName) {

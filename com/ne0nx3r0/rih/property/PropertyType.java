@@ -43,5 +43,7 @@ public enum PropertyType {
     TOUGH_LOVE,
     VAMPIRIC_REGENERATION,
     WATER_BREATHING,
-    WEAKEN
+    WEAKEN,
+    FLAME_FX,
+    HEARTS_FX
 }

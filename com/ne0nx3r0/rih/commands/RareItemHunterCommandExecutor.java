@@ -30,6 +30,9 @@ public class RareItemHunterCommandExecutor implements CommandExecutor {
         this.registerCommand(new CommandConvert(plugin));
         
         this.registerCommand(new CommandHat(plugin));
+        
+        //mainly for testing
+        this.registerCommand(new CommandFX(plugin));
     }
     
     @Override
@@ -57,6 +60,8 @@ public class RareItemHunterCommandExecutor implements CommandExecutor {
                 );
             }
         }
+        
+        cs.sendMessage(ChatColor.RED+"Invalid subcommand: "+args[0]);
         
         return false;
     }

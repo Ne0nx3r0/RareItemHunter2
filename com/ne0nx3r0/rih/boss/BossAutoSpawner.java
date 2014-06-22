@@ -35,8 +35,8 @@ public class BossAutoSpawner implements Runnable{
                             public void run() {
                                 plugin.getLogger().log(Level.INFO, "A legendary monster egg has been awakened at X:{0} Y:{1} Z:{2}]", new Object[]{
                                     eggToHatch.getLocation().getBlockX(), 
-                                    eggToHatch.getLocation().getBlockX(), 
-                                    eggToHatch.getLocation().getBlockX()}
+                                    eggToHatch.getLocation().getBlockY(), 
+                                    eggToHatch.getLocation().getBlockZ()}
                                 );
 
                                 for(Player p : eggToHatch.getLocation().getWorld().getPlayers())
