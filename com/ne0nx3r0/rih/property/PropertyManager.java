@@ -75,15 +75,12 @@ public final class PropertyManager {
                 
                 for(Entry<UUID, Map<RareItemProperty, Integer>> playerActiveEffects : activeEffects.entrySet()){
                     for(Entry<RareItemProperty, Integer> activeEffect : playerActiveEffects.getValue().entrySet()){
-                        if(activeEffect.getKey().getCostType().equals(PropertyCostType.AUTOMATIC) 
-                        && activeEffect.getKey() instanceof ItemPropertyRepeatingEffect){
+                        if(activeEffect.getKey().getCostType().equals(PropertyCostType.AUTOMATIC)){
                             Player p = Bukkit.getServer().getPlayer(playerActiveEffects.getKey());
                             
                             if(p != null){
-                                ItemPropertyRepeatingEffect ripre = (ItemPropertyRepeatingEffect) activeEffect.getKey();
-
-                                if(runCount % (int) ripre.getCost() == 0){
-                                    ripre.applyEffectToPlayer(p,activeEffect.getValue());
+                                if(runCount % (int) activeEffect.getKey().getCost() == 0){
+                                    activeEffect.getKey().applyEffectToPlayer(p,activeEffect.getValue());
                                 }
                             }
                         }
@@ -176,9 +173,7 @@ public final class PropertyManager {
                     if(rip.getCostType() == PropertyCostType.AUTOMATIC || rip.getCostType() == PropertyCostType.PASSIVE){
                         activeProperties.remove(rip);
                         
-                        if(rip instanceof ItemPropertyRepeatingEffect){
-                            ((ItemPropertyRepeatingEffect) rip).removeEffectFromPlayer(p);
-                        }
+                        rip.removeEffectFromPlayer(p);
                     }
                 }
                 

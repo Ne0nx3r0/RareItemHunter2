@@ -1,12 +1,12 @@
 package com.ne0nx3r0.rih.property.properties;
 
-import com.ne0nx3r0.rih.property.ItemPropertyRepeatingEffect;
+import com.ne0nx3r0.rih.property.RareItemProperty;
 import com.ne0nx3r0.rih.property.PropertyCostType;
 import com.ne0nx3r0.rih.property.PropertyType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class Durability extends ItemPropertyRepeatingEffect
+public class Durability extends RareItemProperty
 {
     
     public Durability()

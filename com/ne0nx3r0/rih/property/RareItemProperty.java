@@ -16,7 +16,7 @@ public class RareItemProperty {
     private double cost;
     private final int maxLevel;
     private List<String> recipe;
-    
+
     public RareItemProperty(int id,String name,String description,PropertyCostType defaultCostType,double defaultCost,int maxLevel){
         this.id = id;
         this.name = name;
@@ -62,7 +62,11 @@ public class RareItemProperty {
     public boolean onInteract(PlayerInteractEvent e, int level){return false;}
 
     public boolean onInteractEntity(PlayerInteractEntityEvent e, int level){return false;}
-
+    
+    public void applyEffectToPlayer(Player p,int level){}
+    
+    public void removeEffectFromPlayer(Player p){}
+    
 // The reason player is specified is because arrow events are forwarded here
 // and damager requires some extra work to grab from those events
     public boolean onDamageOther(EntityDamageByEntityEvent e, Player attacker, int level){return false;}

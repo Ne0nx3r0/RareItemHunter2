@@ -1,12 +1,12 @@
 package com.ne0nx3r0.rih.property.properties;
 
-import com.ne0nx3r0.rih.property.ItemPropertyRepeatingEffect;
+import com.ne0nx3r0.rih.property.RareItemProperty;
 import com.ne0nx3r0.rih.property.PropertyCostType;
 import com.ne0nx3r0.rih.property.PropertyType;
 import com.ne0nx3r0.util.ParticleEffect;
 import org.bukkit.entity.Player;
 
-public class RainbowFuryFX extends ItemPropertyRepeatingEffect
+public class RainbowFuryFX extends RareItemProperty
 {
     public RainbowFuryFX()
     {

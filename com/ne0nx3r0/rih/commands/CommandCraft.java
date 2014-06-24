@@ -14,7 +14,7 @@ class CommandCraft extends RareItemHunterCommand{
     public CommandCraft(RareItemHunterPlugin plugin) {
         super(
             "craft",
-            "[vintage] <propertyName> <level>",
+            "[vintage|artifact] <propertyName> <level>",
             "Add a rare item property to an item",
             "rih.admin.craft"
         );
