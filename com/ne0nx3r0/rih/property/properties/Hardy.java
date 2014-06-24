@@ -8,6 +8,6 @@ public class Hardy extends RareItemProperty
 {
     public Hardy()
     {
-        super(PropertyType.HARDY.ordinal(),"Hardy","-1 damage / lvl",PropertyCostType.PASSIVE,0,3);
+        super(PropertyType.HARDY.ordinal(),"Hardy","While worn as armor or a helmet decreases damage by -1 per lvl",PropertyCostType.PASSIVE,0,3);
     }
 }

@@ -11,7 +11,7 @@ public class Strength extends RareItemProperty
         super(
             PropertyType.STRENGTH.ordinal(),
             "Strength",
-            "+1 damage/lvl",
+            "While worn as armor or a helmet adds 1 damage per lvl",
             PropertyCostType.PASSIVE,
             0,
             3
