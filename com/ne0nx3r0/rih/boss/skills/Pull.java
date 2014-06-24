@@ -12,7 +12,7 @@ public class Pull extends BossSkillTemplate
     
     @Override    
     public boolean activateOnHitSkill(LivingEntity bossEntity, Boss boss, LivingEntity target, int level, int damageTaken){
-        bossEntity.teleport(target);
+        target.teleport(bossEntity);
 
         return true;
     }

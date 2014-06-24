@@ -21,7 +21,7 @@ Bobcat:
 Fisherman:
   type: zombie
   hp: 1800
-  attackPower: 18
+  attackPower: 14
   speed: 6
   difficulty: 5
   onHit:
@@ -73,14 +73,15 @@ Cucco:
     - every 10 seconds Pull level 5 
     
 "Frosty":
-  speed: 4
+  speed: 5
   type: snowman
   hp: 1000
   attackPower: 10
   difficulty: 5
   onHit:
-    - 50% chance Freeze level 5 
+#    - 50% chance Freeze level 5 
     - 50% chance Shiver level 1
+    - 50% chance Spawn Silverfish level 2 
   onHeartbeat:
     - every 10 seconds Pull level 5
     
@@ -96,7 +97,7 @@ Cucco:
   onHeartbeat:
     - every 10 seconds Pull level 5
     
-"Laputa":
+"Sky Guardian":
     hp: 2000
     speed: 3.5
     type: irongolem

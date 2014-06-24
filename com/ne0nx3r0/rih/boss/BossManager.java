@@ -262,13 +262,16 @@ public class BossManager {
     public Location getClosestBossOrEggTo(Location compassLocation) {
         Location lClosest = null;
         
-        int closestDistance = -1;
+        double closestDistanceSquared = -1;
      
         for(BossEgg egg : this.bossEggs){
-            if(egg.getLocation().getWorld().equals(compassLocation.getWorld())
-            && (compassLocation.distanceSquared(egg.getLocation()) < closestDistance
-            || closestDistance == -1)){
-                lClosest = egg.getLocation();
+            if(egg.getLocation().getWorld().equals(compassLocation.getWorld())){
+                double tempDistanceSquared = compassLocation.distanceSquared(egg.getLocation());
+                
+                if(tempDistanceSquared < closestDistanceSquared || closestDistanceSquared == -1){
+                    closestDistanceSquared = tempDistanceSquared;
+                    lClosest = egg.getLocation();
+                }
             }
         }
         

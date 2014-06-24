@@ -65,7 +65,7 @@ public class Boss {
         Integer damageDone = this.playerDamage.get(playerName);
         
         if(damageDone != null){
-            this.playerDamage.put(playerName,damageAmount);
+            this.playerDamage.put(playerName,damageDone+damageAmount);
         }
         else
         {

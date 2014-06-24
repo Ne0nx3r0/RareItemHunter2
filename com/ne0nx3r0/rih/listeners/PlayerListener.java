@@ -7,6 +7,7 @@ import com.ne0nx3r0.rih.gui.GuiManager;
 import com.ne0nx3r0.rih.property.PropertyManager;
 import com.ne0nx3r0.rih.property.PropertyType;
 import com.ne0nx3r0.rih.property.RareItemProperty;
+import com.ne0nx3r0.rih.property.properties.Rage;
 import com.ne0nx3r0.rih.recipe.RecipeManager;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -182,6 +183,13 @@ public class PlayerListener implements Listener {
                 for(Entry<RareItemProperty, Integer> entry : playerActiveEffects.entrySet()){
                     if(entry.getKey().getID() == PropertyType.STRENGTH.ordinal()){
                         e.setDamage(e.getDamage()+entry.getValue());
+                    }
+                    else if(entry.getKey().getID() == PropertyType.RAGE.ordinal()){
+                        e.setDamage(((Rage) entry.getKey()).getModifiedDamage(
+                                entry.getValue(), 
+                                pAttacker.getHealth(), 
+                                e.getDamage()
+                        ));
                     }
                 }
             }

@@ -169,7 +169,7 @@ public class BossPersistence {
                 ymlConfig.set("eggs", eggs);
                 
                 for(Boss boss : plugin.getBossManager().getAllActiveBosses()){
-                    String sUuid = boss.getEntity().toString();
+                    String sUuid = boss.getEntity().getUniqueId().toString();
                     
                     ymlConfig.set(sUuid+".template", boss.getTemplate().getName());
                     ymlConfig.set(sUuid+".currentHealth", boss.getHealth());

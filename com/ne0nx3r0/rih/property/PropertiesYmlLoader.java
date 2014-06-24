@@ -49,6 +49,7 @@ class PropertiesYmlLoader {
         this.addPropertyToAllProperties(new PaintWool());
         this.addPropertyToAllProperties(new Poison());
         this.addPropertyToAllProperties(new Pull());
+        this.addPropertyToAllProperties(new Rage());
         this.addPropertyToAllProperties(new RainbowFuryFX());
         this.addPropertyToAllProperties(new Regeneration());
         this.addPropertyToAllProperties(new RepairItem());

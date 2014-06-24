@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
-import net.minecraft.server.v1_7_R3.Material;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 
@@ -54,6 +54,8 @@ class BossGarbageCollection {
                 List<BossEgg> removeThese = new ArrayList<>();
                 
                 for(BossEgg egg : bm.getAllActiveEggs()){
+                    egg.getLocation().getChunk().load();
+                    
                     if(!egg.getLocation().getBlock().getType().equals(Material.DRAGON_EGG)){
                         removeThese.add(egg);
                     }
