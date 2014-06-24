@@ -36,7 +36,7 @@ public class DimensionDoor extends BossSkillTemplate
             return false;
         }
         
-        int distance = 60^2;
+        int distance = 90^2;
         int warped = 0;
         
         Location bossLocation = bossEntity.getLocation();
