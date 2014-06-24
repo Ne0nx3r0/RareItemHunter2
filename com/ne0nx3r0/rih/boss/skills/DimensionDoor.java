@@ -63,6 +63,8 @@ public class DimensionDoor extends BossSkillTemplate
             bossHandle.world = ((CraftWorld) worldTo).getHandle();
             bossHandle.setLocation(bossTo.getX(), bossTo.getY()+1, bossTo.getZ(), bossTo.getYaw(), bossTo.getPitch());
             bossHandle.world.addEntity(bossHandle);
+  
+            boss.setEntity((LivingEntity) bossHandle.getBukkitEntity());
             
             return true;
         }
