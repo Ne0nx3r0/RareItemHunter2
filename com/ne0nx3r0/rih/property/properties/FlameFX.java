@@ -14,7 +14,7 @@ public class FlameFX extends ItemPropertyRepeatingEffect
         super(
             PropertyType.FLAME_FX.ordinal(),
             "Flame FX",
-            "Shows a visual flame effect around you",
+            "While worn as armor or a helmet shows a visual flame effect around you",
             PropertyCostType.AUTOMATIC,
             1,
             1

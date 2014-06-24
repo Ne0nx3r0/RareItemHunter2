@@ -8,6 +8,6 @@ public class WaterBreathing extends RareItemProperty
 {
     public WaterBreathing()
     {
-        super(PropertyType.WATER_BREATHING.ordinal(),"Water Breathing","Allows underwater breathing",PropertyCostType.PASSIVE,0,1);
+        super(PropertyType.WATER_BREATHING.ordinal(),"Water Breathing","While worn as armor or a helmet allows underwater breathing",PropertyCostType.PASSIVE,0,1);
     }
 }

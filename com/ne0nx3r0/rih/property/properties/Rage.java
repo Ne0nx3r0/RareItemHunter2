@@ -12,7 +12,7 @@ public class Rage extends RareItemProperty
         super(
             PropertyType.RAGE.ordinal(),
             "Rage",
-            "While worn as armor or a helmet damage is decreased at full health, but heavily increased at lower health levels. Higher levels modify damage even more",
+            "While worn as armor or a helmet damage is decreased at high health, but heavily increased at low health. Higher levels modify damage even more",
             PropertyCostType.PASSIVE,
             0,
             5

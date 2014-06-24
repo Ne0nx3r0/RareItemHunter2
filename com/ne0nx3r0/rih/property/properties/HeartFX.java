@@ -13,7 +13,7 @@ public class HeartFX extends ItemPropertyRepeatingEffect
         super(
             PropertyType.HEARTS_FX.ordinal(),
             "Hearts FX",
-            "Shows a visual hearts effect around you",
+            "While worn as armor or a helmet shows a visual hearts effect around you",
             PropertyCostType.AUTOMATIC,
             3,
             1

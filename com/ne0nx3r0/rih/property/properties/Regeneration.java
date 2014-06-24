@@ -13,7 +13,7 @@ public class Regeneration extends ItemPropertyRepeatingEffect
         super(
             PropertyType.REGENERATION.ordinal(),
             "Regeneration",
-            "Regenerate 1 HP / lvl every 5 seconds",
+            "While worn as armor or a helmet regenerates 1 HP per lvl every 5 seconds",
             PropertyCostType.AUTOMATIC,
             5,
             5

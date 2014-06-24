@@ -14,7 +14,7 @@ public class MermaidsGift extends ItemPropertyRepeatingEffect{
         super(
             PropertyType.MERMAIDS_GIFT.ordinal(),
             "Mermaid's Gift",
-            "Allows for better control and faster movement while underwater",
+            "While worn as armor or a helmet allows for better control and faster movement while underwater",
             PropertyCostType.AUTOMATIC,
             1,
             1

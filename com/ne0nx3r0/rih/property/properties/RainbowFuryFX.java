@@ -13,7 +13,7 @@ public class RainbowFuryFX extends ItemPropertyRepeatingEffect
         super(
             PropertyType.RAINBOW_FURY_FX.ordinal(),
             "Rainbow Fury FX",
-            "Shows a smattering of colored explosions",
+            "While worn as armor or a helmet shows a smattering of colored explosions",
             PropertyCostType.AUTOMATIC,
             3,
             1

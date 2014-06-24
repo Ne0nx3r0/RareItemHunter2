@@ -8,6 +8,6 @@ public class ToughLove extends ItemPropertyRepeatingEffect
 {
     public ToughLove()
     {
-        super(PropertyType.TOUGH_LOVE.ordinal(),"Tough Love","(VFX) Hearts when harmed",PropertyCostType.PASSIVE,0,1);
+        super(PropertyType.TOUGH_LOVE.ordinal(),"Tough Love","While worn as armor or a helmet causes a heart effect when harmed",PropertyCostType.PASSIVE,0,1);
     }
 }
