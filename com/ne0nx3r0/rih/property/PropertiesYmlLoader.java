@@ -43,6 +43,7 @@ class PropertiesYmlLoader {
         this.addPropertyToAllProperties(new Haste());
         this.addPropertyToAllProperties(new HeartFX());
         this.addPropertyToAllProperties(new Invisibility());
+        this.addPropertyToAllProperties(new MageFX());
         this.addPropertyToAllProperties(new MagicBag());
         this.addPropertyToAllProperties(new MeltObsidian());
         this.addPropertyToAllProperties(new MermaidsGift());
