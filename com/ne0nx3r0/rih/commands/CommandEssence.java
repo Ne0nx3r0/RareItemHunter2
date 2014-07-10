@@ -42,7 +42,7 @@ class CommandEssence extends RareItemHunterCommand{
             return true;
         }
         else if(args.length == 2){
-            String propertyName = args[1];
+            String propertyName = args[1].replace("_"," ");
             
             RareItemProperty rip = this.plugin.getPropertymanager().getProperty(propertyName);
             
@@ -65,7 +65,7 @@ class CommandEssence extends RareItemHunterCommand{
             return true;
         }        
         else if(args.length == 3){
-            String propertyName = args[1];
+            String propertyName = args[1].replace("_"," ");
             String playerName = args[2];
             
             Player p = this.plugin.getServer().getPlayer(playerName);
