@@ -150,7 +150,7 @@ public class BossListener implements Listener {
         
         this.handleBossDamage((LivingEntity) e.getEntity(),boss, pAttacker, e.getDamage());
         
-        e.setDamage(1d);
+        e.setDamage(0d);
         
         LivingEntity lent = (LivingEntity) e.getEntity();
         
