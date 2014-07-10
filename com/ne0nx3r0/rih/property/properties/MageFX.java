@@ -15,7 +15,7 @@ public class MageFX extends RareItemProperty
             "Mage FX",
             "While worn as armor or a helmet shows a visual enchantment effect around you",
             PropertyCostType.AUTOMATIC,
-            2,
+            3,
             1
         );
     }
@@ -24,7 +24,7 @@ public class MageFX extends RareItemProperty
     public void applyEffectToPlayer(Player player, int level)
     {	
         ParticleEffect.ENCHANTMENT_TABLE.display(
-            player.getLocation().add(0,1,0), //center
+            player.getLocation().add(0,2,0), //center
             0.25F, //offsetX
             0.25F, //offsetY
             0.25F, //offsetZ
