@@ -19,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -208,5 +209,14 @@ public class PlayerListener implements Listener {
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent e){
         this.propertyManager.onQuit(e.getPlayer());
+    }
+    
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerPlaceRareItem(BlockPlaceEvent e){
+        Map<RareItemProperty, Integer> properties = this.recipeManager.getProperties(e.getItemInHand());
+        
+        if(properties != null && !properties.isEmpty()){
+            e.setCancelled(true);
+        }
     }
 }
