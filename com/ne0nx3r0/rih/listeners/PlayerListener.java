@@ -78,6 +78,9 @@ public class PlayerListener implements Listener {
                     else if(entry.getKey().getID() == PropertyType.HARDY.ordinal()){
                         e.setDamage(e.getDamage()-entry.getValue());
                     }
+                    else if(entry.getKey().getID() == PropertyType.TOUGH_LOVE.ordinal()){
+                        entry.getKey().applyEffectToPlayer(p, entry.getValue());
+                    }
                 }
             }
         }
