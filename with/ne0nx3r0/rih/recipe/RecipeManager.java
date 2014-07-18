@@ -22,7 +22,7 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class RecipeManager {
-    private final String ESSENCE_NAME = ChatColor.GREEN+"Rare Essence";
+    private final String ESSENCE_NAME = ChatColor.GREEN+Essenia Rara";
     
     private final String ESSENCE_DESCRIPTION_0 = ChatColor.DARK_GRAY.toString()+ChatColor.DARK_GRAY+ChatColor.DARK_GRAY+"The essence of a fallen boss";
     private final String ESSENCE_DESCRIPTION_1 = ChatColor.DARK_GRAY+"View recipes with: "+ChatColor.GRAY+"/ri wi";
@@ -40,7 +40,7 @@ public class RecipeManager {
 
         this.compass = new ItemStack(Material.COMPASS);
         ItemMeta itemMeta = compass.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.DARK_GREEN+"Legendary Compass");
+        itemMeta.setDisplayName(ChatColor.DARK_GREEN+"Compass Legendario");
         
         List<String> lore = new ArrayList<>();
         
@@ -85,7 +85,7 @@ public class RecipeManager {
         return false;
     }
 
-    private final String PROPERTY_HEADER = ChatColor.DARK_PURPLE+"Rare Item";
+    private final String PROPERTY_HEADER = ChatColor.DARK_PURPLE+"Item Raro";
     private final String PROPERTY_HEADER_VINTAGE = ChatColor.LIGHT_PURPLE+"Vintage Rare Item";
     private final String PROPERTY_LINE_PREFIX = ChatColor.DARK_GRAY+"Property: "+ChatColor.GREEN;
     private final String PROPERTY_LINE = PROPERTY_LINE_PREFIX+"%s "+ChatColor.GREEN+"%s "+ChatColor.BLACK+"%s";
