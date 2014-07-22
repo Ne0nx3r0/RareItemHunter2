@@ -76,7 +76,6 @@ public class BossListener implements Listener {
         }
     }
     
-    
     // Priority is primarily meant to let other plugins adjust damage
     @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled = true)
     public void onBossDamaged(EntityDamageEvent e)
@@ -87,35 +86,32 @@ public class BossListener implements Listener {
             return;
         }
         
-        if (e.getEntity() != null && this.bossManager.isBoss(e.getEntity()))
-        {
-            switch(e.getCause()){
-                case SUFFOCATION:
-                case CONTACT:
-                case FIRE:
-                case FIRE_TICK:
-                case MELTING:
-                case LAVA:
-                case FALL:
-                case DROWNING:
-                case FALLING_BLOCK:
-                    e.setCancelled(true);
-                    return;
-                // caught already by damagedbyentity
-                case ENTITY_ATTACK:
-                case PROJECTILE:
-                case MAGIC:
-                    return;
-            }
+        switch(e.getCause()){
+            case SUFFOCATION:
+            case CONTACT:
+            case FIRE:
+            case FIRE_TICK:
+            case MELTING:
+            case LAVA:
+            case FALL:
+            case DROWNING:
+            case FALLING_BLOCK:
+                e.setCancelled(true);
+                return;
+            // caught already by damagedbyentity
+            case ENTITY_ATTACK:
+            case PROJECTILE:
+            case MAGIC:
+                return;
         }
 
-        this.handleBossDamage((LivingEntity) e.getEntity(),boss, null, e.getDamage());
-
-        e.setDamage(1d);
+        e.setDamage(0d);
 
         LivingEntity lent = (LivingEntity) e.getEntity();
 
         lent.setHealth(lent.getMaxHealth());
+        
+        this.handleBossDamage((LivingEntity) e.getEntity(),boss, null, e.getDamage());
     }
     
     // Priority is primarily meant to let other plugins adjust damage
@@ -149,6 +145,10 @@ public class BossListener implements Listener {
         }
         
         this.handleBossDamage((LivingEntity) e.getEntity(),boss, pAttacker, e.getDamage());
+        
+        if(boss.getHealth() > 0){
+            e.setCancelled(true);
+        }
         
         e.setDamage(0d);
         

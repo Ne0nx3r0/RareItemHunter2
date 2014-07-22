@@ -133,6 +133,8 @@ public class RecipeManager {
                 }
                 else if(isAddPropertiesTo == null){
                     isAddPropertiesTo = is.clone();
+                    
+                    isAddPropertiesTo.setAmount(1);
                 }
                 else {
                     return null;

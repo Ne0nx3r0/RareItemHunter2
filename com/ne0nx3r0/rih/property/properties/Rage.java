@@ -3,7 +3,6 @@ package com.ne0nx3r0.rih.property.properties;
 import com.ne0nx3r0.rih.property.PropertyCostType;
 import com.ne0nx3r0.rih.property.PropertyType;
 import com.ne0nx3r0.rih.property.RareItemProperty;
-import org.bukkit.Bukkit;
 
 public class Rage extends RareItemProperty
 {
@@ -33,13 +32,6 @@ public class Rage extends RareItemProperty
         if(newDamage < 1){
             newDamage = 1;
         }
-
-        Bukkit.getPlayer("Ne0nx3r0").sendMessage(String.format("level: %s hp: %s damage: %s newDamage: %s", new Object[]{
-            level,
-            hp,
-            damage,
-            newDamage
-        }));
         
         return newDamage;
     }

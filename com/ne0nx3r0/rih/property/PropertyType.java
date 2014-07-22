@@ -49,5 +49,6 @@ public enum PropertyType {
     RAINBOW_FURY_FX,
     MERMAIDS_GIFT,
     RAGE,
-    MAGE_FX
+    MAGE_FX,
+    FIREWORKS_FX
 }

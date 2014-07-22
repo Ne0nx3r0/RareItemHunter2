@@ -35,6 +35,7 @@ class PropertiesYmlLoader {
         this.addPropertyToAllProperties(new Fertilize());
         this.addPropertyToAllProperties(new FireHandling());
         this.addPropertyToAllProperties(new FireResistance());
+        this.addPropertyToAllProperties(new FireworksFX());
         this.addPropertyToAllProperties(new FlameFX());
         this.addPropertyToAllProperties(new GreaterBurst());
         this.addPropertyToAllProperties(new GrowTree());

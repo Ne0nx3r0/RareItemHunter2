@@ -1,6 +1,6 @@
 name: RareItemHunter2
 main: com.ne0nx3r0.rih.RareItemHunterPlugin
-version: '2.6.22a'
+version: '2.6.24b'
 load: STARTUP
 database: false
 softdepend: [Essentials]

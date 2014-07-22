@@ -21,7 +21,7 @@ public class Burst extends RareItemProperty
     public Burst()
     {
         super(
-            PropertyType.DURABILITY.ordinal(),
+            PropertyType.BURST.ordinal(),
             "Burst",
             "Pushes a clicked target away",
             PropertyCostType.FOOD,

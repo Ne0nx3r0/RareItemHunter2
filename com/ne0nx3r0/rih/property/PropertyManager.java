@@ -40,6 +40,8 @@ public final class PropertyManager {
         
         this.cooldowns = new HashMap<>();
         
+        final PropertyManager pm = this;
+        
         plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable(){
             private int runCount = 1;
             
@@ -71,6 +73,21 @@ public final class PropertyManager {
                 
                 if(runCount > 100){
                     runCount = 1;
+                    
+                    for(Entry<UUID, Map<RareItemProperty, Integer>> playerActiveEffects : activeEffects.entrySet()){
+                        playerActiveEffects.getValue().clear();
+                    }
+                    
+                    for(Entry<UUID, Map<RareItemProperty, Integer>> playerActiveEffects : activeEffects.entrySet()){
+                        Player p = Bukkit.getServer().getPlayer(playerActiveEffects.getKey());
+                        
+                        
+                        for(ItemStack is : p.getInventory().getArmorContents()){
+                            if(is != null && is.getType() != Material.AIR){
+                                pm.onEquip(p, is);
+                            }
+                        }
+                    }
                 }
                 
                 for(Entry<UUID, Map<RareItemProperty, Integer>> playerActiveEffects : activeEffects.entrySet()){
@@ -88,9 +105,6 @@ public final class PropertyManager {
                 }
             }
         }, 20, 20);
-        
-        // kludgemaster flex
-        final PropertyManager pm = this;
         
         plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable(){
             @Override

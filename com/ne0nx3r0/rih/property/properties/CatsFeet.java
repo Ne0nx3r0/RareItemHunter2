@@ -15,7 +15,7 @@ public class CatsFeet extends RareItemProperty
     public CatsFeet()
     {
         super(
-            PropertyType.DURABILITY.ordinal(),
+            PropertyType.CATS_FEET.ordinal(),
             "Cat's Feet",
             "Lets you or a clicked target jump higher for 60 seconds per level",
             PropertyCostType.LEVEL,

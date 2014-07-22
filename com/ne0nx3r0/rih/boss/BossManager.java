@@ -154,10 +154,8 @@ public class BossManager {
     }
 
     public boolean isBoss(org.bukkit.entity.Entity entity) {
-        UUID uuid = entity.getUniqueId();
-        
         for(Boss boss : this.activeBosses){
-            if(boss.getEntity().equals(uuid)){
+            if(boss.getEntity().equals(entity)){
                 return true;
             }
         }

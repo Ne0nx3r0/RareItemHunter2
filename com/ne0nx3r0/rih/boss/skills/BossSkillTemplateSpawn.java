@@ -1,6 +1,7 @@
 package com.ne0nx3r0.rih.boss.skills;
 
 import com.ne0nx3r0.rih.boss.Boss;
+import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
@@ -27,9 +28,11 @@ public class BossSkillTemplateSpawn extends BossSkillTemplate
     public void spawnMobs(Location l,int level){        
         World w = l.getWorld();
         
+        Random r = new Random();
+        
         for(int i=0;i<level;i++)
         {
-            w.spawnEntity(l, this.entityType);
+            w.spawnEntity(l.add(r.nextInt(6)-3, r.nextInt(2), r.nextInt(6)-3), this.entityType);
         }
     }
 }
