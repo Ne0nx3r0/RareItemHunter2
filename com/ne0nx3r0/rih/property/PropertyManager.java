@@ -257,7 +257,46 @@ public final class PropertyManager {
 
             if(propertyLevels != null && !propertyLevels.isEmpty()){
                 for(Entry<RareItemProperty,Integer> propertyLevel : propertyLevels.entrySet()){
-                    propertyLevel.getKey().onInteractEntity(e, propertyLevel.getValue());
+                    RareItemProperty rip = propertyLevel.getKey();
+                    
+                    if(this.hasCost(e.getPlayer(),rip)){                 
+                        if(rip.onInteractEntity(e, propertyLevel.getValue())){
+                            this.used(e.getPlayer(),rip);
+                        }
+                    }
+                    else {
+                        String thingNeeded = "";
+                        
+                        switch(rip.getCostType()){
+                            case FOOD:
+                                thingNeeded = rip.getCost()+" food";
+                                break;
+                            case LEVEL: 
+                                thingNeeded = rip.getCost()+" level"+(rip.getCost()>1?"s":"");
+                                break;
+                            case HEALTH: 
+                                thingNeeded = rip.getCost()+" health";
+                                break;
+                            case MONEY: 
+                                thingNeeded = this.economy.format(rip.getCost());
+                                break;
+                            case COOLDOWN: 
+                                int seconds = (int) ((this.cooldowns.get(e.getPlayer().getUniqueId()).get(rip) - System.currentTimeMillis()) / 1000);
+                                
+                                if(seconds < 1){
+                                    seconds = 1;
+                                }
+                                
+                                thingNeeded = "to wait "+seconds+" seconds";
+                                break;
+                            case AUTOMATIC: 
+                                return;
+                            case PASSIVE: 
+                                return;
+                        }
+                        
+                        e.getPlayer().sendMessage(ChatColor.RED+"You need "+thingNeeded+" to use "+rip.getName()+"!");
+                    }
                 }
             }
         }
