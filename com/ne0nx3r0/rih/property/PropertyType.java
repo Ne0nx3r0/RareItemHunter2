@@ -50,5 +50,6 @@ public enum PropertyType {
     MERMAIDS_GIFT,
     RAGE,
     MAGE_FX,
-    FIREWORKS_FX
+    FIREWORKS_FX,
+    WITCH_FX
 }

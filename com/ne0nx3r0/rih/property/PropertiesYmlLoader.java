@@ -70,6 +70,7 @@ class PropertiesYmlLoader {
         this.addPropertyToAllProperties(new ToughLove());
         this.addPropertyToAllProperties(new VampiricRegeneration());
         this.addPropertyToAllProperties(new WaterBreathing());
+        this.addPropertyToAllProperties(new WitchFX());
         this.addPropertyToAllProperties(new Weaken());
     }
     

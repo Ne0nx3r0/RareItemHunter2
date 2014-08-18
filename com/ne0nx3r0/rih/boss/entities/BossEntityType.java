@@ -7,5 +7,6 @@ public enum BossEntityType {
     PIG,
     ENDERMAN,
     SNOWMAN,
-    IRONGOLEM
+    IRONGOLEM,
+    WITHER
 }

@@ -1,5 +1,6 @@
 package com.ne0nx3r0.rih.gui;
 
+import com.ne0nx3r0.badges.LonelyBadgesAPI;
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.property.RareItemProperty;
 import com.ne0nx3r0.util.ItemStackConvertorRI2;
@@ -367,6 +368,18 @@ public class GuiManager {
                             }
                         
                         });
+                        
+                        // adjust rare item property
+                        LonelyBadgesAPI lbapi = this.plugin.getLonelyBadgesAPI();
+
+                        if(lbapi != null){
+                            try{
+                                lbapi.adjustGlobalBadgeProperty(e.getWhoClicked().getUniqueId(),this.plugin.RIH_ITEMS_CRAFTED,1);
+                            }
+                            catch(Exception ex){
+                                // Just in case...
+                            }
+                        }
                     }
                 }                
         }
@@ -374,7 +387,7 @@ public class GuiManager {
 
     // Surrounded (in any order) by the 
     public boolean isLegendaryShrineBlock(Block block) {
-        if(block.getType().equals(Material.HOPPER)){
+        if(block.getType().equals(Material.ENDER_PORTAL_FRAME)){
             boolean[] hasFaces = new boolean[4];
 
             for(BlockFace bf : new BlockFace[]{BlockFace.NORTH,BlockFace.EAST,BlockFace.SOUTH,BlockFace.WEST}){

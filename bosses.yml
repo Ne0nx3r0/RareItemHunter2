@@ -17,7 +17,20 @@ Bobcat:
 # Passive abilities the boss has
   passiveSkills:
     - immunityToArrows
-
+    
+"Holy Crap A Wither":
+  type: wither
+  hp: 8000
+  attackPower: 16
+  speed: 10
+  difficulty: 12
+  onHit:
+    - 30% chance LightningStorm level 5 
+    - 30% chance Pull level 5
+    - 30% chance PoisonDart level 2
+    - 30% chance Disorient level 2
+    - 30% chance Blink level 2
+  
 Fisherman:
   type: zombie
   hp: 1800

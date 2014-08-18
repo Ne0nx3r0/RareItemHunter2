@@ -5,9 +5,9 @@ import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.boss.egg.BossEgg;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 import net.minecraft.server.v1_7_R3.Entity;
 import net.minecraft.server.v1_7_R3.EntityLiving;
+import net.minecraft.server.v1_7_R3.EntityWither;
 import net.minecraft.server.v1_7_R3.GenericAttributes;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -108,6 +108,8 @@ public class BossManager {
         
         lent.setCustomName(template.getName());
         
+        lent.setMaxHealth(10000);
+        
         return boss;
     }
     
@@ -138,6 +140,9 @@ public class BossManager {
                 break;
             case IRONGOLEM: 
                 bossEntity = new BossEntityIronGolem(nmsWorld);
+                break;
+            case WITHER: 
+                bossEntity = new EntityWither(nmsWorld);
                 break;
         }
         

@@ -2,6 +2,7 @@ package com.ne0nx3r0.rih.listeners;
 
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.User;
+import com.ne0nx3r0.badges.LonelyBadgesAPI;
 import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.boss.Boss;
 import com.ne0nx3r0.rih.boss.BossManager;
@@ -79,82 +80,69 @@ public class BossListener implements Listener {
     // Priority is primarily meant to let other plugins adjust damage
     @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled = true)
     public void onBossDamaged(EntityDamageEvent e)
-    {
-        Boss boss = this.bossManager.getBoss(e.getEntity());
-        
-        if(boss == null){
+    {        
+        if(e.getCause() == ENTITY_ATTACK || e.getCause() == PROJECTILE || e.getCause() == MAGIC){
             return;
         }
         
-        switch(e.getCause()){
-            case SUFFOCATION:
-            case CONTACT:
-            case FIRE:
-            case FIRE_TICK:
-            case MELTING:
-            case LAVA:
-            case FALL:
-            case DROWNING:
-            case FALLING_BLOCK:
-                e.setCancelled(true);
-                return;
-            // caught already by damagedbyentity
-            case ENTITY_ATTACK:
-            case PROJECTILE:
-            case MAGIC:
-                return;
-        }
-
-        e.setDamage(0d);
-
-        LivingEntity lent = (LivingEntity) e.getEntity();
-
-        lent.setHealth(lent.getMaxHealth());
+        Boss boss = this.bossManager.getBoss(e.getEntity());
         
-        this.handleBossDamage((LivingEntity) e.getEntity(),boss, null, e.getDamage());
+        if(boss != null){
+            switch(e.getCause()){
+                // boss is immune to these
+                case SUFFOCATION:
+                case CONTACT:
+                case FIRE:
+                case FIRE_TICK:
+                case WITHER:
+                case MELTING:
+                case LAVA:
+                case FALL:
+                case DROWNING:
+                case FALLING_BLOCK:
+                case STARVATION:            
+                    e.setCancelled(true);
+                    return;
+            }     
+
+            LivingEntity lent = (LivingEntity) e.getEntity();
+
+            lent.setHealth(lent.getMaxHealth());
+
+            this.handleBossDamage((LivingEntity) e.getEntity(),boss, null, e.getDamage());
+        }
     }
     
     // Priority is primarily meant to let other plugins adjust damage
     @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
-    public void onBossDamagedByEntity(EntityDamageByEntityEvent e)
-    {
-        if(e.getCause() != ENTITY_ATTACK 
-        && e.getCause() != PROJECTILE 
-        && e.getCause() != MAGIC){
-            return;
-        }
-        
-        Boss boss = this.bossManager.getBoss(e.getEntity());
-        
-        if(boss == null){
-            return;
-        }
-        
-        Entity eAttacker = e.getDamager();
-        Player pAttacker = null;
+    public void onBossDamagedByEntity(EntityDamageByEntityEvent e){
+        if(e.getCause() == ENTITY_ATTACK 
+        || e.getCause() == PROJECTILE 
+        || e.getCause() == MAGIC){
+            Boss boss = this.bossManager.getBoss(e.getEntity());
 
-        if(eAttacker instanceof Player){
-           pAttacker = (Player) eAttacker;
-        }
-        else if(eAttacker instanceof Projectile){
-            LivingEntity leShooter = ((Projectile) eAttacker).getShooter();
-            
-            if(leShooter instanceof Player){
-                pAttacker = (Player) leShooter;
+            if(boss != null){
+                Entity eAttacker = e.getDamager();
+                Player pAttacker = null;
+
+                if(eAttacker instanceof Player){
+                   pAttacker = (Player) eAttacker;
+                }
+                else if(eAttacker instanceof Projectile){
+                    LivingEntity leShooter = ((Projectile) eAttacker).getShooter();
+
+                    if(leShooter instanceof Player){
+                        pAttacker = (Player) leShooter;
+                    }
+                }
+
+                LivingEntity lent = (LivingEntity) e.getEntity();
+
+                lent.setHealth(lent.getMaxHealth());
+                
+                this.handleBossDamage((LivingEntity) e.getEntity(),boss, pAttacker, e.getDamage());
             }
-        }
-        
-        this.handleBossDamage((LivingEntity) e.getEntity(),boss, pAttacker, e.getDamage());
-        
-        if(boss.getHealth() > 0){
-            e.setCancelled(true);
-        }
-        
-        e.setDamage(0d);
-        
-        LivingEntity lent = (LivingEntity) e.getEntity();
-        
-        lent.setHealth(lent.getMaxHealth());
+        }        
     }
     
     public void handleBossDamage(LivingEntity eBoss,Boss boss,Player attacker,double damageAmount){
@@ -234,7 +222,7 @@ public class BossListener implements Listener {
 
             this.bossManager.removeBoss(boss);
             
-            eBoss.damage(eBoss.getHealth()+100);
+            eBoss.damage(eBoss.getHealth()+10000);
             
 // Prepare a list of players close enough to get an essence
             RandomCollection<Player> randomPlayer = new RandomCollection();
@@ -268,11 +256,34 @@ public class BossListener implements Listener {
             
             StringBuilder playerDamages = new StringBuilder();
             
+            int currentMostDamage = 0;
+            String sCurrentMostDamage = null;
+            
             for(Map.Entry<String, Integer> entry : boss.getPlayersDamageDone().entrySet()){
                 playerDamages.append(", ").append(entry.getKey()).append("(").append(entry.getValue()).append(")");
+                
+                if(entry.getValue() > currentMostDamage){
+                    currentMostDamage = entry.getValue();
+                    sCurrentMostDamage = entry.getKey();
+                }
             }
 
             plugin.getServer().broadcastMessage("Player damage to boss: "+playerDamages.substring(2));
+                      
+            Player pMostDamage = this.plugin.getServer().getPlayer(sCurrentMostDamage);
+
+            if(pMostDamage != null){
+                LonelyBadgesAPI lbapi = this.plugin.getLonelyBadgesAPI();
+
+                if(lbapi != null){
+                    try{
+                        lbapi.adjustGlobalBadgeProperty(pMostDamage.getUniqueId(),this.plugin.RIH_MOST_DAMAGE_TO_BOSS,1);
+                    }
+                    catch(Exception ex){
+                        // Just in case...
+                    }
+                }
+            }
             
             return;
         }

@@ -1,6 +1,7 @@
 package com.ne0nx3r0.rih;
 
 import com.earth2me.essentials.Essentials;
+import com.ne0nx3r0.badges.LonelyBadgesAPI;
 import com.ne0nx3r0.rih.boss.spawning.SpawnPointManager;
 import com.ne0nx3r0.rih.listeners.PlayerListener;
 import com.ne0nx3r0.rih.listeners.BossListener;
@@ -27,6 +28,10 @@ public class RareItemHunterPlugin extends JavaPlugin{
     private SpawnPointManager spawnPointManager;
     private Essentials essentials;
     private Economy economy;
+    
+    public final String RIH_ITEMS_CRAFTED = "rih_items_crafted";
+    public final String RIH_MOST_DAMAGE_TO_BOSS = "rih_boss_most_damage";
+    private LonelyBadgesAPI lb;
     
     @Override
     public void onEnable(){
@@ -62,7 +67,17 @@ public class RareItemHunterPlugin extends JavaPlugin{
         this.getCommand("hat").setExecutor(executor);
         
         this.getServer().getPluginManager().registerEvents(new BossListener(this), this);
-        this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);  
+        
+        // Register badge properties
+        LonelyBadgesAPI lb = (LonelyBadgesAPI) this.getServer().getPluginManager().getPlugin("LonelyBadges");
+        
+        if(lb != null && lb.isEnabled()){
+            this.lb = lb;
+            
+            this.lb.registerBadgeProperty(this.RIH_ITEMS_CRAFTED,"# of rare items crafted");
+            this.lb.registerBadgeProperty(this.RIH_MOST_DAMAGE_TO_BOSS,"# of times did the most damage to a boss");
+        }
     }
     
     public BossManager getBossManager(){
@@ -122,5 +137,9 @@ public class RareItemHunterPlugin extends JavaPlugin{
         {
             e.printStackTrace();
         }
+    }
+
+    public LonelyBadgesAPI getLonelyBadgesAPI() {
+        return this.lb;
     }
 }

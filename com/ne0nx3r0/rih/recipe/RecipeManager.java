@@ -181,7 +181,7 @@ public class RecipeManager {
                             Integer currentLevel = propertyLevels.get(rip);
                             
                             if(currentLevel == null){
-                                currentLevel = 1;
+                                currentLevel = 0;
                             }
                             
                             int newLevel = currentLevel + itemPropertyLevel;
