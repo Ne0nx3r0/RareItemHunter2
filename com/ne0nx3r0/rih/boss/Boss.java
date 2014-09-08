@@ -11,6 +11,7 @@ public class Boss {
     private int currentHealth;
     private int kills = 0;
     private final Map<String,Integer> playerDamage;
+    private String hatchedBy;
 
     Boss(LivingEntity entity, BossTemplate template) {
         this.livingEntity = entity;
@@ -25,6 +26,14 @@ public class Boss {
         this.currentHealth = currentHealth;
         this.kills = kills;
         this.playerDamage = playerDamage;
+    }
+    
+    public void setHatchedBy(String playerName){
+        this.hatchedBy = playerName;
+    }
+    
+    public String getHatchedBy(){
+        return this.hatchedBy;
     }
     
     public BossTemplate getTemplate(){

@@ -169,12 +169,14 @@ public class BossPersistence {
                 ymlConfig.set("eggs", eggs);
                 
                 for(Boss boss : plugin.getBossManager().getAllActiveBosses()){
-                    String sUuid = boss.getEntity().getUniqueId().toString();
-                    
-                    ymlConfig.set(sUuid+".template", boss.getTemplate().getName());
-                    ymlConfig.set(sUuid+".currentHealth", boss.getHealth());
-                    ymlConfig.set(sUuid+".kills", boss.getKills());
-                    ymlConfig.set(sUuid+".playerDamage", boss.getPlayersDamageDone());
+                    if(boss.getEntity() != null && !boss.getEntity().isDead()){
+                        String sUuid = boss.getEntity().getUniqueId().toString();
+
+                        ymlConfig.set(sUuid+".template", boss.getTemplate().getName());
+                        ymlConfig.set(sUuid+".currentHealth", boss.getHealth());
+                        ymlConfig.set(sUuid+".kills", boss.getKills());
+                        ymlConfig.set(sUuid+".playerDamage", boss.getPlayersDamageDone());
+                    }
                 }
                 
                 try {

@@ -111,7 +111,7 @@ public class PlayerListener implements Listener {
             this.guiManager.shrineClick(e);
         }
         else if(e.hasBlock()){
-            this.bossManager.hatchEggIfBoss(e.getClickedBlock());
+            this.bossManager.hatchEggIfBoss(e.getClickedBlock(),e.getPlayer().getName());
         }
     }
     

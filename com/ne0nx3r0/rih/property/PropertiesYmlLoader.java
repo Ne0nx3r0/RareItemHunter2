@@ -23,6 +23,7 @@ class PropertiesYmlLoader {
         this.allProperties = new HashMap<>();
 
         this.addPropertyToAllProperties(new Backstab());
+        this.addPropertyToAllProperties(new BlackSmokeFX());
         this.addPropertyToAllProperties(new Blinding());
         this.addPropertyToAllProperties(new BuildersWand());
         this.addPropertyToAllProperties(new Burst());
@@ -48,8 +49,10 @@ class PropertiesYmlLoader {
         this.addPropertyToAllProperties(new MagicBag());
         this.addPropertyToAllProperties(new MeltObsidian());
         this.addPropertyToAllProperties(new MermaidsGift());
+        this.addPropertyToAllProperties(new NerdyFX());
         this.addPropertyToAllProperties(new PaintWool());
         this.addPropertyToAllProperties(new Poison());
+        this.addPropertyToAllProperties(new PortalFX());
         this.addPropertyToAllProperties(new Pull());
         this.addPropertyToAllProperties(new Rage());
         this.addPropertyToAllProperties(new RainbowFuryFX());

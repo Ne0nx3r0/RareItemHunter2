@@ -226,7 +226,6 @@ public class BossListener implements Listener {
             
 // Prepare a list of players close enough to get an essence
             RandomCollection<Player> randomPlayer = new RandomCollection();
-            int maxDistanceFromBossToGetReward = 50^2;
             Location lBoss = eBoss.getLocation();
             
             Iterator<Map.Entry<String, Integer>> iter = boss.getPlayersDamageDone().entrySet().iterator();
@@ -236,9 +235,14 @@ public class BossListener implements Listener {
                 
                 Player p = plugin.getServer().getPlayer(entry.getKey());
                 
-                if(p != null){
-                    if(p.getLocation().getWorld().equals(lBoss.getWorld())
-                    && lBoss.distanceSquared(p.getLocation()) < maxDistanceFromBossToGetReward){
+                if(p == null){
+                    iter.remove();
+                }
+                else if(p.getLocation().getWorld().equals(lBoss.getWorld())){
+                    if(p.getName().equals(boss.getHatchedBy())){
+                        randomPlayer.add(entry.getValue()*2, p);
+                    }
+                    else {
                         randomPlayer.add(entry.getValue(), p);
                     }
                 }
@@ -260,7 +264,12 @@ public class BossListener implements Listener {
             String sCurrentMostDamage = null;
             
             for(Map.Entry<String, Integer> entry : boss.getPlayersDamageDone().entrySet()){
-                playerDamages.append(", ").append(entry.getKey()).append("(").append(entry.getValue()).append(")");
+                if(entry.getKey().equals(boss.getHatchedBy())){
+                    playerDamages.append(", ").append(entry.getKey()).append("(").append(entry.getValue()).append(" * 2 finder's bonus)");
+                }
+                else {
+                    playerDamages.append(", ").append(entry.getKey()).append("(").append(entry.getValue()).append(")");
+                }
                 
                 if(entry.getValue() > currentMostDamage){
                     currentMostDamage = entry.getValue();

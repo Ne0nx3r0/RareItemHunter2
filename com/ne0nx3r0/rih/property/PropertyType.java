@@ -51,5 +51,8 @@ public enum PropertyType {
     RAGE,
     MAGE_FX,
     FIREWORKS_FX,
-    WITCH_FX
+    WITCH_FX,
+    PORTAL_FX,
+    BLACK_SMOKE_FX,
+    NERDY_FX
 }

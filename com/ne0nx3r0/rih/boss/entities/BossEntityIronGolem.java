@@ -2,21 +2,21 @@
 package com.ne0nx3r0.rih.boss.entities;
 
 import java.lang.reflect.Field;
-import net.minecraft.server.v1_7_R3.EntityHuman;
-import net.minecraft.server.v1_7_R3.EntityIronGolem;
-import net.minecraft.server.v1_7_R3.GenericAttributes;
-import net.minecraft.server.v1_7_R3.PathfinderGoalFloat;
-import net.minecraft.server.v1_7_R3.PathfinderGoalHurtByTarget;
-import net.minecraft.server.v1_7_R3.PathfinderGoalLookAtPlayer;
-import net.minecraft.server.v1_7_R3.PathfinderGoalMeleeAttack;
-import net.minecraft.server.v1_7_R3.PathfinderGoalMoveThroughVillage;
-import net.minecraft.server.v1_7_R3.PathfinderGoalMoveTowardsRestriction;
-import net.minecraft.server.v1_7_R3.PathfinderGoalNearestAttackableTarget;
-import net.minecraft.server.v1_7_R3.PathfinderGoalRandomLookaround;
-import net.minecraft.server.v1_7_R3.PathfinderGoalRandomStroll;
-import net.minecraft.server.v1_7_R3.PathfinderGoalSelector;
-import net.minecraft.server.v1_7_R3.World;
-import org.bukkit.craftbukkit.v1_7_R3.util.UnsafeList;
+import net.minecraft.server.v1_7_R4.EntityHuman;
+import net.minecraft.server.v1_7_R4.EntityIronGolem;
+import net.minecraft.server.v1_7_R4.GenericAttributes;
+import net.minecraft.server.v1_7_R4.PathfinderGoalFloat;
+import net.minecraft.server.v1_7_R4.PathfinderGoalHurtByTarget;
+import net.minecraft.server.v1_7_R4.PathfinderGoalLookAtPlayer;
+import net.minecraft.server.v1_7_R4.PathfinderGoalMeleeAttack;
+import net.minecraft.server.v1_7_R4.PathfinderGoalMoveThroughVillage;
+import net.minecraft.server.v1_7_R4.PathfinderGoalMoveTowardsRestriction;
+import net.minecraft.server.v1_7_R4.PathfinderGoalNearestAttackableTarget;
+import net.minecraft.server.v1_7_R4.PathfinderGoalRandomLookaround;
+import net.minecraft.server.v1_7_R4.PathfinderGoalRandomStroll;
+import net.minecraft.server.v1_7_R4.PathfinderGoalSelector;
+import net.minecraft.server.v1_7_R4.World;
+import org.bukkit.craftbukkit.v1_7_R4.util.UnsafeList;
 
 public class BossEntityIronGolem extends EntityIronGolem{
     
@@ -48,20 +48,20 @@ public class BossEntityIronGolem extends EntityIronGolem{
         this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, true));
         this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget(this, EntityHuman.class, 0, true));
     }
-    
+
     @Override
-    protected void aC() {
-        super.aC();
-        
+    public boolean aC() {
         // follow range
         this.getAttributeInstance(GenericAttributes.b).setValue(40.0D);
         
         // movement speed
+        //this.getAttributeInstance(GenericAttributes.d).setValue(0.23000000417232513D);
         this.getAttributeInstance(GenericAttributes.d).setValue(0.53000000417232513D);
         
         // attack damage
         //this.getAttributeInstance(GenericAttributes.e).setValue(3.0D);
         
         //this.bb().b(bp).setValue(this.random.nextDouble() * 0.10000000149011612D);
+        return super.aC();
     }
 }

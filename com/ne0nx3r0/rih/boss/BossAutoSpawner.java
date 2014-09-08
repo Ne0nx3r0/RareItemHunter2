@@ -44,7 +44,7 @@ public class BossAutoSpawner implements Runnable{
                                     p.sendMessage(ChatColor.DARK_GREEN+"Legendary boss "+ChatColor.WHITE+eggToHatch.getTemplate().getName()+ChatColor.DARK_GREEN+" has been awakened by "+ChatColor.WHITE+awakener+ChatColor.DARK_GREEN+"!");
                                 }
 
-                                plugin.getBossManager().hatchEggIfBoss(eggToHatch.getLocation().getBlock());
+                                plugin.getBossManager().hatchEggIfBoss(eggToHatch.getLocation().getBlock(),awakener);
                             }
                         },1);
 

@@ -24,11 +24,11 @@ public class EntityLoader {
     {
         try
         {
-            mapStringToClassField = net.minecraft.server.v1_7_R3.EntityTypes.class.getDeclaredField("c");
-            mapClassToStringField = net.minecraft.server.v1_7_R3.EntityTypes.class.getDeclaredField("d");
+            mapStringToClassField = net.minecraft.server.v1_7_R4.EntityTypes.class.getDeclaredField("c");
+            mapClassToStringField = net.minecraft.server.v1_7_R4.EntityTypes.class.getDeclaredField("d");
             //mapIdtoClassField = net.minecraft.server.v1_7_R1.EntityTypes.class.getDeclaredField("e");
-            mapClassToIdField = net.minecraft.server.v1_7_R3.EntityTypes.class.getDeclaredField("f");
-            mapStringToIdField = net.minecraft.server.v1_7_R3.EntityTypes.class.getDeclaredField("g");
+            mapClassToIdField = net.minecraft.server.v1_7_R4.EntityTypes.class.getDeclaredField("f");
+            mapStringToIdField = net.minecraft.server.v1_7_R4.EntityTypes.class.getDeclaredField("g");
 
             mapStringToClassField.setAccessible(true);
             mapClassToStringField.setAccessible(true);

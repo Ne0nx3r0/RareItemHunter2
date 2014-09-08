@@ -8,5 +8,6 @@ public enum BossEntityType {
     ENDERMAN,
     SNOWMAN,
     IRONGOLEM,
-    WITHER
+    WITHER,
+    BLAZE
 }

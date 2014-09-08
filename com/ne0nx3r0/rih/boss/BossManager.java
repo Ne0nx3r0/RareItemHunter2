@@ -5,16 +5,18 @@ import com.ne0nx3r0.rih.RareItemHunterPlugin;
 import com.ne0nx3r0.rih.boss.egg.BossEgg;
 import java.util.Iterator;
 import java.util.List;
-import net.minecraft.server.v1_7_R3.Entity;
-import net.minecraft.server.v1_7_R3.EntityLiving;
-import net.minecraft.server.v1_7_R3.EntityWither;
-import net.minecraft.server.v1_7_R3.GenericAttributes;
+import net.minecraft.server.v1_7_R4.Entity;
+import net.minecraft.server.v1_7_R4.EntityBlaze;
+import net.minecraft.server.v1_7_R4.EntityLiving;
+import net.minecraft.server.v1_7_R4.EntityWither;
+import net.minecraft.server.v1_7_R4.GenericAttributes;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -72,10 +74,10 @@ public class BossManager {
             return null;
         }
         
-        return this.spawnBossAt(template, spawnAt);
+        return this.spawnBossAt(template, spawnAt, null);
     }
     
-    public Boss spawnBossAt(BossTemplate template, Location spawnAt ){
+    public Boss spawnBossAt(BossTemplate template, Location spawnAt,String hatcher){
         Entity bossEntity = this.spawnBossEntity(template.getBossEntityType(), spawnAt,template.getSpeed());
 
         LivingEntity lent = (LivingEntity) bossEntity.getBukkitEntity();
@@ -110,13 +112,17 @@ public class BossManager {
         
         lent.setMaxHealth(10000);
         
+        if(hatcher != null){
+            boss.setHatchedBy(hatcher);
+        }
+        
         return boss;
     }
     
     private Entity spawnBossEntity(BossEntityType bossType,Location loc,double speed){
-        net.minecraft.server.v1_7_R3.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
+        net.minecraft.server.v1_7_R4.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
         
-        net.minecraft.server.v1_7_R3.Entity bossEntity;
+        net.minecraft.server.v1_7_R4.Entity bossEntity;
         
         switch(bossType){
             default:
@@ -143,6 +149,9 @@ public class BossManager {
                 break;
             case WITHER: 
                 bossEntity = new EntityWither(nmsWorld);
+                break;
+            case BLAZE: 
+                bossEntity = new EntityBlaze(nmsWorld);
                 break;
         }
         
@@ -231,7 +240,7 @@ public class BossManager {
         return this.bossEggs;
     }
 
-    public void hatchEggIfBoss(Block block) {
+    public void hatchEggIfBoss(Block block,String hatcher) {
         if(block.getType().equals(Material.DRAGON_EGG)){
             Location lBlock = block.getLocation();
             
@@ -248,7 +257,7 @@ public class BossManager {
                     
                     lBlock.getWorld().strikeLightningEffect(lBlock);
                     
-                    this.spawnBossAt(template, block.getLocation());
+                    this.spawnBossAt(template, block.getLocation(),hatcher);
                     
                     iter.remove();
                     

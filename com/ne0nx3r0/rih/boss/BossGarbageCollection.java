@@ -16,7 +16,7 @@ class BossGarbageCollection {
     BossGarbageCollection(final RareItemHunterPlugin plugin, final BossManager bm,long timer) {
         plugin.getServer().getScheduler().runTaskTimer(plugin, new Runnable(){
             @Override
-            public void run() {
+            public void run() {/*
                 List<Boss> activeBosses = bm.getAllActiveBosses();
                 
                 if(!activeBosses.isEmpty()){
@@ -45,10 +45,10 @@ class BossGarbageCollection {
                     for(Entry<UUID,Boss> entry : bossesFound.entrySet()){
                         // wasn't found, remove entry
                         if(entry.getValue() != null){
-                            activeBosses.remove(entry.getValue());
+                            bm.removeBoss(entry.getValue());
                         }
                     }
-                }
+                }*/
                 
                 // Clean up the eggs, much cleaner
                 List<BossEgg> removeThese = new ArrayList<>();
