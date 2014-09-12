@@ -58,6 +58,7 @@ class PropertiesYmlLoader {
         this.addPropertyToAllProperties(new RainbowFuryFX());
         this.addPropertyToAllProperties(new Regeneration());
         this.addPropertyToAllProperties(new RepairItem());
+        this.addPropertyToAllProperties(new Replenish());
         this.addPropertyToAllProperties(new Slow());
         this.addPropertyToAllProperties(new Smelt());
         this.addPropertyToAllProperties(new Spore());
