@@ -21,13 +21,13 @@ public class Replenish extends RareItemProperty
     
     @Override
     public void applyEffectToPlayer(Player player, int level){
-        double health = player.getHealthScale();
+        int food = player.getFoodLevel();
         
-        health = health + level;
+        food = food + level;
         
-        if(health > 20){
-            health = 20;
+        if(food > 20){
+            food = 20;
         }
-        player.setHealth(health);
+        player.setFoodLevel(food);
     } 
 }
