@@ -40,9 +40,7 @@ public class Replenish extends RareItemProperty
                     newFood = 20;
                 }
                 
-                if(newFood != currentFood){
-                    player.setFoodLevel(newFood);
-                }
+                player.setFoodLevel(newFood);
             }
         }
     } 
