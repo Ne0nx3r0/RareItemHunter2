@@ -21,16 +21,29 @@ public class Replenish extends RareItemProperty
     
     @Override
     public void applyEffectToPlayer(Player player, int level){
-        int food = player.getFoodLevel();
+        if(!player.isSprinting()){
+            int currentFood = player.getFoodLevel();
+            
+            if(currentFood == 20){
+                float newSaturation = player.getSaturation() + level;
 
-        food = food + level;
-        
-        if(food > 20){
-            food = 20;
+                if(newSaturation > currentFood){
+                    newSaturation = currentFood;
+                }
+                
+                player.setSaturation(newSaturation);
+            }
+            else {
+                int newFood = currentFood + level;
+                
+                if(newFood >= 20){                
+                    newFood = 20;
+                }
+                
+                if(newFood != currentFood){
+                    player.setFoodLevel(newFood);
+                }
+            }
         }
-        
-        player.setFoodLevel(food);
-        
-        player.setSaturation(food);
     } 
 }
