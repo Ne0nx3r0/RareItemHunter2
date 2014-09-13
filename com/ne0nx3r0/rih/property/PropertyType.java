@@ -55,6 +55,7 @@ public enum PropertyType {
     PORTAL_FX,
     BLACK_SMOKE_FX,
     NERDY_FX,
-    REPLENISH
+    REPLENISH,
+    MULTISHOT
     
 }

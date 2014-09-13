@@ -3,7 +3,9 @@ package com.ne0nx3r0.rih.property;
 import java.util.List;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -63,10 +65,11 @@ public class RareItemProperty {
 
     public boolean onInteractEntity(PlayerInteractEntityEvent e, int level){return false;}
     
+    public boolean onLaunchProjectile(EntityShootBowEvent e, Player shooter, int level) {return false;}
+    
     public void applyEffectToPlayer(Player p,int level){}
     
     public void removeEffectFromPlayer(Player p){}
-    
 // The reason player is specified is because arrow events are forwarded here
 // and damager requires some extra work to grab from those events
     public boolean onDamageOther(EntityDamageByEntityEvent e, Player attacker, int level){return false;}

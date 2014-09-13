@@ -14,6 +14,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -243,6 +245,62 @@ public final class PropertyManager {
                         }
                         
                         e.getPlayer().sendMessage(ChatColor.RED+"You need "+thingNeeded+" to use "+rip.getName()+"!");
+                    }
+                }
+            }
+        }
+    }
+
+    public void onShootBow(EntityShootBowEvent e) {
+        if(e.getEntity() instanceof Player){
+            Player player = (Player) e.getEntity();
+            ItemStack bow = e.getBow();
+      
+            if(bow != null){
+                Map<RareItemProperty, Integer> propertyLevels = this.recipeManager.getProperties(bow);
+
+                if(propertyLevels != null && !propertyLevels.isEmpty()){
+                    for(Entry<RareItemProperty,Integer> propertyLevel : propertyLevels.entrySet()){
+                        RareItemProperty rip = propertyLevel.getKey();
+
+                        if(this.hasCost(player,rip)){                 
+                            if(rip.onLaunchProjectile(e, player, propertyLevel.getValue())){
+                                this.used(player,rip);
+                            }
+                        }
+                        else {
+                            String thingNeeded = "";
+
+                            switch(rip.getCostType()){
+                                case FOOD:
+                                    thingNeeded = rip.getCost()+" food";
+                                    break;
+                                case LEVEL: 
+                                    thingNeeded = rip.getCost()+" level"+(rip.getCost()>1?"s":"");
+                                    break;
+                                case HEALTH: 
+                                    thingNeeded = rip.getCost()+" health";
+                                    break;
+                                case MONEY: 
+                                    thingNeeded = this.economy.format(rip.getCost());
+                                    break;
+                                case COOLDOWN: 
+                                    int seconds = (int) ((this.cooldowns.get(player.getUniqueId()).get(rip) - System.currentTimeMillis()) / 1000);
+
+                                    if(seconds < 1){
+                                        seconds = 1;
+                                    }
+
+                                    thingNeeded = "to wait "+seconds+" seconds";
+                                    break;
+                                case AUTOMATIC: 
+                                    return;
+                                case PASSIVE: 
+                                    return;
+                            }
+
+                            player.sendMessage(ChatColor.RED+"You need "+thingNeeded+" to use "+rip.getName()+"!");
+                        }
                     }
                 }
             }

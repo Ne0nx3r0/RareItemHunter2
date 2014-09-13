@@ -49,6 +49,7 @@ class PropertiesYmlLoader {
         this.addPropertyToAllProperties(new MagicBag());
         this.addPropertyToAllProperties(new MeltObsidian());
         this.addPropertyToAllProperties(new MermaidsGift());
+        this.addPropertyToAllProperties(new Multishot());
         this.addPropertyToAllProperties(new NerdyFX());
         this.addPropertyToAllProperties(new PaintWool());
         this.addPropertyToAllProperties(new Poison());

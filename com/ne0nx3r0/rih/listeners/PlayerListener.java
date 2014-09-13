@@ -23,7 +23,9 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -105,17 +107,6 @@ public class PlayerListener implements Listener {
     }
     
     @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlayerClickShrineOrEgg(PlayerInteractEvent e){
-        if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK) 
-        && this.guiManager.isLegendaryShrineBlock(e.getClickedBlock())){
-            this.guiManager.shrineClick(e);
-        }
-        else if(e.hasBlock()){
-            this.bossManager.hatchEggIfBoss(e.getClickedBlock(),e.getPlayer().getName());
-        }
-    }
-    
-    @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerClickRIInventory(InventoryClickEvent e){
         if(e.getSlotType() == InventoryType.SlotType.ARMOR)
         {
@@ -150,6 +141,14 @@ public class PlayerListener implements Listener {
     
     @EventHandler(priority=EventPriority.NORMAL)
     public void onPlayerInteract(PlayerInteractEvent e){
+        if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK) 
+        && this.guiManager.isLegendaryShrineBlock(e.getClickedBlock())){
+            this.guiManager.shrineClick(e);
+        }
+        else if(e.hasBlock()){
+            this.bossManager.hatchEggIfBoss(e.getClickedBlock(),e.getPlayer().getName());
+        }
+        
         if(this.recipeManager.isLegendaryCompass(e.getPlayer().getItemInHand())){            
             Location lClosest = this.bossManager.getClosestBossOrEggTo(e.getPlayer().getLocation());
             
@@ -221,5 +220,10 @@ public class PlayerListener implements Listener {
         if(properties != null && !properties.isEmpty()){
             e.setCancelled(true);
         }
+    }
+    
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerPlaceRareItem(EntityShootBowEvent e){
+        this.propertyManager.onShootBow(e);
     }
 }
