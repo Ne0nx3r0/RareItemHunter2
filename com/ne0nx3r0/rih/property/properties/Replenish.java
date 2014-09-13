@@ -12,7 +12,7 @@ public class Replenish extends RareItemProperty
         super(
             PropertyType.REPLENISH.ordinal(),
             "Replenish",
-            "Adds 1 food per level every 20 seconds",
+            "Adds 1 food per level every 20 seconds, if food is full adds 1 saturation per level",
             PropertyCostType.AUTOMATIC,
             20,
             4
